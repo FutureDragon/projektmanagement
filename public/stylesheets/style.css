@@ -1,0 +1,29 @@
+body {
+  padding: 10px 5%;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url("/images/zusammenarbeit.jpg");
+  background-repeat:no-repeat;
+  background-position: 50% 0px ;
+}
+a {
+  color: #00B7FF;
+}
+h1 {
+  color: #000000;
+}
+
+#container {
+  background-color: rgba(189, 187, 210, 0.5);
+  border-radius: 5px;
+  min-height: 750px;
+  width: 98%;
+}
+
+.tableCenter {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.center {
+  text-align: center;
+}
