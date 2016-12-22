@@ -1,17 +1,17 @@
 extends layout
 
 block content
-  #container
-    #header.center
-      h1= title
-    table.table.table-hover
+
+        #header
+        h1= title
+        table.table.table-hover
           tr
-            th Überschrift
-            th Überschrift 2
+            th.center Überschrift
+            th.center Überschrift 2
           tr
             td eintrag 1
             td eintrag 1.2
           tr
             td eintrag 2
             td eintrag 2.2
-    a.btn.btn-default.transparent(href='/backlog/new', role='button') Neuen Task anlegen
+        a.btn.btn-default.transparent(href='/backlog/new', role='button') Neuen Task anlegen
