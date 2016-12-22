@@ -6,6 +6,7 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='javascripts/jquery.js')
     script(src='javascripts/bootstrap.min.js')
+    script(src='javascripts/backlog.js')
   body
     nav.navbar.navbar-default.navbar-fixed-top
       .container-fluid
@@ -20,12 +21,12 @@ html
         // Alle Navigationslinks, Formulare und anderer Inhalt werden hier zusammengefasst und können dann ein- und ausgeblendet werden
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav
-            li.active
-              a(href='/backlog')
-                | Backlog
+            li
+              a(href='/')
+                | Index
                 span.sr-only (aktuell)
             li
-              a(href='#') Irgendwas
+              a(href='/backlog') Backlog
           ul.nav.navbar-nav.navbar-right
             li
               a(href='#') Abmelden oder sowas

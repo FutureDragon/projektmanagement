@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  #container
+    #header.center
+      h1= title
+
+    form(method='post')
+      .form-group
+        label(for='task') Task
+        input#task.form-control.transparent(type='text', placeholder='Task')
+      .form-group
+        label(for='description') Beschreibung
+        textarea.form-control.transparent(rows='7')
+      button.btn.btn-defaul.transparent(type='submit') Task anlegen
