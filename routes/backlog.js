@@ -7,6 +7,8 @@ router.get('/', function(req, res, next) {
 });
 router.post('/new', function(req, res, next) {
   res.render('backlogNewTask', { title: 'Task anlegen'});
+  console.log("Task: " + req.body.task);
+  console.log("Description: " + req.body.description);
 });
 router.get('/new', function(req, res, next) {
   res.render('backlogNewTask', { title: 'Task anlegen'});
