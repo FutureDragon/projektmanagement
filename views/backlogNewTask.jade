@@ -1,9 +1,9 @@
 extends layout
 block content
-
+    script(src='/javascripts/backlog.js')
     #header
       h1= title
-    #newTaskMessage
+    #newTaskMessage.fadeIn
     form#newTaskForm(method='post' enctype='application/json')
       .form-group
         label(for='task') Task
