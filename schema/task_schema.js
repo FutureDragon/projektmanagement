@@ -12,7 +12,8 @@ var taskSchema = new Schema({
     },
     priority: {
         type: String,
-        enum: ['Low', 'Medium', 'High', ],
+        enum: ['Low', 'Medium', 'High'],
+        default: 'Medium'
     },
     author: String,
     created: Date,

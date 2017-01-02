@@ -2,7 +2,7 @@ $(document).ready(function (event) {
     $(".table").hide();
     $.getJSON( "backlog/get", function( data ) {
         $.each(data, function (key ,val) {
-            var text = '<tr><td><details class="details">'+ val.description +'<summary>'+ val.task +'</summary></details></td></tr>';
+            var text = '<tr><td><details class="details">' +'<summary>'+ val.task +'</summary><p>' + val.description + '</p></details></td></tr>';
             if(val.status == "Open") {
                 $("#opentable tr:last").after(text);
             }
