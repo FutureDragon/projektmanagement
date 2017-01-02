@@ -33,5 +33,17 @@ function Task() {
         });
         mongoose.disconnect();
     };
+
+    this.updateStatus = function (name, status) {
+        mongoose.connect('mongodb://localhost/test');
+        TaskSchema.findOneAndUpdate({ task: name }, { status: status }, function(err, user) {
+            if (err) throw err;
+
+            // we have the updated user returned to us
+            console.log(user);
+        });
+
+        mongoose.disconnect();
+    }
 }
 module.exports = new Task();

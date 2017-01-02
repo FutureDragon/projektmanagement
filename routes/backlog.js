@@ -18,6 +18,7 @@ router.get('/new', function(req, res, next) {
 });
 
 router.get('/get', function(req, res, next) {
+  res.setHeader('Content-Type', 'application/json');
   task.getAll(res);
 });
 

@@ -1,4 +1,24 @@
 $(document).ready(function (event) {
+    $(".table").hide();
+    $.getJSON( "backlog/get", function( data ) {
+        $.each(data, function (key ,val) {
+            var text = '<tr><td><details class="details">'+ val.description +'<summary>'+ val.task +'</summary></details></td></tr>';
+            if(val.status == "Open") {
+                $("#opentable tr:last").after(text);
+            }
+            else if(val.status == "In Progress") {
+                $("#progress tr:last").after(text);
+            }
+            else if(val.status == "Code Review") {
+                $("#review tr:last").after(text);
+            }
+            else if(val.status == "Done") {
+                $("#done tr:last").after(text);
+            }
+        });
+        $(".table").fadeIn(500);
+    });
+
     if($('#newTaskAction').val() == 'success') {
         $('#newTaskMessage').text("Task erfolgreich angelegt").addClass('alert alert-success').hide().fadeIn(700);
         $('#newTaskAction').val('none');
@@ -16,3 +36,11 @@ $(document).ready(function (event) {
        return false;
     });
 });
+
+
+db.test.update(
+    { "task" : "df" },
+    {
+        $set: { "status": "In Progress" }
+    }
+)

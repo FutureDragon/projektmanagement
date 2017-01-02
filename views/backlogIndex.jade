@@ -4,14 +4,21 @@ block content
   script(src='/javascripts/backlog.js')
   #header
   h1= title
-  table.table.table-hover
-    tr
-      th.center Überschrift
-      th.center Überschrift 2
-    tr
-      td eintrag 1
-      td eintrag 1.2
-    tr
-      td eintrag 2
-      td eintrag 2.2
-  a.btn.btn-default.transparent(href='/backlog/new', role='button') Neuen Task anlegen
+  #open.col-md-3
+    table#opentable.table.table-hover
+      tr
+      th.center Offen
+  #progress.col-md-3
+    table.table.table-hover
+      tr
+      th.center In Arbeit
+  #review.col-md-3
+    table.table.table-hover
+      tr
+      th.center Review
+  #done.col-md-3
+    table.table.table-hover
+      tr
+      th.center Fertig
+  #newTask.col-md-12
+    a.btn.btn-default.transparent(href='/backlog/new', role='button') Neuen Task anlegen
