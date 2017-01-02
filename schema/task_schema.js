@@ -7,8 +7,16 @@ var taskSchema = new Schema({
     sprintID : String,
     status: {
         type: String,
-        enum: ['Done', 'In Progress', 'Open'],
+        enum: ['Open', 'In Progress', 'Code Review', 'Done'],
         default: 'Open'
-    }
+    },
+    priority: {
+        type: String,
+        enum: ['Low', 'Medium', 'High', ],
+    },
+    author: String,
+    created: Date,
+    updated: Date
+
 });
 module.exports = mongoose.model('tasks', taskSchema);
