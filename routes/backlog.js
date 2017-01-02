@@ -21,4 +21,9 @@ router.get('/get', function(req, res, next) {
   task.getAll(res);
 });
 
+router.get('/get/:name', function(req, res, next) {
+  var name = req.params.name;
+  task.get(name, res);
+});
+
 module.exports = router;

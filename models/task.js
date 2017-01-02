@@ -12,10 +12,6 @@ function Task() {
                 console.log('Task angelegt');
             }
         });
-
-
-
-
         mongoose.disconnect();
     };
 
@@ -25,6 +21,15 @@ function Task() {
             if (err) throw err;
             res.send(tasks);
             return tasks;
+        });
+        mongoose.disconnect();
+    };
+    
+    this.get = function (name ,res) {
+        mongoose.connect('mongodb://localhost/test');
+        TaskSchema.find({ task: name }, function(err, task) {
+            if (err) throw err;
+                res.send(task);
         });
         mongoose.disconnect();
     };
