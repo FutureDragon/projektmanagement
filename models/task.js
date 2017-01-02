@@ -1,10 +1,26 @@
+var mongoose = require('mongoose');
+var TaskSchema = require("../schema/task_schema");
 function Task() {
-    this.get = function (res) {
-        return connection.acquire(function (err, con) {
-            con.query('select * from task', function (err, result) {
-                con.release();
-                res.send(result);
-            });
+
+    this.new = function (task, description) {
+        mongoose.connect('mongodb://localhost/test');
+        var taskModel = TaskSchema({ task: task, description: description });
+        taskModel.save(function (err) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Task angelegt');
+            }
         });
+
+
+        TaskSchema.find({}, function(err, tasks) {
+            if (err) throw err;
+            // object of all the users
+            return tasks;
+        });
+
+        mongoose.disconnect();
     };
 }
+module.exports = new Task();
