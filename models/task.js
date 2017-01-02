@@ -14,12 +14,18 @@ function Task() {
         });
 
 
+
+
+        mongoose.disconnect();
+    };
+
+    this.getAll = function (res) {
+        mongoose.connect('mongodb://localhost/test');
         TaskSchema.find({}, function(err, tasks) {
             if (err) throw err;
-            // object of all the users
+            res.send(tasks);
             return tasks;
         });
-
         mongoose.disconnect();
     };
 }
