@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/rest', function(req, res, next) {
-  task.new(req.body.task, req.body.description, res);
+  task.new(req.body.task, req.body.description, req.body.priority ,res);
   //res.render('backlogNewTask', { title: 'Task anlegen', action : 'success'});
   console.log("Task: " + req.body.task);
   console.log("Description: " + req.body.description);

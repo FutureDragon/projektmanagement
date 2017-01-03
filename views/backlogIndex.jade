@@ -32,6 +32,13 @@ block content
         .form-group
           label(for='description') Beschreibung
           textarea#description.form-control.transparent(rows='7' name='description')
+        .form-group
+          label(for='priority') Priorität:
+          select(name='priority' id="priority")
+            option Low
+            option(selected="selected") Medium
+            option High
+
 
     #dialog-form-task
       form#showTaskForm(method='post' enctype='application/json')
@@ -43,3 +50,12 @@ block content
         .form-group
           label(for='description') Beschreibung
           textarea#descriptionShow.form-control.transparent(rows='7' name='description' disabled=true)
+        .form-group
+          label(for='status') Status
+          p#statusShow
+        .form-group
+          label(for='created') Erstellt:
+          p#createdShow
+        .form-group
+          label(for='priority') Priorität:
+          p#priorityShow

@@ -3,9 +3,9 @@ var TaskSchema = require("../schema/task_schema");
 var db = require("./db");
 function Task() {
 
-    this.new = function (task, description, res) {
+    this.new = function (task, description, priority, res) {
         db.connect();
-        var taskModel = TaskSchema({ task: task, description: description });
+        var taskModel = TaskSchema({ task: task, description: description, priority: priority });
         taskModel.save(function (err) {
             if (err) {
                 console.log(err);

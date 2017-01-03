@@ -2,9 +2,12 @@ $(document).ready(function (event) {
     var dialog, form, dialogShow;
     var task;
     task = $( "#task");
-    description = $("#description");
-
+    var description = $("#description");
     getTasks();
+
+
+    $(".drag").draggable({ axis: "x" });
+
 
 // ____________________________________________________________________________
     dialog = $( "#dialog-form" ).dialog({
@@ -28,18 +31,26 @@ $(document).ready(function (event) {
 
     });
     function createTask() {
-        $.ajax(
-            {
-                type: "POST",
-                url: "backlog/rest",
-                contentType: "application/json; charset=utf-8",
-                dataType : 'json',
-                data: JSON.stringify({"task" : task.val(), "description" : description.val()}),
-                success: newTaskSuccese()
-            }
-        );
-        dialog.dialog("close");
-        formReset();
+        if(task.val() != "") {
+            var priority = $( "#priority option:selected" ).text();
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "backlog/rest",
+                    contentType: "application/json; charset=utf-8",
+                    dataType : 'json',
+                    data: JSON.stringify({"task" : task.val(), "description" : description.val(), "priority" : priority}),
+                    success: newTaskSuccese()
+                }
+            );
+            dialog.dialog("close");
+            formReset();
+        }
+        else {
+            alert("Task eingeben");
+        }
+
+
     }
 
     function formReset() {
@@ -63,15 +74,19 @@ $(document).ready(function (event) {
         buttons: {
             "Offen": function () {
                 updateTask(task._id, "Open");
+                $("#statusShow").text("Open");
             },
             "In Arbeit": function () {
                 updateTask(task._id, "In Progress");
+                $("#statusShow").text("In Progress");
             },
             "Review": function () {
                 updateTask(task._id, "Code Review");
+                $("#statusShow").text("Code Review");
             },
             "Fertig": function () {
                 updateTask(task._id, "Done");
+                $("#statusShow").text("Done");
             },
             "Fenster Schließen": function () {
                 dialogShow.dialog("close");
@@ -111,6 +126,9 @@ $(document).ready(function (event) {
         $.getJSON( "backlog/rest/"+id, function( data ) {
             $("#taskShow").val(data.task);
             $("#descriptionShow").val(data.description);
+            $("#statusShow").text(data.status);
+            $("#createdShow").text(data.created);
+            $("#priorityShow").text(data.priority);
             task = data;
         });
     }
