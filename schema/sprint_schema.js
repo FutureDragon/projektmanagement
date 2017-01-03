@@ -18,4 +18,8 @@ var sprintSchema = new Schema({
     tasks: [{type: mongoose.Schema.Types.ObjectId, ref: Task}]
 });
 
-module.exports = mongoose.model('Sprint', sprintSchema);
+// Create model for a sprint
+var Sprint = mongoose.model('Sprint', sprintSchema);
+
+// Exports the module
+module.exports = Sprint;

@@ -9,8 +9,6 @@ function Task() {
         taskModel.save(function (err) {
             if (err) {
                 console.log(err);
-            } else {
-                console.log('Task angelegt');
             }
         });
         res.sendStatus(200);
@@ -20,29 +18,40 @@ function Task() {
     this.getAll = function (res) {
         db.connect();
         TaskSchema.find({}, function (err, tasks) {
-            if (err) throw err;
-            res.send(tasks);
-            return tasks;
+            if (err){
+                console.log(err);
+            }
+            else{
+                res.send(tasks);
+            }
+
         });
         db.disconnect();
     };
 
     this.get = function (id, res) {
-        db.connect();
-        TaskSchema.findById(id, function(err, task) {
-            if (err) throw err;
-            res.send(task);
-        });
-        db.disconnect();
+            db.connect();
+            TaskSchema.findById(id, function(err, task) {
+                if (err){
+                    throw err;
+                }
+                else{
+                    res.send(task);
+                }
+            });
+            db.disconnect();
     };
 
     this.updateStatus = function (id, status, res) {
         db.connect();
         TaskSchema.findOneAndUpdate({ _id: id}, { status: status }, function(err, user) {
-            if (err) throw err;
-
-            // we have the updated user returned to us
-            console.log(user);
+            if (err){
+                throw err;
+            }
+            else {
+                // we have the updated user returned to us
+                console.log(user);
+            }
         });
         db.disconnect();
         res.sendStatus(200);

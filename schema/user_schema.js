@@ -11,10 +11,19 @@ var userSchema = new Schema({
     lastname: {type: String, required: true},
     username: {type: String, required:true, unique: true},
     password: {type: String, required: true},
-    email: {type: String, required: true},
+    email: {type: String, required: true, unique: true},
+    role: {
+        type: String,
+        enum: ['admin', 'scrummaster', 'employee'],
+        default: 'employee'
+    },
     created: {type: Date, default: Date.now },
     updated: Date,
     tasks: [{type: mongoose.Schema.Types.ObjectId, ref: Task}]
 });
 
-module.exports = mongoose.model('User', userSchema);
+//  create model for a user
+var User = mongoose.model('User', userSchema);
+
+// Exports module
+module.exports = User;

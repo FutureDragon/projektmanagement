@@ -1,38 +1,43 @@
 var mongoose = require('mongoose');
-var UserSchema = require("../schema/user_schema");
+var User = require("../schema/user_schema");
+var db = require("./db");
 function User() {
 
-    this.new = function (firstname, lastname, username, password, email) {
-        mongoose.connect('mongodb://localhost/test');
-        var taskModel = UserSchema({ firstname: firstname, lastname: lastname, username: username,
-        password: password, email: email});
+    this.new = function (firstName, lastName, userName, pwd, mail) {
+        db.connect();
+        var taskModel = User({ firstname: firstName, lastname: lastName, username: userName, password: pwd, email: mail});
         userModel.save(function (err) {
             if (err) {
                 console.log(err);
-            } else {
-                console.log('User angelegt');
             }
         });
-        mongoose.disconnect();
+        db.disconnect();
     };
 
-    this.getAll = function (res) {
-        mongoose.connect('mongodb://localhost/test');
-        UserSchema.find({}, function(err, users) {
-            if (err) throw err;
-            res.send(users);
-            return users;
+    this.getAllUsers = function (res) {
+        db.connect();
+        User.find({}, function(err, users) {
+            if (err){
+                throw err;
+            }
+            else{
+                res.send(users);
+            }
         });
-        mongoose.disconnect();
+        db.disconnect();
     };
 
-    this.get = function (username ,res) {
-        mongoose.connect('mongodb://localhost/test');
-        UserSchema.find({ username: username }, function(err, users) {
-            if (err) throw err;
-            res.send(users);
+    this.get = function (name ,res) {
+        db.connect();
+        User.find({ username: name }, function(err, user) {
+            if (err){
+                throw err;
+            }
+            else{
+                res.send(user);
+            }
         });
-        mongoose.disconnect();
+        db.disconnect();
     };
 }
 module.exports = new User();

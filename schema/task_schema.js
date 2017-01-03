@@ -30,7 +30,8 @@ var taskSchema = new Schema({
     _sprint : {type: String, ref: Sprint}
 });
 
-/**
- * Create new Task Model and export this Module
- */
-module.exports = mongoose.model('Task', taskSchema);
+// Create new model for a task
+var Task = mongoose.model('Task', taskSchema);
+
+// Exports module
+module.exports = Task;
