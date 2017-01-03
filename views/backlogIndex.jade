@@ -4,6 +4,7 @@ block content
   script(src='/javascripts/backlog.js')
   #header
   h1= title
+  #newTaskMessage.fadeIn
   #open.col-md-3
     table#opentable.table.table-hover
       tr
@@ -21,4 +22,14 @@ block content
       tr
       th.center Fertig
   #newTask.col-md-12
-    a.btn.btn-default.transparent(href='/backlog/new', role='button') Neuen Task anlegen
+    //a.btn.btn-default.transparent(href='/backlog/new', role='button') Neuen Task anlegen
+    button#newTaskBtn.btn.btn-default.transparent  Neuen Task anlegen
+  #dialog-form
+    form#newTaskForm(method='post' enctype='application/json')
+        .form-group
+          label(for='task') Task
+          input#task.form-control.transparent(type='text', placeholder='Task' name='task')
+        .form-group
+          label(for='description') Beschreibung
+          textarea#description.form-control.transparent(rows='7' name='description')
+

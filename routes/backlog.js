@@ -6,9 +6,9 @@ router.get('/', function(req, res, next) {
   res.render('backlogIndex', { title: 'Projektmanagement Backlog'});
 });
 
-router.post('/new', function(req, res, next) {
-  task.new(req.body.task, req.body.description);
-  res.render('backlogNewTask', { title: 'Task anlegen', action : 'success'});
+router.post('/rest', function(req, res, next) {
+  task.new(req.body.task, req.body.description, res);
+  //res.render('backlogNewTask', { title: 'Task anlegen', action : 'success'});
   console.log("Task: " + req.body.task);
   console.log("Description: " + req.body.description);
 });

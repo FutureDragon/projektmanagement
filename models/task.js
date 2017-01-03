@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var TaskSchema = require("../schema/task_schema");
 function Task() {
 
-    this.new = function (task, description) {
+    this.new = function (task, description, res) {
         mongoose.connect('mongodb://localhost/test');
         var taskModel = TaskSchema({ task: task, description: description });
         taskModel.save(function (err) {
@@ -12,6 +12,7 @@ function Task() {
                 console.log('Task angelegt');
             }
         });
+        res.sendStatus(200)
         mongoose.disconnect();
     };
 
