@@ -12,4 +12,4 @@ var sprintSchema = new Schema({
     end: {type: Date, required: true}
 });
 
-module.exports = mongoose.Model('Sprint', sprintSchema);
+module.exports = mongoose.model('Sprint', sprintSchema);

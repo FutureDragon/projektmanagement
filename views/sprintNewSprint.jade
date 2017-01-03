@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    script(src='/javascripts/sprint.js')
+    #header
+        h1= title
+        #newSprintMessage.fadeIn
+            form#newSprintForm(method='post' enctype='application/json')
+                button#newSprintBtn.btn.btn-defaul.transparent Sprint anlegen
+            input#newSprintAction(type='hidden' name='newSprintAction' value='#{action}')
