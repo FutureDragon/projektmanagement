@@ -1,10 +1,9 @@
 var mongoose = require('mongoose');
 var TaskSchema = require("../schema/task_schema");
-//var autoIncrement = require('mongoose-auto-increment');
 function Task() {
 
     this.new = function (task, description) {
-        //mongoose.connect('mongodb://localhost/test');
+        mongoose.connect('mongodb://localhost/test');
         var taskModel = TaskSchema({ task: task, description: description });
         taskModel.save(function (err) {
             if (err) {
@@ -13,7 +12,7 @@ function Task() {
                 console.log('Task angelegt');
             }
         });
-        //mongoose.disconnect();
+        mongoose.disconnect();
     };
 
     /*this.getAll = function (res) {

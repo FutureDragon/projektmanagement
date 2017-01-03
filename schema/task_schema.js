@@ -3,17 +3,6 @@
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-// var autoIncrement = require('mongoose-auto-increment');
-
-/**
- * Connect to the database
- */
-var connection = mongoose.createConnection("mongodb://localhost/test");
-
-/**
- * Register auto increment for this connection
- */
-//autoIncrement.initialize(connection);
 
 /**
  * Define Schema for tasks
@@ -38,19 +27,6 @@ var taskSchema = new Schema({
 });
 
 /**
- * Set up auto increment for Model 'tasks"
+ * Create new Task Model and export this Module
  */
-/*taskSchema.plugin(autoIncrement.plugin,{
- model: 'tasks',
- startAt: 1
- });*/
-
-/**
- * Create new Task Model
- */
-var Task = connection.model('Task', taskSchema);
-
-/**
- * Export this Module
- */
-module.exports = Task;
+module.exports = mongoose.model('Task', taskSchema);
