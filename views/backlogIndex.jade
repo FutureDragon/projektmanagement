@@ -33,3 +33,13 @@ block content
           label(for='description') Beschreibung
           textarea#description.form-control.transparent(rows='7' name='description')
 
+    #dialog-form-task
+      form#showTaskForm(method='post' enctype='application/json')
+        .form-group
+          p#messageShow
+        .form-group
+          label(for='task') Task
+          input#taskShow.form-control.transparent(type='text', name='task' disabled=true)
+        .form-group
+          label(for='description') Beschreibung
+          textarea#descriptionShow.form-control.transparent(rows='7' name='description' disabled=true)

@@ -13,18 +13,24 @@ router.post('/rest', function(req, res, next) {
   console.log("Description: " + req.body.description);
 });
 
+router.post('/rest/update', function(req, res, next) {
+  console.log("Update von : " + req.body.id);
+
+  task.updateStatus(req.body.id, req.body.status, res);
+});
+
 router.get('/new', function(req, res, next) {
   res.render('backlogNewTask', { title: 'Task anlegen', action : 'none'});
 });
 
-router.get('/get', function(req, res, next) {
+router.get('/rest/', function(req, res, next) {
   res.setHeader('Content-Type', 'application/json');
   task.getAll(res);
 });
 
-router.get('/get/:name', function(req, res, next) {
-  var name = req.params.name;
-  task.get(name, res);
+router.get('/rest/:id', function(req, res, next) {
+  var id = req.params.id;
+  task.get(id, res);
 });
 
 module.exports = router;

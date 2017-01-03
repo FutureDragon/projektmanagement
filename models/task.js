@@ -12,7 +12,7 @@ function Task() {
                 console.log('Task angelegt');
             }
         });
-        res.sendStatus(200)
+        res.sendStatus(200);
         mongoose.disconnect();
     };
 
@@ -26,18 +26,18 @@ function Task() {
         mongoose.disconnect();
     };
 
-    this.get = function (name ,res) {
+    this.get = function (id ,res) {
         mongoose.connect('mongodb://localhost/test');
-        TaskSchema.find({ task: name }, function(err, task) {
+        TaskSchema.findById(id, function(err, task) {
             if (err) throw err;
             res.send(task);
         });
         mongoose.disconnect();
     };
 
-    this.updateStatus = function (name, status) {
+    this.updateStatus = function (id, status, res) {
         mongoose.connect('mongodb://localhost/test');
-        TaskSchema.findOneAndUpdate({ task: name }, { status: status }, function(err, user) {
+        TaskSchema.findOneAndUpdate({ _id: id}, { status: status }, function(err, user) {
             if (err) throw err;
 
             // we have the updated user returned to us
@@ -45,6 +45,7 @@ function Task() {
         });
 
         mongoose.disconnect();
+        res.sendStatus(200);
     }
 }
 module.exports = new Task();
