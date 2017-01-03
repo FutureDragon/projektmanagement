@@ -5,10 +5,6 @@ $(document).ready(function (event) {
     var description = $("#description");
     getTasks();
 
-
-    $(".drag").draggable({ axis: "x" });
-
-
 // ____________________________________________________________________________
     dialog = $( "#dialog-form" ).dialog({
         autoOpen: false,
@@ -40,7 +36,7 @@ $(document).ready(function (event) {
                     contentType: "application/json; charset=utf-8",
                     dataType : 'json',
                     data: JSON.stringify({"task" : task.val(), "description" : description.val(), "priority" : priority}),
-                    success: newTaskSuccese()
+                    success: newTasksuccess()
                 }
             );
             dialog.dialog("close");
@@ -49,8 +45,6 @@ $(document).ready(function (event) {
         else {
             alert("Task eingeben");
         }
-
-
     }
 
     function formReset() {
@@ -58,7 +52,7 @@ $(document).ready(function (event) {
         description.val("");
     }
 
-    function newTaskSuccese() {
+    function newTasksuccess() {
         location.reload();
         $("#newTaskMessage").text("Task erfolgreich angelegt").addClass("alert alert-success");
         getTasks();
@@ -127,7 +121,7 @@ $(document).ready(function (event) {
             $("#taskShow").val(data.task);
             $("#descriptionShow").val(data.description);
             $("#statusShow").text(data.status);
-            $("#createdShow").text(data.created);
+            $("#createdShow").text("Von: " + data.author + " am " +data.created);
             $("#priorityShow").text(data.priority);
             task = data;
         });

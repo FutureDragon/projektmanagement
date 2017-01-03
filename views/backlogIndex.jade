@@ -22,7 +22,6 @@ block content
       tr
       th.center Fertig
   #newTask.col-md-12
-    //a.btn.btn-default.transparent(href='/backlog/new', role='button') Neuen Task anlegen
     button#newTaskBtn.btn.btn-default.transparent  Neuen Task anlegen
   #dialog-form
     form#newTaskForm(method='post' enctype='application/json')
@@ -31,7 +30,7 @@ block content
           input#task.form-control.transparent(type='text', placeholder='Task' name='task')
         .form-group
           label(for='description') Beschreibung
-          textarea#description.form-control.transparent(rows='7' name='description')
+          textarea#description.form-control.transparent(rows='7' name='description' placeholder='Beschreibung des Tasks')
         .form-group
           label(for='priority') Priorität:
           select(name='priority' id="priority")
