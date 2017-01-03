@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Task = require("./task_schema");
 
 //create a schema for users
 var userSchema = new Schema({
@@ -12,7 +13,8 @@ var userSchema = new Schema({
     password: {type: String, required: true},
     email: {type: String, required: true},
     created: {type: Date, default: Date.now },
-    updated: Date
+    updated: Date,
+    tasks: [{type: mongoose.Schema.Types.ObjectId, ref: Task}]
 });
 
-module.exports = mongoose.Model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);

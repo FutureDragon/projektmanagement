@@ -15,9 +15,9 @@ function Task() {
         mongoose.disconnect();
     };
 
-    /*this.getAll = function (res) {
+    this.getAll = function (res) {
         mongoose.connect('mongodb://localhost/test');
-        TaskSchema.find({}, function(err, tasks) {
+        TaskSchema.find({}, function (err, tasks) {
             if (err) throw err;
             res.send(tasks);
             return tasks;
@@ -25,9 +25,9 @@ function Task() {
         mongoose.disconnect();
     };
 
-    this.get = function (name ,res) {
+    this.get = function (name, res) {
         mongoose.connect('mongodb://localhost/test');
-        TaskSchema.find({ task: name }, function(err, task) {
+        TaskSchema.find({task: name}, function (err, task) {
             if (err) throw err;
             res.send(task);
         });
@@ -36,7 +36,7 @@ function Task() {
 
     this.updateStatus = function (name, status) {
         mongoose.connect('mongodb://localhost/test');
-        TaskSchema.findOneAndUpdate({ task: name }, { status: status }, function(err, user) {
+        TaskSchema.findOneAndUpdate({task: name}, {status: status}, function (err, user) {
             if (err) throw err;
 
             // we have the updated user returned to us
@@ -44,6 +44,6 @@ function Task() {
         });
 
         mongoose.disconnect();
-    }*/
+    }
 }
 module.exports = new Task();
