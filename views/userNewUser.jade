@@ -6,5 +6,20 @@ block content
         h1= title
         #newUserMessage.fadeIn
             form#newUserForm(method='post' enctype='application/json')
-                button#newUserBtn.btn.btn-defaul.transparent User anlegen
+                .form-group
+                    label(for='username') Username
+                    input#username.form-control.transparent(type='text', placeholder='Username', name='username')
+                .form-group
+                    label(for='password') Passwort
+                    input#password.form-control.transparent(type='password', name='password')
+                .form-group
+                    label(for='firstname') Vorname
+                    input#firstname.form-control.transparent(type='text', placeholder='Vorname', name='firstname')
+                .form-group
+                    label(for='lastname') Nachname
+                    input#lastname.form-control.transparent(type='text', placeholder='Nachname', name='lastname')
+                .form-group
+                    label(for='email') E-Mail
+                    input#email.form-control.transparent(type='email', name='email')
+                button#newUserBtn.btn.btn-defaul.transparent Neuen User anlegen
             input#newUserAction(type='hidden' name='newUserAction' value='#{action}')
