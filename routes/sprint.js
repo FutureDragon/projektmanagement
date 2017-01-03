@@ -20,7 +20,7 @@ router.get('/new', function (req, res, next) {
 });
 
 router.get('/get', function (req, res, next) {
-    task.getAll(res);
+    sprint.getAll(res);
 });
 
 router.get('/get/:name', function (req, res, next) {

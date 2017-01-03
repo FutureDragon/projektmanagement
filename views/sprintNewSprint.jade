@@ -6,5 +6,17 @@ block content
         h1= title
         #newSprintMessage.fadeIn
             form#newSprintForm(method='post' enctype='application/json')
+                .form-group
+                    label(for='name') Sprint
+                    input#name.form-control.transparent(type='text', placeholder='Sprint', name='Sprint')
+                .form-group
+                    label(for='description') Beschreibung
+                    textarea.form-control.transparent(rows='7', name='description')
+                .form-group
+                    label(for='start') Startdatum
+                    input#start.form-control.transparent(type='date', name='start')
+                .form-group
+                    label(for='end') Enddatum
+                    input#end.form-control.transparent(type='date', name='end')
                 button#newSprintBtn.btn.btn-defaul.transparent Sprint anlegen
             input#newSprintAction(type='hidden' name='newSprintAction' value='#{action}')
