@@ -15,7 +15,7 @@ function Task() {
         mongoose.disconnect();
     };
 
-    /*this.getAll = function (res) {
+    this.getAll = function (res) {
         mongoose.connect('mongodb://localhost/test');
         TaskSchema.find({}, function(err, tasks) {
             if (err) throw err;
@@ -44,6 +44,6 @@ function Task() {
         });
 
         mongoose.disconnect();
-    }*/
+    }
 }
 module.exports = new Task();
