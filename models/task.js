@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
 var TaskSchema = require("../schema/task_schema");
+//var autoIncrement = require('mongoose-auto-increment');
 function Task() {
 
     this.new = function (task, description) {
-        mongoose.connect('mongodb://localhost/test');
+        //mongoose.connect('mongodb://localhost/test');
         var taskModel = TaskSchema({ task: task, description: description });
         taskModel.save(function (err) {
             if (err) {
@@ -12,10 +13,10 @@ function Task() {
                 console.log('Task angelegt');
             }
         });
-        mongoose.disconnect();
+        //mongoose.disconnect();
     };
 
-    this.getAll = function (res) {
+    /*this.getAll = function (res) {
         mongoose.connect('mongodb://localhost/test');
         TaskSchema.find({}, function(err, tasks) {
             if (err) throw err;
@@ -24,12 +25,12 @@ function Task() {
         });
         mongoose.disconnect();
     };
-    
+
     this.get = function (name ,res) {
         mongoose.connect('mongodb://localhost/test');
         TaskSchema.find({ task: name }, function(err, task) {
             if (err) throw err;
-                res.send(task);
+            res.send(task);
         });
         mongoose.disconnect();
     };
@@ -44,6 +45,6 @@ function Task() {
         });
 
         mongoose.disconnect();
-    }
+    }*/
 }
 module.exports = new Task();
