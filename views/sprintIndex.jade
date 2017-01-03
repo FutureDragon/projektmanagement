@@ -1,5 +1,7 @@
 extends layout
 
 block content
+    script(src='/javascripts/sprint.js')
     #header
-      h1= title
+        h1= title
+    a.btn.btn-default.transparent(href='/sprint/new', role='button') Neuen Sprint anlegen

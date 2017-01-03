@@ -1,0 +1,7 @@
+extends layout
+
+block content
+    script(src='/javascripts/users.js')
+    #header
+        h1= title
+    a.btn.btn-default.transparent(href='/users/new', role='button') Neuen User anlegen

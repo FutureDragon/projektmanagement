@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    script(src='/javascripts/users.js')
+    #header
+        h1= title
+        #newUserMessage.fadeIn
+            form#newUserForm(method='post' enctype='application/json')
+                button#newUserBtn.btn.btn-defaul.transparent User anlegen
+            input#newUserAction(type='hidden' name='newUserAction' value='#{action}')
