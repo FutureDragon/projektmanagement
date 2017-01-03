@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
 var TaskSchema = require("../schema/task_schema");
+var db = require("./db");
 function Task() {
 
     this.new = function (task, description) {
-        mongoose.connect('mongodb://localhost/test');
+        db.connect();
         var taskModel = TaskSchema({ task: task, description: description });
         taskModel.save(function (err) {
             if (err) {
@@ -12,38 +13,38 @@ function Task() {
                 console.log('Task angelegt');
             }
         });
-        mongoose.disconnect();
+        db.disconnect();
     };
 
     this.getAll = function (res) {
-        mongoose.connect('mongodb://localhost/test');
+        db.connect();
         TaskSchema.find({}, function (err, tasks) {
             if (err) throw err;
             res.send(tasks);
             return tasks;
         });
-        mongoose.disconnect();
+        db.disconnect();
     };
 
     this.get = function (name, res) {
-        mongoose.connect('mongodb://localhost/test');
+        db.connect();
         TaskSchema.find({task: name}, function (err, task) {
             if (err) throw err;
             res.send(task);
         });
-        mongoose.disconnect();
+        db.disconnect();
     };
 
     this.updateStatus = function (name, status) {
-        mongoose.connect('mongodb://localhost/test');
+        db.connect();
         TaskSchema.findOneAndUpdate({task: name}, {status: status}, function (err, user) {
             if (err) throw err;
 
             // we have the updated user returned to us
             console.log(user);
         });
-
-        mongoose.disconnect();
+        db.disconnect();
     }
 }
+// Exports a new Task Object
 module.exports = new Task();

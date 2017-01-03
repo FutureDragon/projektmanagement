@@ -1,13 +1,14 @@
 var mongoose = require('mongoose');
-function db() {
-    this.connectionString = "mongodb://localhost/test"
 
-    this.connect = function () {
-        mongoose.createConnection(this.connectionString);
+function Connection(){
+    this.connect = function(){
+        return mongoose.connect("mongodb://localhost/test", {server: {reconnectTries: Number.MAX_VALUE }});
+
     };
 
-    this.disconnect = function () {
-        mongoose.disconnect();
+    this.disconnect = function(){
+        return mongoose.disconnect();
     };
 }
-module.exports = new db();
+// Exports a new Connection Object
+module.exports = new Connection();
