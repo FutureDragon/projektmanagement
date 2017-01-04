@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
 var SprintSchema = require("../schema/sprint_schema");
+var db = require('./db');
 function Sprint() {
 
     this.new = function (name, description, start, end) {
-        mongoose.connect('mongodb://localhost/test');
+        db.connect();
         var sprintModel = SprintSchema({ name: name, description: description, start: start, end: end });
         sprintModel.save(function (err) {
             if (err) {
@@ -12,26 +13,28 @@ function Sprint() {
                 console.log('Sprint angelegt');
             }
         });
-        mongoose.disconnect();
+        db.disconnect();
     };
 
     this.getAll = function (res) {
-        mongoose.connect('mongodb://localhost/test');
+        db.connect();
         SprintSchema.find({}, function(err, sprints) {
             if (err) throw err;
             res.send(sprints);
             return sprints;
         });
-        mongoose.disconnect();
+        db.disconnect();
     };
 
-    this.get = function (name ,res) {
-        mongoose.connect('mongodb://localhost/test');
-        SprintSchema.find({ name: name }, function(err, sprints) {
-            if (err) throw err;
+    this.get = function (id ,res) {
+        db.connect();
+        SprintSchema.findById(id, function(err, sprints) {
+            if (err)throw err;
             res.send(sprints);
         });
-        mongoose.disconnect();
+        db.disconnect();
     };
+
+
 }
 module.exports = new Sprint();
