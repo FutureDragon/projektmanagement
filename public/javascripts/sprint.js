@@ -8,11 +8,13 @@ $(document).ready(function (event) {
     $("#start").datepicker();
     $("#end").datepicker();
 
+    createIndex();
+
     // ____________________________________________________________________________
 
     dialog = $("#dialog-form").dialog({
         autoOpen: false,
-        height: 500,
+        height: 550,
         width: 450,
         modal: true,
         buttons: {
@@ -28,7 +30,7 @@ $(document).ready(function (event) {
     });
 
     $("#newSprintBtn").button().on("click", function () {
-        $("#messageShow").text("").removeClass("alert alert-success fadeIn");
+        $("#messageShow").text("").removeClass("alert alert-danger fadeIn");
         dialog.dialog("open");
     });
 
@@ -54,14 +56,14 @@ $(document).ready(function (event) {
         }
         else {
             if (sprint.val() == "") {
-                $("#messageShow").text("Bitte Sprint eingeben!").addClass("alert alert-success fadeIn");
+                $("#messageShow").text("Bitte Sprint eingeben!").addClass("alert alert-danger fadeIn");
             }
             else {
                 if (startd.val() == "") {
-                    $("#messageShow").text("Bitte Startdatum eingeben!").addClass("alert alert-success fadeIn");
+                    $("#messageShow").text("Bitte Startdatum eingeben!").addClass("alert alert-danger fadeIn");
                 }
                 else {
-                    $("#messageShow").text("Bitte Enddatum eingeben!").addClass("alert alert-success fadeIn");
+                    $("#messageShow").text("Bitte Enddatum eingeben!").addClass("alert alert-danger fadeIn");
                 }
             }
         }
@@ -81,5 +83,18 @@ $(document).ready(function (event) {
 
     // ____________________________________________________________________________
 
+    function createIndex() {
+        $.getJSON("/sprint/rest", function (data) {
+            $.each(data, function (key, val) {
+                var text = '<tr><td id="' + val._id + '" class="click">' + val.name + '</td></tr>';
+                $("#sprintTable tr:last").after(text);
+            });
+            $(".table").fadeIn(300);
+        });
+    }
+
+    $(".table").on("click", "td", function () {
+        window.location = "/sprint/" + $(this).attr("id");
+    })
 
 });
