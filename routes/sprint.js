@@ -6,7 +6,7 @@ router.get('/', function (req, res, next) {
     res.render('sprintIndex', {title: 'Projektmanagement Sprints'});
 });
 
-router.post('/new', function (req, res, next) {
+router.post('/rest', function (req, res, next) {
     sprint.new(req.body.name, req.body.description, req.body.start, req.body.end);
     res.render('sprintNewSprint', {title: 'Sprint anlegen', action: 'success'});
     console.log("Sprint: " + req.body.name);

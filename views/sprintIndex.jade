@@ -4,15 +4,23 @@ block content
     script(src='/javascripts/sprint.js')
     #header
         h1= title
+    #newSprintMessage.fadeIn
 
-    //table
-        thead
-            tr
-                th Sprint
-                th Beschreibung
-                th Startdatum
-                th Enddatum
-        tbody
-            tr
-
-    a.btn.btn-default.transparent(href='/sprint/new', role='button') Neuen Sprint anlegen
+    #newSprint
+        button#newSprintBtn.btn.btn-default.transparent Neuen Sprint anlegen
+    #dialog-form
+        form#newSprintForm(method='post' enctype='application/json')
+            .form-group
+                p#messageShow
+            .form-group
+                label(for='name') Sprint
+                input#name.form-control.transparent(type='text', placeholder='Sprint', name='Sprint')
+            .form-group
+                label(for='description') Beschreibung
+                textarea#description.form-control.transparent(rows='7', placeholder='Beschreibung des Sprints', name='description')
+            .form-group
+                label(for='start') Startdatum
+                input#start.form-control.transparent(type='date', name='start')
+            .form-group
+                label(for='end') Enddatum
+                input#end.form-control.transparent(type='date', name='end')
