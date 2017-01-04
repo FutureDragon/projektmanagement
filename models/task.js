@@ -4,9 +4,9 @@ var db = require("./db");
 
 function Task() {
 
-    this.new = function (task, description, priority, res) {
+    this.new = function (task, description, priority, storyPoints,res) {
         db.connect();
-        var taskModel = TaskSchema({ task: task, description: description, priority: priority });
+        var taskModel = TaskSchema({ task: task, description: description, priority: priority, story_points :  storyPoints});
         taskModel.save(function (err) {
             if (err) {
                 console.log(err);

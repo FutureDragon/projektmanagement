@@ -37,6 +37,9 @@ block content
             option Low
             option(selected="selected") Medium
             option High
+        .form-group
+          label(for='storypoints') Story Points
+          input#storyPoints.form-control.transparent(type='number', placeholder='Story Points' name='storypoints')
 
 
     #dialog-form-task
@@ -58,3 +61,6 @@ block content
         .form-group
           label(for='priority') Priorität:
           p#priorityShow
+        .form-group
+          label(for='storypoints') Story Points
+            p#storyPointsShow

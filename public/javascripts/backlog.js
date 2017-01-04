@@ -27,23 +27,25 @@ $(document).ready(function (event) {
 
     });
     function createTask() {
-        if(task.val() != "") {
+        if(task.val() != "" && $("#storyPoints").val() != "") {
             var priority = $( "#priority option:selected" ).text();
+            var storyPoint = $( "#storyPoints" ).val();
             $.ajax(
                 {
                     type: "POST",
                     url: "backlog/rest",
                     contentType: "application/json; charset=utf-8",
                     dataType : 'json',
-                    data: JSON.stringify({"task" : task.val(), "description" : description.val(), "priority" : priority}),
+                    data: JSON.stringify({"task" : task.val(), "description" : description.val(), "priority" : priority, "story_points" : storyPoint}),
                     success: newTasksuccess()
                 }
             );
             dialog.dialog("close");
             formReset();
+
         }
         else {
-            alert("Task eingeben");
+            alert("Task und Story Points eingeben");
         }
     }
 
@@ -123,6 +125,7 @@ $(document).ready(function (event) {
             $("#statusShow").text(data.status);
             $("#createdShow").text("Von: " + data.author + " am " +data.created);
             $("#priorityShow").text(data.priority);
+            $("#storyPointsShow").text(data.story_points);
             task = data;
         });
     }
