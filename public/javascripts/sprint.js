@@ -5,6 +5,11 @@ $(document).ready(function (event) {
     var startd = $("#start");
     var endd = $("#end");
 
+    $("#start").datepicker();
+    $("#end").datepicker();
+
+    // ____________________________________________________________________________
+
     dialog = $("#dialog-form").dialog({
         autoOpen: false,
         height: 500,
@@ -73,5 +78,8 @@ $(document).ready(function (event) {
         location.reload();
         $("#newSprintMessage").text("Sprint erfolgreich angelegt").addClass("alert alert-success");
     }
+
+    // ____________________________________________________________________________
+
 
 });
