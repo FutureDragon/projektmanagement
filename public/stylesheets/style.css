@@ -62,3 +62,10 @@ h1 {
 .red {
   background-color: rgba(255, 28, 36, 0.5);
 }
+.ui-widget-header {
+  border: none;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.ui-widget-content {
+  background-color: rgba(255, 255, 255, 0.85);
+}
