@@ -4,9 +4,14 @@ var db = require("./db");
 
 function Task() {
 
-    this.new = function (task, description, priority, storyPoints,res) {
+    this.new = function (task, description, priority, storyPoints, res) {
         db.connect();
-        var taskModel = TaskSchema({ task: task, description: description, priority: priority, story_points :  storyPoints});
+        var taskModel = TaskSchema({
+            task: task,
+            description: description,
+            priority: priority,
+            story_points: storyPoints
+        });
         taskModel.save(function (err) {
             if (err) {
                 console.log(err);
@@ -19,10 +24,10 @@ function Task() {
     this.getAll = function (res) {
         db.connect();
         TaskSchema.find({}, function (err, tasks) {
-            if (err){
+            if (err) {
                 console.log(err);
             }
-            else{
+            else {
                 res.send(tasks);
             }
 
@@ -31,22 +36,22 @@ function Task() {
     };
 
     this.get = function (id, res) {
-            db.connect();
-            TaskSchema.findById(id, function(err, task) {
-                if (err){
-                    throw err;
-                }
-                else{
-                    res.send(task);
-                }
-            });
-            db.disconnect();
+        db.connect();
+        TaskSchema.findById(id, function (err, task) {
+            if (err) {
+                throw err;
+            }
+            else {
+                res.send(task);
+            }
+        });
+        db.disconnect();
     };
 
     this.updateStatus = function (id, status, res) {
         db.connect();
-        TaskSchema.findOneAndUpdate({ _id: id}, { status: status }, function(err, user) {
-            if (err){
+        TaskSchema.findOneAndUpdate({_id: id}, {status: status}, function (err, user) {
+            if (err) {
                 throw err;
             }
             else {
@@ -60,13 +65,23 @@ function Task() {
 
     this.getTasksWithoutSprint = function (res) {
         db.connect();
-        TaskSchema.find({_sprint: null}, function(err, tasks){
+        TaskSchema.find({_sprint: null}, function (err, tasks) {
             if (err) throw err;
             res.send(tasks);
         });
         db.disconnect();
         //res.sendStatus(200);
     };
+
+    this.assignSprintToTask = function (sprint_id, task_ids, res) {
+        db.connect();
+        TaskSchema.update({_id: task_ids}, {sprintID: sprint_id}, function (err) {
+            if(err) console.error(err);
+        });
+        db.disconnect();
+        res.sendStatus(200);
+    };
+
 }
 // Exports a new Task Object
 module.exports = new Task();
