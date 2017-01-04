@@ -27,6 +27,7 @@ var taskSchema = new Schema({
     author: String,
     created: {type: Date, default: Date.now},
     updated: Date,
+    story_points: {type: Number, required:true},
     _sprint : {type: String, ref: Sprint}
 });
 
