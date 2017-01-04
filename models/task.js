@@ -75,9 +75,11 @@ function Task() {
 
     this.assignSprintToTask = function (sprint_id, task_ids, res) {
         db.connect();
-        TaskSchema.update({_id: task_ids}, {sprintID: sprint_id}, function (err) {
-            if(err) console.error(err);
-        });
+        for(var i=0; i<task_ids.length; i++){
+            TaskSchema.update({_id: task_ids[i]}, {sprintID: sprint_id}, function (err) {
+                if(err) console.error(err);
+            });
+        };
         db.disconnect();
         res.sendStatus(200);
     };
