@@ -22,7 +22,7 @@ router.get('/new', function (req, res, next) {
 });
 
 router.get('/get', function (req, res, next) {
-    user.getAll(res);
+    user.getAllUsers(res);
 });
 
 router.get('/get/:name', function (req, res, next) {
