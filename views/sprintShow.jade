@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    script(src='/javascripts/sprintShow.js')
+    #header
+      h1#taskId= title
+    p#description
+    table#taskTable.table.table-hover
+      thead
+        th.center  Tasks
+      tbody

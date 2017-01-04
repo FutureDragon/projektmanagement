@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var sprint = require('../models/sprint');
+var task = require('../models/task');
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('sprintIndex', {title: 'Projektmanagement Sprints'});
@@ -19,13 +20,23 @@ router.get('/new', function (req, res, next) {
     res.render('sprintNewSprint', {title: 'Sprint anlegen', action: 'none'});
 });
 
-router.get('/get', function (req, res, next) {
+router.get('/rest', function (req, res, next) {
     sprint.getAll(res);
 });
 
-router.get('/get/:name', function (req, res, next) {
+router.get('/rest/taskWithoutSprint', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    task.getTasksWithoutSprint(res);
+});
+
+router.get('/rest/:id', function (req, res, next) {
+    var id = req.params.id;
+    sprint.get(id, res);
+});
+
+router.get('/:name', function (req, res, next) {
     var name = req.params.name;
-    sprint.get(name, res);
+    res.render('sprintShow',{title: name});
 });
 
 module.exports = router;

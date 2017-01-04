@@ -56,15 +56,17 @@ function Task() {
         });
         db.disconnect();
         res.sendStatus(200);
-    }
+    };
 
-    this.getTasksWithoutSprint = function () {
+    this.getTasksWithoutSprint = function (res) {
         db.connect();
-        TaskSchema.findOne({_sprint: null}, function(err, tasks){
+        TaskSchema.find({_sprint: null}, function(err, tasks){
             if (err) throw err;
             res.send(tasks);
-        })
-    }
+        });
+        db.disconnect();
+        //res.sendStatus(200);
+    };
 }
 // Exports a new Task Object
 module.exports = new Task();
