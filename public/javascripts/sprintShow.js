@@ -24,12 +24,26 @@ $(document).ready(function () {
     }
     
     function addTasksToSprint() {
+        var id = $("#sprintId").val();
         
+        $.ajax(
+            {
+                type: "POST",
+                url: "/backlog/rest/addSprint",
+                contentType: "application/json; charset=utf-8",
+                dataType : 'json',
+                data: JSON.stringify({"sprint_id" : id, "tasks" : tasks}),
+                success: function () {
+                    
+                }
+            }
+        );
     }
 
     $("#save").click(function () {
         $("input:checkbox[name=task]:checked").each(function(){
             tasks.push($(this).val());
         });
+        addTasksToSprint();
     });
 });

@@ -100,7 +100,17 @@ $(document).ready(function (event) {
         $(".table").hide().find("tr:gt(1)").remove();
         $.getJSON( "backlog/rest", function( data ) {
             $.each(data, function (key ,val) {
-                var text = '<tr><td id="'+ val._id +'" class="click">'+ val.task + '</td></tr>';
+                var color;
+                if(val.priority == "Low") {
+                    color = "green";
+                }
+                else if(val.priority == "Medium") {
+                    color = "yellow";
+                }
+                else if(val.priority == "High") {
+                    color = "red";
+                }
+                var text = '<tr><td id="'+ val._id +'" class="click tdBig ' +color + '">'+ val.task + '</td></tr>';
                 if(val.status == "Open") {
                     $("#opentable tr:last").after(text);
                 }

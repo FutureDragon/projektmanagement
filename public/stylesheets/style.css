@@ -39,7 +39,26 @@ h1 {
   color: #0064ff;
 }
 
-.details :hover{
+.tdBig :hover{
   cursor: pointer;
   text-decoration: underline;
+}
+
+.tdBig {
+  height: 70px;
+  border-radius: 5px;
+  text-align:center;
+  vertical-align:middle;
+}
+
+.green{
+  background-color: rgba(3, 255, 0, 0.5);
+}
+
+.yellow {
+  background-color: rgba(255, 236, 0, 0.5);
+}
+
+.red {
+  background-color: rgba(255, 28, 36, 0.5);
 }
