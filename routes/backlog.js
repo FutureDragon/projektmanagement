@@ -24,13 +24,18 @@ router.get('/new', function(req, res, next) {
 });
 
 router.get('/rest/', function(req, res, next) {
-  res.setHeader('Content-Type', 'application/json');
-  task.getAll(res);
+      res.setHeader('Content-Type', 'application/json');
+      task.getAll(res);
 });
 
-router.get('/rest/:id', function(req, res, next) {
-  var id = req.params.id;
-  task.get(id, res);
+router.get('/rest/:id', function(req, res, next, err) {
+  if (err){
+    console.log(err);
+  }
+  else {
+      var id = req.params.id;
+      task.get(id, res);
+  }
 });
 
 module.exports = router;

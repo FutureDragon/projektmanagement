@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var TaskSchema = require("../schema/task_schema");
 var db = require("./db");
+
 function Task() {
 
     this.new = function (task, description, priority, res) {
