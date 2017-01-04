@@ -3,9 +3,13 @@ extends layout
 block content
     script(src='/javascripts/sprintShow.js')
     #header
-      h1#taskId= title
+      h1#sprintName
     p#description
-    table#taskTable.table.table-hover
+    p  Task auswählen die in den Sprint sollen:
+    #taskContainer
+    //table#taskTable.table.table-hover
       thead
-        th.center  Tasks
+        th.center  Open Tasks
       tbody
+    button#save.btn.btn-default.transparent  Speichern
+    input#sprintId(type="hidden" value="#{title}")
