@@ -28,14 +28,10 @@ router.get('/rest/', function(req, res, next) {
       task.getAll(res);
 });
 
-router.get('/rest/:id', function(req, res, next, err) {
-  if (err){
-    console.log(err);
-  }
-  else {
+router.get('/rest/:id', function(req, res, next) {
       var id = req.params.id;
       task.get(id, res);
-  }
+
 });
 
 module.exports = router;
