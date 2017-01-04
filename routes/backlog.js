@@ -33,7 +33,10 @@ router.get('/rest/:id', function(req, res, next) {
 
 });
 router.post('/rest/addSprint', function(req, res, next) {
-    console.log(req.body);
+    task.assignSprintToTask(req.body.sprint_id, req.body.tasks)
+    /*for(var i = 0, len = req.body.tasks.length; i < len; i++) {
+        console.log(req.body.tasks[i]);
+    }*/
 
 });
 module.exports = router;
