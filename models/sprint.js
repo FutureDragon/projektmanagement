@@ -26,6 +26,7 @@ function Sprint() {
         db.disconnect();
     };
 
+
     this.get = function (id ,res) {
         db.connect();
         SprintSchema.findById(id, function(err, sprints) {
@@ -34,7 +35,6 @@ function Sprint() {
         });
         db.disconnect();
     };
-
 
 }
 module.exports = new Sprint();

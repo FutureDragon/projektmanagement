@@ -57,6 +57,14 @@ function Task() {
         db.disconnect();
         res.sendStatus(200);
     }
+
+    this.getTasksWithoutSprint = function () {
+        db.connect();
+        TaskSchema.findOne({_sprint: null}, function(err, tasks){
+            if (err) throw err;
+            res.send(tasks);
+        })
+    }
 }
 // Exports a new Task Object
 module.exports = new Task();
