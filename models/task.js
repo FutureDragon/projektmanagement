@@ -75,7 +75,10 @@ function Task() {
 
     this.assignSprintToTask = function (sprint_id, task_id) {
         db.connect();
-        TaskSchema.update({_id: task_id}, {sprintID: sprint_id}, function (err) {
+
+        console.log(sprint_id + " " + task_id);
+
+        TaskSchema.findOneAndUpdate({_id: task_id}, {sprintID: sprint_id}, function (err, task) {
             if(err) console.error(err);
         });
         db.disconnect();

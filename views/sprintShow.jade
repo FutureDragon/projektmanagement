@@ -6,10 +6,6 @@ block content
       h1#sprintName
     p#description
     p  Task auswählen die in den Sprint sollen:
-    #taskContainer
-    //table#taskTable.table.table-hover
-      thead
-        th.center  Open Tasks
-      tbody
-    button#save.btn.btn-default.transparent  Speichern
+    #taskContainer.col-md-4.col-md-offset-4
+    button#save.btn.btn-default.transparent.col-md-8.col-md-offset-2  Speichern
     input#sprintId(type="hidden" value="#{title}")
