@@ -38,7 +38,7 @@ $(document).ready(function (event) {
     });
 
     function createSprint() {
-        if (sprint.val() != "" && startd.val() != "" && endd.val() != "") {
+        if (sprint.val() != "" && startd.val() != "" && endd.val() != "" && startd.val() <= endd.val()) {
             $.ajax(
                 {
                     type: "POST",
@@ -66,7 +66,12 @@ $(document).ready(function (event) {
                     $("#messageShow").text("Bitte Startdatum eingeben!").addClass("alert alert-danger fadeIn");
                 }
                 else {
-                    $("#messageShow").text("Bitte Enddatum eingeben!").addClass("alert alert-danger fadeIn");
+                    if (endd.val() == "") {
+                        $("#messageShow").text("Bitte Enddatum eingeben!").addClass("alert alert-danger fadeIn");
+                    }
+                    else {
+                        $("#messageShow").text("Enddatum kann nicht vor dem Startdatum liegen!").addClass("alert alert-danger fadeIn");
+                    }
                 }
             }
         }
