@@ -25,7 +25,9 @@ block content
     button#newTaskBtn.btn.btn-default.transparent  Neuen Task anlegen
   #dialog-form(title="Neuen Task anlegen")
     form#newTaskForm(method='post' enctype='application/json')
-        .form-group
+      .form-group
+        p#message
+      .form-group
           label(for='task') Task
           input#task.form-control.transparent(type='text', placeholder='Task' name='task')
         .form-group

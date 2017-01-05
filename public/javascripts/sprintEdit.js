@@ -39,7 +39,7 @@ $(document).ready(function () {
                 $("#taskContainer").append(text);
             });
             if(data.length == 0) {
-                var text = "<div class='alert alert-danger'><p>Keine Offenen Tasks vorhanden</p></div>";
+                var text = "<div class='alert alert-warning'><p>Keine Offenen Tasks vorhanden</p></div>";
                 $("#taskContainer").append(text);
                 $("#save").prop("disabled", true);
             }
@@ -96,7 +96,7 @@ $(document).ready(function () {
         var checkbox = $(this).find(".checkbox-check");
         if(checkbox.is(":checked")) {
             $(this).find(".checkbox-check").prop('checked', false);
-            $(this).removeClass("blue");
+            $(this).removeClass("green");
         }
         else
         {

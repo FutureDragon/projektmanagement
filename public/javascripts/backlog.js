@@ -45,7 +45,7 @@ $(document).ready(function (event) {
 
         }
         else {
-            alert("Task und Story Points eingeben");
+            $("#message").text("Task und Story Points eingeben").addClass("alert alert-danger");
         }
     }
 

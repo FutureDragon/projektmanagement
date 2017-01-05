@@ -45,6 +45,9 @@ $(document).ready(function () {
                     $("#done tr:last").after(text);
                 }
             });
+            if(data.length == 0) {
+                $("#message").text("Der Sprint enthält noch keine Tasks").addClass("alert alert-warning");
+            }
             //$(".table").fadeIn(500);
         });
     }
