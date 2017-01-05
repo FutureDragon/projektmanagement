@@ -12,7 +12,6 @@ var Sprint = require("./sprint_schema");
 var taskSchema = new Schema({
     task : String,
     description : String,
-    sprintID : String,
     _creator: {type: String, ref: User},
     status: {
         type: String,

@@ -73,20 +73,35 @@ function Task() {
         //res.sendStatus(200);
     };
 
-    this.assignSprintToTask = function (sprint_id, task_id, res) {
+    // this.assignSprintToTask = function (sprint_id, task_id, res) {
+    //     db.connect();
+    //     for (var i=0; i<task_id.length; i++){
+    //         TaskSchema.find({_id: task_id[i]}, function (err, task) {
+    //             if(err)throw err;
+    //             console.log(task);
+    //         });
+    //     }
+    //
+    //     // TaskSchema.findOneAndUpdate({_id: task_id}, {_sprint: task_id}, function (err, task) {
+    //     //     if (err) {
+    //     //         throw err;
+    //     //     }
+    //     //     else {
+    //     //         // we have the updated user returned to us
+    //     //         console.log(user);
+    //     //     }
+    //     // });
+    //     db.disconnect();
+    // };
+
+    this.getTasksForSprint = function (sprint_id, res) {
         db.connect();
-        TaskSchema.findOneAndUpdate({_id: task_id}, {sprintID: task_id}, function (err, user) {
-            if (err) {
-                throw err;
-            }
-            else {
-                // we have the updated user returned to us
-                console.log(user);
-            }
+        TaskSchema.findById({_sprint: sprint_id}, function (err, tasks){
+           if(err) console.error(err);
+           res.send(tasks);
         });
         db.disconnect();
-    };
-
+    }
 }
 // Exports a new Task Object
 module.exports = new Task();
