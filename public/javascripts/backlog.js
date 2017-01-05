@@ -84,14 +84,28 @@ $(document).ready(function (event) {
                 updateTask(task._id, "Done");
                 $("#statusShow").text("Done");
             },
+            "Bearbeiten":{
+                id : "change",
+                text : "Bearbeiten",
+                click: function () {
+                    /*$("#taskShow").prop("disabled", false);
+                    $("#descriptionShow").prop("disabled", false);
+                    $("#change").text("Speichern");
+                    $("#change").attr("id","saveChanges");*/
+              }
+            },
             "Fenster Schließen": function () {
                 dialogShow.dialog("close");
+                $("#taskShow").prop("disabled", true);
+                $("#descriptionShow").prop("disabled", true);
                 $("#messageShow").text("").removeClass("alert alert-success fadeIn");
                 location.reload();
             }
         },
         close: function () {
             $("#messageShow").text("").removeClass("alert alert-success fadeIn");
+            $("#taskShow").prop("disabled", true);
+            $("#descriptionShow").prop("disabled", true);
             location.reload();
         }
     });
@@ -161,6 +175,36 @@ $(document).ready(function (event) {
         getTask($( this ).attr("id"));
         dialogShow.dialog( "open" );
     });
+
+    $('body').on('click', '#change', function () {
+        if($(this).text() == "Bearbeiten") {
+            $("#taskShow").prop("disabled", false);
+            $("#descriptionShow").prop("disabled", false);
+            var priorityOption = '<select name="priority" id="priorityEdit">' +
+                '<option>Low</option>' +
+                '<option>Medium</option>' +
+                '<option>High</option>' +
+                '</select> ';
+            $("#priorityShow").text("").append(priorityOption);
+            var storyPointsInput = "<input type='number' id='storyPointsEdit'>";
+            $("#storyPointsShow").text("").append(storyPointsInput);
+            $(this).text("Speichern");
+        }
+        else {
+            var taskText = $("#taskShow").val();
+            var descriptionText = $("#descriptionShow").val();
+            var priority = $( "#priorityEdit option:selected" ).text();
+            var storyPoints = $( "#storyPointsEdit" ).val();
+            $("#messageShow").text("Task erfolgreich geändert").addClass("alert alert-success fadeIn");
+            $("#taskShow").prop("disabled", true);
+            $("#descriptionShow").prop("disabled", true);
+            $("#priorityShow").text(priority);
+            $(this).text("Bearbeiten");
+            $("#storyPointsShow").text(storyPoints);
+        }
+
+    });
+
 
 
 
