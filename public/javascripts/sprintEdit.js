@@ -21,7 +21,16 @@ $(document).ready(function () {
     function getTasksWithoutSprint() {
         $.getJSON( "/sprint/rest/taskWithoutSprint", function( data ) {
             $.each(data, function (key ,val) {
-                var text = '<div class="checkbox sprintCheckbox">' +
+                if(val.priority == "Low") {
+                    color = "green";
+                }
+                else if(val.priority == "Medium") {
+                    color = "yellow";
+                }
+                else if(val.priority == "High") {
+                    color = "red";
+                }
+                var text = '<div class="checkbox sprintCheckbox ' + color + '">' +
                     '<label class="sprintname">' +
                     '<input class="checkbox-check" type="checkbox" name="task" value="' + val._id +'">' +
                     '<p>' + val.task + '</p>' +
@@ -29,7 +38,13 @@ $(document).ready(function () {
                     '</div>';
                 $("#taskContainer").append(text);
             });
+            if(data.length == 0) {
+                var text = "<div class='alert alert-danger'><p>Keine Offenen Tasks vorhanden</p></div>";
+                $("#taskContainer").append(text);
+                $("#save").prop("disabled", true);
+            }
         });
+
     }
     
     function addTasksToSprint() {
@@ -68,7 +83,7 @@ $(document).ready(function () {
             tasks.push($(this).val());
         });
         if(tasks.length == 0) {
-            alert("Keien Tasks ausgewählt!");
+            $("#message").text("Kein Task ausgewählt!").addClass("alert alert-danger");
         }
         else{
             addTasksToSprint();
@@ -81,12 +96,12 @@ $(document).ready(function () {
         var checkbox = $(this).find(".checkbox-check");
         if(checkbox.is(":checked")) {
             $(this).find(".checkbox-check").prop('checked', false);
-            $(this).removeClass("green");
+            $(this).removeClass("blue");
         }
         else
         {
             $(this).find(".checkbox-check").prop('checked', true);
-            $(this).addClass("green");
+            $(this).addClass("blue");
         }
     });
 });
