@@ -55,9 +55,8 @@ h1 {
   text-align: left;
   height: 70px;
   border-radius: 5px;
-  background-color: rgba(3, 255, 0, 0.5);
+  background-color: rgba(189, 187, 210, 0.33);
 }
-
 
 .green{
   background-color: rgba(3, 255, 0, 0.5);
@@ -81,4 +80,8 @@ h1 {
 }
 .ui-widget-content {
   background-color: rgba(255, 255, 255, 0.85);
+}
+
+input[type="checkbox"]{
+
 }
