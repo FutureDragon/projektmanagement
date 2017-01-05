@@ -4,9 +4,12 @@ $(document).ready(function (event) {
     var description = $("#description");
     var startd = $("#start");
     var endd = $("#end");
+    var today = new Date();
 
     $("#start").datepicker();
     $("#end").datepicker();
+    //$("#start").datepicker({ dateFormat: 'dd.mm.yy' }).val();
+    //$("#end").datepicker({ dateFormat: 'dd.mm.yy' }).val();
 
     createIndex();
 
@@ -94,8 +97,21 @@ $(document).ready(function (event) {
                 var text = '<tr><td id="' + val._id + '" class="click tdBig ' + color + '">'
                     + '<b>' + val.name + '</b>' + '<br>' + 'Erstellt von: ' + val._creator
                     + '</b>' + '<br>' + startDate.getDate() + '.' + startDateMonth + '.' + startDate.getFullYear()
-                    + ' - ' + endDate.getDate()+ '.' + endDateMonth + '.' + endDate.getFullYear() + '</td></tr>';
-                $("#sprintTable tr:last").after(text);
+                    + ' - ' + endDate.getDate() + '.' + endDateMonth + '.' + endDate.getFullYear() + '</td></tr>';
+                if (startDate > today) {
+                    $("#sprintTable tr:last").after(text);
+                }
+                else {
+                    endDate.setHours(23);
+                    endDate.setMilliseconds(59);
+                    endDate.setSeconds(59);
+                    if (endDate >= today) {
+                        $("#sprintTableStarted tr:last").after(text);
+                    }
+                    else {
+                        $("#sprintTableClosed tr:last").after(text);
+                    }
+                }
             });
             $(".table").fadeIn(1);
         });

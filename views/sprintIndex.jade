@@ -6,13 +6,25 @@ block content
         h1= title
     #newSprintMessage.fadeIn
 
-    table#sprintTable.table.table-hover
-        tr
-        th.center Sprints
+    #open.col-md-4
+        table#sprintTable.table.table-hover
+            tr
+            th.center Sprints - angelegt
 
-    #newSprint
+    #started.col-md-4
+        table#sprintTableStarted.table.table-hover
+            tr
+            th.center Sprints - gestartet
+
+    #closed.col-md-4
+        table#sprintTableClosed.table.table-hover
+            tr
+            th.center Sprints - beendet
+
+    #newSprint.col-md-12
         button#newSprintBtn.btn.btn-default.transparent Neuen Sprint anlegen
-    #dialog-form
+
+    #dialog-form(title="Neuen Sprint anlegen")
         form#newSprintForm(method='post' enctype='application/json')
             .form-group
                 p#messageShow
