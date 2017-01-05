@@ -51,6 +51,14 @@ h1 {
   vertical-align:middle;
 }
 
+.sprintCheckbox {
+  text-align: left;
+  height: 70px;
+  border-radius: 5px;
+  background-color: rgba(3, 255, 0, 0.5);
+}
+
+
 .green{
   background-color: rgba(3, 255, 0, 0.5);
 }
