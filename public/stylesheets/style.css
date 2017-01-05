@@ -70,6 +70,11 @@ h1 {
 .red {
   background-color: rgba(255, 28, 36, 0.5);
 }
+
+.blue {
+  background-color: rgba(0,0, 255, 0.5);
+}
+
 .ui-widget-header {
   border: none;
   background-color: rgba(255, 255, 255, 0.8);

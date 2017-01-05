@@ -86,10 +86,18 @@ $(document).ready(function (event) {
     function createIndex() {
         $.getJSON("/sprint/rest", function (data) {
             $.each(data, function (key, val) {
-                var text = '<tr><td id="' + val._id + '" class="click">' + val.name + '</td></tr>';
+                var color = "blue";
+                var startDate = new Date(val.start);
+                var startDateMonth = startDate.getMonth() + 1;
+                var endDate = new Date(val.end);
+                var endDateMonth = endDate.getMonth() + 1;
+                var text = '<tr><td id="' + val._id + '" class="click tdBig ' + color + '">'
+                    + '<b>' + val.name + '</b>' + '<br>' + 'Erstellt von: ' + val._creator
+                    + '</b>' + '<br>' + startDate.getDate() + '.' + startDateMonth + '.' + startDate.getFullYear()
+                    + ' - ' + endDate.getDate()+ '.' + endDateMonth + '.' + endDate.getFullYear() + '</td></tr>';
                 $("#sprintTable tr:last").after(text);
             });
-            $(".table").fadeIn(300);
+            $(".table").fadeIn(1);
         });
     }
 
