@@ -73,13 +73,16 @@ function Task() {
         //res.sendStatus(200);
     };
 
-    this.assignSprintToTask = function (sprint_id, task_id) {
+    this.assignSprintToTask = function (sprint_id, task_id, res) {
         db.connect();
-
-        console.log(sprint_id + " " + task_id);
-
-        TaskSchema.findOneAndUpdate({_id: task_id}, {sprintID: sprint_id}, function (err, task) {
-            if(err) console.error(err);
+        TaskSchema.findOneAndUpdate({_id: task_id}, {sprintID: task_id}, function (err, user) {
+            if (err) {
+                throw err;
+            }
+            else {
+                // we have the updated user returned to us
+                console.log(user);
+            }
         });
         db.disconnect();
     };
