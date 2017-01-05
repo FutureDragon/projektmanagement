@@ -8,6 +8,7 @@ $(document).ready(function () {
             $("#author").text(data._creator);
             $("#begin").text("Sprint startet: " + data.start);
             $("#end").text("Sprint endet: " +data.end);
+            $("#edit").attr("href", $("#sprintId").val()+"/edit");
             sprint = data;
         }).done(function () {
             $("#sprintName").text(sprint.name);
@@ -30,8 +31,7 @@ $(document).ready(function () {
                     color = "red";
                 }
                 var text = '<tr><td id="'+ val._id +'" class="click tdBig ' +color + '">'+ val.task + '</td></tr>';
-                $("#done tr:last").after(text);
-                /*if(val.status == "Open") {
+                if(val.status == "Open") {
                     $("#opentable tr:last").after(text);
                 }
                 else if(val.status == "In Progress") {
@@ -39,7 +39,7 @@ $(document).ready(function () {
                 }
                 else if(val.status == "Done") {
                     $("#done tr:last").after(text);
-                }*/
+                }
             });
             //$(".table").fadeIn(500);
         });

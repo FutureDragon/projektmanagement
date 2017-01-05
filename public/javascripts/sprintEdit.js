@@ -1,6 +1,7 @@
 $(document).ready(function () {
     var sprint;
     var tasks = [];
+    var counter = 0;
     getSprint($("#sprintId").val());
     
     
@@ -33,27 +34,47 @@ $(document).ready(function () {
     
     function addTasksToSprint() {
         var id = $("#sprintId").val();
-        $.ajax(
-            {
-                type: "POST",
-                url: "/backlog/rest/addSprint",
-                contentType: "application/json; charset=utf-8",
-                dataType : 'json',
-                data: JSON.stringify({"sprint_id" : id, "tasks" : tasks}),
-                success: function () {
-                    tasks.splice(0,tasks.length);
-                    location.reload();
+        //for(var i = 0, len = tasks.length; i < len; i++) {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/backlog/rest/addSprint",
+                    contentType: "application/json; charset=utf-8",
+                    dataType : 'json',
+                    data: JSON.stringify({"sprint_id" : id, "tasks" : tasks[counter]}),
+                    success: addTaskToSprintSuccess()
                 }
-            }
-        );
-        tasks.splice(0,tasks.length);
+            );
+        //}
+
+        //tasks.splice(0,tasks.length);
+    }
+
+    function addTaskToSprintSuccess() {
+        counter++;
+        if(counter != tasks.length) {
+            setTimeout(addTasksToSprint, 200);
+        }
+        else {
+            tasks.splice(0,tasks.length);
+            window.location = "/sprint/" + $("#sprintId").val();
+        }
+
+
     }
 
     $("#save").click(function () {
         $("input:checkbox[name=task]:checked").each(function(){
             tasks.push($(this).val());
         });
-        addTasksToSprint();
+        if(tasks.length == 0) {
+            alert("Keien Tasks ausgewählt!");
+        }
+        else{
+            addTasksToSprint();
+        }
+
+
     });
 
     $('body').on('click', '.checkbox', function () {

@@ -73,6 +73,21 @@ function Task() {
         //res.sendStatus(200);
     };
 
+    this.assignSprintToTask = function (sprint_id, task_id, res) {
+        db.connect();
+        TaskSchema.findOneAndUpdate({_id: task_id}, {_sprint: sprint_id}, function (err, user) {
+            if (err) {
+                throw err;
+            }
+            else {
+                // we have the updated user returned to us
+                console.log(user);
+            }
+        });
+        db.disconnect();
+        res.sendStatus(200);
+    };
+
     // this.assignSprintToTask = function (sprint_id, task_id, res) {
     //     db.connect();
     //     for (var i=0; i<task_id.length; i++){
@@ -96,7 +111,8 @@ function Task() {
 
     this.getTasksForSprint = function (sprint_id, res) {
         db.connect();
-        TaskSchema.findById({_sprint: sprint_id}, function (err, tasks){
+        console.log(sprint_id);
+        TaskSchema.find({_sprint: sprint_id}, function (err, tasks){
            if(err) console.error(err);
            res.send(tasks);
         });
