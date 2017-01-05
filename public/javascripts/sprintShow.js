@@ -7,6 +7,9 @@ $(document).ready(function () {
     function getSprint(id) {
         $.getJSON( "/sprint/rest/"+id, function( data ) {
             $("#description").text(data.description);
+            $("#author").text(data._creator);
+            $("#begin").text("Sprint startet: " + data.start);
+            $("#end").text("Sprint endet: " +data.end);
             sprint = data;
         }).done(function () {
             $("#sprintName").text(sprint.name);
@@ -17,7 +20,7 @@ $(document).ready(function () {
     function getTasksWithoutSprint() {
         $.getJSON( "/sprint/rest/taskWithoutSprint", function( data ) {
             $.each(data, function (key ,val) {
-                var text = '<div class="checkbox sprintCheckbox"><label><input class="checkbox-check" type="checkbox" name="task" value="' + val._id +'">' + val.task + '</label></div>';
+                var text = '<div class="checkbox sprintCheckbox"><label><input class="checkbox-check" type="checkbox" name="task" value="' + val._id +'"><p>' + val.task + '</p></label></div>';
                 $("#taskContainer").append(text);
             });
         });
@@ -51,10 +54,12 @@ $(document).ready(function () {
         var checkbox = $(this).find(".checkbox-check");
         if(checkbox.is(":checked")) {
             $(this).find(".checkbox-check").prop('checked', false);
+            $(this).removeClass("green");
         }
         else
         {
             $(this).find(".checkbox-check").prop('checked', true);
+            $(this).addClass("green");
         }
     });
 });
