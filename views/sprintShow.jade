@@ -10,7 +10,21 @@ block content
     p#begin
     p#end
     hr
-    p  Task auswählen die in den Sprint sollen:
-    #taskContainer.col-md-4.col-md-offset-4
-    button#save.btn.btn-default.transparent.col-md-8.col-md-offset-2  Speichern
+    p  Scrum Board
+    #open.col-md-3
+        table#opentable.table.table-hover
+            tr
+            th.center Offen
+    #progress.col-md-3
+        table.table.table-hover
+            tr
+            th.center In Arbeit
+    #review.col-md-3
+        table.table.table-hover
+            tr
+            th.center Review
+    #done.col-md-3
+        table.table.table-hover
+            tr
+            th.center Fertig
     input#sprintId(type="hidden" value="#{title}")

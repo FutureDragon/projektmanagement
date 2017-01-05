@@ -55,7 +55,13 @@ h1 {
   text-align: left;
   height: 70px;
   border-radius: 5px;
-  background-color: rgba(189, 187, 210, 0.33);
+  background-color: rgba(255, 255, 255, 0.33);
+}
+
+.sprintname {
+  width: 900px;
+
+  text-align: center;
 }
 
 .green{
@@ -83,5 +89,5 @@ h1 {
 }
 
 input[type="checkbox"]{
-
+  display: none;
 }

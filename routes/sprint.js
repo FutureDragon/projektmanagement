@@ -38,5 +38,9 @@ router.get('/:name', function (req, res, next) {
     var name = req.params.name;
     res.render('sprintShow',{title: name});
 });
+router.get('/:name/edit', function (req, res, next) {
+    var name = req.params.name;
+    res.render('sprintEdit',{title: name});
+});
 
 module.exports = router;

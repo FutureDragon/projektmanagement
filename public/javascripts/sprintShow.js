@@ -1,9 +1,7 @@
 $(document).ready(function () {
     var sprint;
-    var tasks = [];
     getSprint($("#sprintId").val());
-    
-    
+
     function getSprint(id) {
         $.getJSON( "/sprint/rest/"+id, function( data ) {
             $("#description").text(data.description);
@@ -13,53 +11,41 @@ $(document).ready(function () {
             sprint = data;
         }).done(function () {
             $("#sprintName").text(sprint.name);
-            getTasksWithoutSprint();
+            getTasks();
         });
     }
-    
-    function getTasksWithoutSprint() {
-        $.getJSON( "/sprint/rest/taskWithoutSprint", function( data ) {
+
+    function getTasks() {
+        //$(".table").hide().find("tr:gt(1)").remove();
+        $.getJSON( "/backlog/rest/getTasksToSprint/"+$("#sprintId").val(), function( data ) {
             $.each(data, function (key ,val) {
-                var text = '<div class="checkbox sprintCheckbox"><label><input class="checkbox-check" type="checkbox" name="task" value="' + val._id +'"><p>' + val.task + '</p></label></div>';
-                $("#taskContainer").append(text);
+                var color;
+                if(val.priority == "Low") {
+                    color = "green";
+                }
+                else if(val.priority == "Medium") {
+                    color = "yellow";
+                }
+                else if(val.priority == "High") {
+                    color = "red";
+                }
+                var text = '<tr><td id="'+ val._id +'" class="click tdBig ' +color + '">'+ val.task + '</td></tr>';
+                $("#done tr:last").after(text);
+                /*if(val.status == "Open") {
+                    $("#opentable tr:last").after(text);
+                }
+                else if(val.status == "In Progress") {
+                    $("#progress tr:last").after(text);
+                }
+                else if(val.status == "Done") {
+                    $("#done tr:last").after(text);
+                }*/
             });
+            //$(".table").fadeIn(500);
         });
     }
     
-    function addTasksToSprint() {
-        var id = $("#sprintId").val();
-        
-        $.ajax(
-            {
-                type: "POST",
-                url: "/backlog/rest/addSprint",
-                contentType: "application/json; charset=utf-8",
-                dataType : 'json',
-                data: JSON.stringify({"sprint_id" : id, "tasks" : tasks}),
-                success: function () {
-                    
-                }
-            }
-        );
-    }
 
-    $("#save").click(function () {
-        $("input:checkbox[name=task]:checked").each(function(){
-            tasks.push($(this).val());
-        });
-        addTasksToSprint();
-    });
 
-    $('body').on('click', '.checkbox', function () {
-        var checkbox = $(this).find(".checkbox-check");
-        if(checkbox.is(":checked")) {
-            $(this).find(".checkbox-check").prop('checked', false);
-            $(this).removeClass("green");
-        }
-        else
-        {
-            $(this).find(".checkbox-check").prop('checked', true);
-            $(this).addClass("green");
-        }
-    });
+
 });

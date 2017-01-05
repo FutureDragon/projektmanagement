@@ -23,7 +23,7 @@ block content
       th.center Fertig
   #newTask.col-md-12
     button#newTaskBtn.btn.btn-default.transparent  Neuen Task anlegen
-  #dialog-form
+  #dialog-form(title="Neuen Task anlegen")
     form#newTaskForm(method='post' enctype='application/json')
         .form-group
           label(for='task') Task
@@ -42,7 +42,7 @@ block content
           input#storyPoints.form-control.transparent(type='number', placeholder='Story Points' name='storypoints')
 
 
-    #dialog-form-task
+    #dialog-form-task(title="Task")
       form#showTaskForm(method='post' enctype='application/json')
         .form-group
           p#messageShow
