@@ -52,12 +52,18 @@ $(document).ready(function (event) {
     function formReset() {
         task.val("");
         description.val("");
+        $( "#storyPoints" ).val("");
     }
 
     function newTasksuccess() {
-        location.reload();
-        $("#newTaskMessage").text("Task erfolgreich angelegt").addClass("alert alert-success");
-        getTasks();
+        $("#newTaskMessage").text("Task erfolgreich angelegt").addClass("alert alert-success").fadeIn(200);
+        if($('#newTaskMessage').length>0){
+            $('#newTaskMessage').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
+                //$(this).remove();
+            });
+        }
+
+        setTimeout(getTasks, 200);
     }
 // ____________________________________________________________________________
 
@@ -96,17 +102,18 @@ $(document).ready(function (event) {
             },
             "Fenster Schließen": function () {
                 dialogShow.dialog("close");
-                $("#taskShow").prop("disabled", true);
-                $("#descriptionShow").prop("disabled", true);
-                $("#messageShow").text("").removeClass("alert alert-success fadeIn");
-                location.reload();
+                //$("#taskShow").prop("disabled", true);
+                //$("#descriptionShow").prop("disabled", true);
+                //$("#messageShow").text("").removeClass("alert alert-success fadeIn");
+
             }
         },
         close: function () {
             $("#messageShow").text("").removeClass("alert alert-success fadeIn");
             $("#taskShow").prop("disabled", true);
             $("#descriptionShow").prop("disabled", true);
-            location.reload();
+            //location.reload();
+            getTasks();
         }
     });
 
@@ -204,9 +211,4 @@ $(document).ready(function (event) {
         }
 
     });
-
-
-
-
-
 });
