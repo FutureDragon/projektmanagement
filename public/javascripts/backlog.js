@@ -1,6 +1,6 @@
 $(document).ready(function (event) {
     var dialog, form, dialogShow, dialogConfirm;
-    var task;
+    var task, sprint;
     task = $( "#task");
     var description = $("#description");
     var openTaskId;
@@ -310,5 +310,27 @@ $(document).ready(function (event) {
         });
         setTimeout(getTasks, 200);
     }
+
+    $('body').on('mouseover', '.click', function () {
+        var id = $(this).attr("id");
+        if ($(this).is("[title]")) {
+
+        }
+        else {
+            getSprint(id)
+        }
+    });
+
+    function getSprint(id) {
+        var element = "#"+id;
+
+        $.getJSON("/backlog/rest/sprintToTask/" + id, function (data) {
+            sprint = data;
+        }).done(function () {
+            $(element).attr("title","Sprint: ");
+        });
+    }
+
+    $(document).tooltip();
 
 });
