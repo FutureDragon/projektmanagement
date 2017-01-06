@@ -27,6 +27,7 @@ $(document).ready(function (event) {
 
     });
     function createTask() {
+        task = $( "#task");
         if(task.val() != "" && $("#storyPoints").val() != "") {
             var priority = $( "#priority option:selected" ).text();
             var storyPoint = $( "#storyPoints" ).val();
@@ -102,10 +103,6 @@ $(document).ready(function (event) {
             },
             "Fenster Schließen": function () {
                 dialogShow.dialog("close");
-                //$("#taskShow").prop("disabled", true);
-                //$("#descriptionShow").prop("disabled", true);
-                //$("#messageShow").text("").removeClass("alert alert-success fadeIn");
-
             }
         },
         close: function () {
