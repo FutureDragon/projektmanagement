@@ -49,4 +49,9 @@ router.get('/rest/getTasksToSprint/:id', function(req, res, next) {
     //task.get(id, res);
 });
 
+router.post('/rest/delete', function(req, res, next) {
+    console.log("Delete: " + req.body.id);
+    task.deleteTask(req.body.id, res);
+});
+
 module.exports = router;

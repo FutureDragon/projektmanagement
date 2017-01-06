@@ -103,6 +103,23 @@ $(document).ready(function (event) {
                 click: function () {
               }
             },
+            "Löschen" : function () {
+                $( "#dialog-delete-confirm" ).dialog({
+                    resizable: false,
+                    height: "auto",
+                    width: 400,
+                    modal: true,
+                    buttons: {
+                        "Löschen": function() {
+                            deleteTask();
+                            $( this ).dialog( "close" );
+                        },
+                        "Abbrechen": function() {
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                });
+            },
             "Fenster Schließen": function () {
                 dialogShow.dialog("close");
             }
@@ -112,7 +129,8 @@ $(document).ready(function (event) {
             $("#taskShow").prop("disabled", true);
             $("#descriptionShow").prop("disabled", true);
             $("#change").text("Bearbeiten");
-            getTasks();
+            //getTasks();
+            setTimeout(getTasks, 200);
         }
     });
 
@@ -261,4 +279,24 @@ $(document).ready(function (event) {
     function taskupdatesuccess() {
         $("#messageShow").text("Task erfolgreich geändert").addClass("alert alert-success fadeIn");
     }
+
+    function deleteTask() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/backlog/rest/delete",
+                contentType: "application/json; charset=utf-8",
+                dataType : 'json',
+                data: JSON.stringify(
+                    {
+                        "id" : openTaskId,
+                    }),
+                success: deleteTaskSuccess()
+            }
+        );
+    }
+    function deleteTaskSuccess() {
+        dialogShow.dialog("close");
+    }
+
 });
