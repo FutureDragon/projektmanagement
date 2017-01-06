@@ -43,7 +43,7 @@ router.post('/rest/addSprint', function(req, res, next) {
 
 router.post('/rest/removeSprint', function(req, res, next) {
     console.log("Remove sprint from task: ");
-    task.assignSprintToTask(req.body.sprint_id, req.body.tasks, res);
+    task.removeSprintFromTask(req.body.tasks, req.body.sprint_id, res);
 });
 
 router.get('/rest/getTasksToSprint/:id', function(req, res, next) {
@@ -56,5 +56,13 @@ router.post('/rest/delete', function(req, res, next) {
     console.log("Delete: " + req.body.id);
     task.deleteTask(req.body.id, res);
 });
+
+router.get('/rest/sprintToTask/:id', function(req, res, next) {
+    var id = req.params.id;
+    task.get(id, res);
+
+});
+
+
 
 module.exports = router;
