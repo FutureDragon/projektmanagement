@@ -73,13 +73,16 @@ $(document).ready(function (event) {
         setTimeout(getTasks, 200);
     }
 // ____________________________________________________________________________
-
+    var wWidth = $(window).width();
+    var dWidth = wWidth * 0.4;
+    var wHeight = $(window).height();
+    var dHeight = wHeight * 0.4;
 
     dialogShow = $( "#dialog-form-task" ).dialog({
         autoOpen: false,
-        height: 500,
-        width: 450,
-        modal: true,
+        height: "auto",
+        width: dWidth,
+        modal: dHeight,
         buttons: {
             "Offen": function () {
                 updateTask(task._id, "Open");
@@ -130,7 +133,7 @@ $(document).ready(function (event) {
             $("#descriptionShow").prop("disabled", true);
             $("#change").text("Bearbeiten");
             //getTasks();
-            setTimeout(getTasks, 200);
+            //setTimeout(getTasks, 200);
         }
     });
 
@@ -201,6 +204,7 @@ $(document).ready(function (event) {
 
     function updatesuccess() {
         $("#messageShow").text("Status erfolgreich geändert!").addClass("alert alert-success fadeIn");
+        setTimeout(getTasks, 200);
     }
 
     $(".table").on("click", "td", function() {
@@ -278,6 +282,7 @@ $(document).ready(function (event) {
     }
     function taskupdatesuccess() {
         $("#messageShow").text("Task erfolgreich geändert").addClass("alert alert-success fadeIn");
+        setTimeout(getTasks, 200);
     }
 
     function deleteTask() {
@@ -297,6 +302,10 @@ $(document).ready(function (event) {
     }
     function deleteTaskSuccess() {
         dialogShow.dialog("close");
+        $("#newTaskMessage").text("Task erfolgreich gelöscht").removeClass("alert-warning").addClass("alert alert-success").fadeIn(200);
+        $('#newTaskMessage').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
+        });
+        setTimeout(getTasks, 200);
     }
 
 });
