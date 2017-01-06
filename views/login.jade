@@ -1,0 +1,25 @@
+extends layout
+
+block content
+    script(src='/javascripts/login.js')
+    #login.center-vertical
+        form.well(id='form-login', method='post')
+            h2 Hello!
+            h6 Please Login To Your Account
+            .form-group
+                label Username | Email
+                input.form-control(type='text', id='user-tf', name='email')
+            .form-group
+                label Password
+                input.form-control(type='password', id='pass-tf', name='pass')
+            .controls
+                button(type='submit').btn.btn-primary.button-sign-in
+                    | Sign In
+            .clearfix
+            hr
+            .btm-links
+                #forgot-password
+                    a(href='#') Forgot Your Password?
+                #create-account
+                    a(href='/users') Create An Account
+            .clearfix

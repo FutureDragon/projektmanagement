@@ -40,5 +40,25 @@ function User() {
         });
         db.disconnect();
     };
+
+    this.userLogin = function (mail, res) {
+        console.log('user login');
+        console.log('Mail:'+ mail);
+        db.connect();
+        /*
+            maybe password validation
+         */
+        UserSchema.find( {email : mail}, function(err, user) {
+            if (err){
+                throw err;
+            }
+            else{
+                console.log('wrong way');
+                res.send(user);
+            }
+        });
+        db.disconnect();
+    };
 }
 module.exports = new User();
+
