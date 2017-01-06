@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var TaskSchema = require("../schema/task_schema");
 var TaskStatus = require("./taskStatus");
+var SprintModel = require("./sprint")
 var db = require("./db");
 
 function Task() {
@@ -135,6 +136,19 @@ function Task() {
         TaskSchema.update({_id: taskId}, {$unset: {_sprint: 1}}, function (err) {
           if(err) console.log(err);
           res.sendStatus(200);
+        });
+        db.disconnect();
+    }
+
+    this.getSprintToTaskId = function(id, res) {
+        db.connect();
+        TaskSchema.findById(id, function (err, task) {
+            if (err) {
+                throw err;
+            }
+            else {
+                SprintModel.get(task._sprint, res);
+            }
         });
         db.disconnect();
     }
