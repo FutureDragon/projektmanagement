@@ -4,12 +4,16 @@ $(document).ready(function () {
     getSprint($("#sprintId").val());
 
     function getSprint(id) {
-        $.getJSON( "/sprint/rest/"+id, function( data ) {
+        $.getJSON("/sprint/rest/" + id, function (data) {
+            var startDate = new Date(data.start);
+            var startDateMonth = startDate.getMonth() + 1;
+            var endDate = new Date(data.end);
+            var endDateMonth = endDate.getMonth() + 1;
             $("#description").text(data.description);
             $("#author").text(data._creator);
-            $("#begin").text("Sprint startet: " + data.start);
-            $("#end").text("Sprint endet: " +data.end);
-            $("#edit").attr("href", $("#sprintId").val()+"/edit");
+            $("#begin").text("Sprint startet: " + startDate.getDate() + "." + startDateMonth + "." + startDate.getFullYear());
+            $("#end").text("Sprint endet: " + endDate.getDate() + "." + endDateMonth + "." + endDate.getFullYear());
+            $("#edit").attr("href", $("#sprintId").val() + "/edit");
             sprint = data;
         }).done(function () {
             $("#sprintName").text(sprint.name);
@@ -19,39 +23,40 @@ $(document).ready(function () {
 
     function getTasks() {
         $(".table").hide().find("tr:gt(1)").remove();
-        $.getJSON( "/backlog/rest/getTasksToSprint/"+$("#sprintId").val(), function( data ) {
-            $.each(data, function (key ,val) {
+        $.getJSON("/backlog/rest/getTasksToSprint/" + $("#sprintId").val(), function (data) {
+            $.each(data, function (key, val) {
                 var color;
-                if(val.priority == "Low") {
+                if (val.priority == "Low") {
                     color = "green";
                 }
-                else if(val.priority == "Medium") {
+                else if (val.priority == "Medium") {
                     color = "yellow";
                 }
-                else if(val.priority == "High") {
+                else if (val.priority == "High") {
                     color = "red";
                 }
-                var text = '<tr><td id="'+ val._id +'" class="click tdBig ' +color + '">'+ val.task + '</td></tr>';
-                if(val.status == "Open") {
+                var text = '<tr><td id="' + val._id + '" class="click tdBig ' + color + '">' + val.task + '</td></tr>';
+                if (val.status == "Open") {
                     $("#opentable tr:last").after(text);
                 }
-                else if(val.status == "In Progress") {
+                else if (val.status == "In Progress") {
                     $("#progress tr:last").after(text);
                 }
-                else if(val.status == "Code Review") {
+                else if (val.status == "Code Review") {
                     $("#review tr:last").after(text);
                 }
-                else if(val.status == "Done") {
+                else if (val.status == "Done") {
                     $("#done tr:last").after(text);
                 }
             });
-            if(data.length == 0) {
+            if (data.length == 0) {
                 $("#message").text("Der Sprint enthält noch keine Tasks").addClass("alert alert-warning");
             }
             $(".table").fadeIn(500);
         });
     }
-    dialogShow = $( "#dialog-form-task" ).dialog({
+
+    dialogShow = $("#dialog-form-task").dialog({
         autoOpen: false,
         height: 500,
         width: 450,
@@ -92,33 +97,33 @@ $(document).ready(function () {
                 type: "POST",
                 url: "/backlog/rest/update",
                 contentType: "application/json; charset=utf-8",
-                dataType : 'json',
-                data: JSON.stringify({"id" : id, "status" : status}),
+                dataType: 'json',
+                data: JSON.stringify({"id": id, "status": status}),
                 success: updatesuccess()
             }
         );
     }
+
     function updatesuccess() {
         $("#messageShow").text("Status erfolgreich geändert!").addClass("alert alert-success fadeIn");
     }
 
-    $(".table").on("click", "td", function() {
-        getTask($( this ).attr("id"));
-        dialogShow.dialog( "open" );
+    $(".table").on("click", "td", function () {
+        getTask($(this).attr("id"));
+        dialogShow.dialog("open");
     });
 
     function getTask(id) {
-        $.getJSON( "/backlog/rest/"+id, function( data ) {
+        $.getJSON("/backlog/rest/" + id, function (data) {
             $("#taskShow").val(data.task);
             $("#descriptionShow").val(data.description);
             $("#statusShow").text(data.status);
-            $("#createdShow").text("Von: " + data.author + " am " +data.created);
+            $("#createdShow").text("Von: " + data.author + " am " + data.created);
             $("#priorityShow").text(data.priority);
             $("#storyPointsShow").text(data.story_points);
             task = data;
         });
     }
-
 
 
 });

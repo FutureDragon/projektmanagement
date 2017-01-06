@@ -6,10 +6,10 @@ $(document).ready(function (event) {
     var endd = $("#end");
     var today = new Date();
 
-    $("#start").datepicker();
-    $("#end").datepicker();
-    //$("#start").datepicker({ dateFormat: 'dd.mm.yy' }).val();
-    //$("#end").datepicker({ dateFormat: 'dd.mm.yy' }).val();
+    //$("#start").datepicker();
+    //$("#end").datepicker();
+    $("#start").datepicker({dateFormat: 'dd.mm.yy'}).val();
+    $("#end").datepicker({dateFormat: 'dd.mm.yy'}).val();
 
     createIndex();
 
@@ -39,6 +39,15 @@ $(document).ready(function (event) {
 
     function createSprint() {
         if (sprint.val() != "" && startd.val() != "" && endd.val() != "" && startd.val() <= endd.val()) {
+            var sdd = startDateFormat.substring(0, 2);
+            var smm = startDateFormat.substring(3, 5);
+            var syy = startDateFormat.substring(6, 10);
+            var startDateChanged = smm + "/" + sdd + "/" + syy;
+            var endDateFormat = endd.val();
+            var edd = endDateFormat.substring(0, 2);
+            var emm = endDateFormat.substring(3, 5);
+            var eyy = endDateFormat.substring(6, 10);
+            var endDateChanged = emm + "/" + edd + "/" + eyy;
             $.ajax(
                 {
                     type: "POST",
@@ -48,8 +57,8 @@ $(document).ready(function (event) {
                     data: JSON.stringify({
                         "name": sprint.val(),
                         "description": description.val(),
-                        "start": startd.val(),
-                        "end": endd.val()
+                        "start": startDateChanged,
+                        "end": endDateChanged
                     }),
                     success: newSprintSuccess()
                 }
@@ -118,7 +127,7 @@ $(document).ready(function (event) {
                     }
                 }
             });
-            $(".table").fadeIn(1);
+            $(".table").fadeIn(500);
         });
     }
 
