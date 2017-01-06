@@ -2,6 +2,7 @@
  * Created by Dominik on 06.01.2017.
  */
 $(document).ready(function () {
+    /*
     var lv = require ('./Controller/LoginValidator');
 
     $('#login').ajaxForm({
@@ -21,5 +22,5 @@ $(document).ready(function () {
             throw err;
         }
     });
-    $('#user-tf').focus();
+    $('#user-tf').focus();*/
 });

@@ -41,19 +41,14 @@ function User() {
         db.disconnect();
     };
 
-    this.userLogin = function (mail, res) {
-        console.log('user login');
-        console.log('Mail:'+ mail);
+    this.getByMail = function (mail, res) {
         db.connect();
-        /*
-            maybe password validation
-         */
-        UserSchema.find( {email : mail}, function(err, user) {
+        // maybe password validation
+        UserSchema.find({ email: mail }, function(err, user) {
             if (err){
                 throw err;
             }
             else{
-                console.log('wrong way');
                 res.send(user);
             }
         });

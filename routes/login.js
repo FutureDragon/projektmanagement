@@ -24,9 +24,7 @@ router.get('/', function(req, res){
 });
 
 router.post('/', function(req, res){
-    // user.new('firstName', 'lastName', 'userName', 'test', 'test');
-    // console.log(user.getAllUsers());
-    user.userLogin(req.body['email'], function(err, user){
+    user.getByMail(req.body['email'], function(err, user){
         console.log("email: "+ req.body['email']);
         console.log("pass: " +req.body['pass']);
         if (!user){
