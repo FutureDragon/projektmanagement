@@ -59,8 +59,7 @@ router.post('/rest/delete', function(req, res, next) {
 
 router.get('/rest/sprintToTask/:id', function(req, res, next) {
     var id = req.params.id;
-    task.get(id, res);
-
+    task.getSprintToTaskId(id, res);
 });
 
 

@@ -55,4 +55,9 @@ router.get('/:name/edit', function (req, res, next) {
     res.render('sprintEdit',{title: name});
 });
 
+router.get('/rest/sprintToTask/:id', function(req, res, next) {
+    var id = req.params.id;
+    sprint.getSprintToTaskId(id, res);
+});
+
 module.exports = router;
