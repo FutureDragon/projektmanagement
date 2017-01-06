@@ -37,6 +37,15 @@ function Sprint() {
         db.disconnect();
     };
 
+    this.getSprintToTaskId = function(taskId, res){
+        db.connect();
+        SprintSchema.find({tasks: {"$in": [taskId]}}, function (err, sprint) {
+            if(err) console.log(err);
+            res.send(sprint);
+        });
+        db.disconnect();
+    };
+
     // Remove a sprint (with specified ID)
     this.deleteSprint = function(sprintId, res){
         db.connect();
@@ -50,13 +59,14 @@ function Sprint() {
     // Remove sprintIds from a task
     this.deleteSprintFromTasks = function(sprintId, res){
         db.connect();
-        TaskSchema.update({_sprint: sprintId}, {$unset: {_sprint: 1}}, function (err) {
+        TaskSchema.update({_sprint: sprintId}, {$unset: {_sprint: 1}}, function (err, tasks) {
             if(err){
                 console.log(err);
             }
-            else{
-                deleteSprint(sprintId, res)
-            }
+            console.log(tasks);
+            // else{
+            //     deleteSprint(sprintId, res)
+            // }
 
         });
         db.disconnect();
@@ -65,14 +75,14 @@ function Sprint() {
     //Remove all tasks within a specified sprint
     this.deleteTasksWithSprintId = function (sprintId, res) {
         db.connect();
-        TaskSchema.remove({_sprint: sprintId}, function (err) {
-            if(err){
-                console.log(err);
-            }
-            else{
-                deleteSprint(sprintId, res);
-            }
-        })
+        TaskSchema.find({_sprint: sprintId}, function (err, tasks) {
+            each(tasks, function (task, callback) {
+                task.remove(function (err, result) {
+                    ActionCtrl.saveRemove(result, callback)
+                })
+            })
+        });
+        res.sendStatus(200);
         db.disconnect();
     };
 
