@@ -75,7 +75,7 @@ function Task() {
     // Update all elements of a task (without status)
     this.updateTask = function(id, task, description, priority, storypoints, res){
         db.connect();
-        Task.Schema.findOneAndUpdate({_id: id}, {task: task, description: description, priority: priority,updated: Date.now(), story_points: storypoints},function(err){
+        TaskSchema.findOneAndUpdate({_id: id}, {task: task, description: description, priority: priority,updated: Date.now(), story_points: storypoints},function(err){
             if(err) throw err;
             else{
                 res.sendStatus(200);
