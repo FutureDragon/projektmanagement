@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var User = require("./user_schema");
 var Sprint = require("./sprint_schema");
+var taskStatus = require("./taskStatus_schema");
 
 /**
  * Define Schema for tasks
@@ -18,12 +19,12 @@ var taskSchema = new Schema({
         enum: ['Open', 'In Progress', 'Code Review', 'Done'],
         default: 'Open'
     },
+    //status: [{type: mongoose.Schema.Types.ObjectId, Ref: taskStatus}],
     priority: {
         type: String,
         enum: ['Low', 'Medium', 'High'],
         default: 'Medium'
     },
-    author: String,
     created: {type: Date, default: Date.now},
     updated: Date,
     story_points: {type: Number, required:true},

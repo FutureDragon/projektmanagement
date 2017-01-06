@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var TaskSchema = require("../schema/task_schema");
+var TaskStatus = require("./taskStatus");
 var db = require("./db");
 
 function Task() {
@@ -16,8 +17,16 @@ function Task() {
             if (err) {
                 console.log(err);
             }
+            else{
+                TaskSchema.find({},{_id: 1}).sort({$natural: -1}).limit(1).exec(function (err, taskID) {
+                    if(err) throw err;
+                    else{
+                        TaskStatus.newTaskStatus(taskID[0]._id, 'Open', res);
+                    }
+                });
+            }
         });
-        res.sendStatus(200);
+        //res.sendStatus(200);
         db.disconnect();
     };
 
@@ -48,19 +57,22 @@ function Task() {
         db.disconnect();
     };
 
+    // Update the status of a task
     this.updateStatus = function (id, status, res) {
         db.connect();
-        TaskSchema.findOneAndUpdate({_id: id}, {status: status}, function (err, user) {
+        TaskSchema.findOneAndUpdate({_id: id}, {status: status, updated: Date.now()}, function (err, task) {
             if (err) {
                 throw err;
             }
             else {
-                // we have the updated user returned to us
-                console.log(user);
+                // Call the function in taskStatus.js to create a new model which contains information about the taskStatus History
+                TaskStatus.newTaskStatus(id,status,res);
             }
         });
+
+
         db.disconnect();
-        res.sendStatus(200);
+        //res.sendStatus(200);
     };
 
     this.getTasksWithoutSprint = function (res) {
@@ -87,27 +99,6 @@ function Task() {
         db.disconnect();
         res.sendStatus(200);
     };
-
-    // this.assignSprintToTask = function (sprint_id, task_id, res) {
-    //     db.connect();
-    //     for (var i=0; i<task_id.length; i++){
-    //         TaskSchema.find({_id: task_id[i]}, function (err, task) {
-    //             if(err)throw err;
-    //             console.log(task);
-    //         });
-    //     }
-    //
-    //     // TaskSchema.findOneAndUpdate({_id: task_id}, {_sprint: task_id}, function (err, task) {
-    //     //     if (err) {
-    //     //         throw err;
-    //     //     }
-    //     //     else {
-    //     //         // we have the updated user returned to us
-    //     //         console.log(user);
-    //     //     }
-    //     // });
-    //     db.disconnect();
-    // };
 
     this.getTasksForSprint = function (sprint_id, res) {
         db.connect();
