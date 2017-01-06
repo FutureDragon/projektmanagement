@@ -69,11 +69,20 @@ function Task() {
                 TaskStatus.newTaskStatus(id,status,res);
             }
         });
-
-
         db.disconnect();
-        //res.sendStatus(200);
     };
+
+    // Update all elements of a task (without status)
+    this.updateTask = function(id, task, description, priority, storypoints, res){
+        db.connect();
+        Task.Schema.findOneAndUpdate({_id: id}, {task: task, description: description, priority: priority,updated: Date.now(), story_points: storypoints},function(err){
+            if(err) throw err;
+            else{
+                res.sendStatus(200);
+            }
+        });
+        db.disconnect();
+    }
 
     this.getTasksWithoutSprint = function (res) {
         db.connect();
