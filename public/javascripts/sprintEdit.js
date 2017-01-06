@@ -1,15 +1,17 @@
 $(document).ready(function () {
-    var dialog, form, dialogShow, dialogDelete;
+    var dialogSprint, form, dialogDescription, dialogDelete, dialogStartDate, dialogEndDate;
     var sprintChange = $("#sprintChange");
     var descriptionChange = $("#descriptionChange");
-    //var startDateChange = $("#startDateChange");
-    //var endDateChange = $("#endDateChange");
+    var startDateChange = $("#startDateChange");
+    var endDateChange = $("#endDateChange");
     var sprint;
     var tasks = [];
     var tasks2 = [];
     var counter = 0;
     var counter2 = 0;
 
+    $("#startDateChange").datepicker().val();
+    $("#endDateChange").datepicker().val();
     //$("#startDateChange").datepicker({dateFormat: 'dd.mm.yy'}).val();
     //$("#endDateChange").datepicker({dateFormat: 'dd.mm.yy'}).val();
 
@@ -44,8 +46,8 @@ $(document).ready(function () {
             $("#sprintName").text(sprint.name);
             $("#sprintChange").text(sprint.name);
             $("#descriptionChange").text(sprint.description);
-            //$("#startDateChange").text(sprint.start);
-            //$("#endDateChange").text(sprint.end);
+            $("#startDateChange").text(sprint.start);
+            $("#endDateChange").text(sprint.end);
             getTasksWithoutSprint();
         });
     }
@@ -110,7 +112,7 @@ $(document).ready(function () {
 
     function addTasksToSprint() {
         var id = $("#sprintId").val();
-        if(tasks.length != 0){
+        if (tasks.length != 0) {
             $.ajax(
                 {
                     type: "POST",
@@ -129,7 +131,7 @@ $(document).ready(function () {
 
     function removeTasksFromSprint() {
         var id = $("#sprintId").val();
-        if (tasks2.length != 0 ) {
+        if (tasks2.length != 0) {
             $.ajax(
                 {
                     type: "POST",
@@ -227,6 +229,7 @@ $(document).ready(function () {
                 data: JSON.stringify({"id": $("#sprintId").val()})
             }
         );
+        window.location = "/sprint";
     }
 
     function deleteSprint() {
@@ -239,28 +242,29 @@ $(document).ready(function () {
                 data: JSON.stringify({"id": $("#sprintId").val()})
             }
         );
+        window.location = "/sprint";
     }
 
     //____________________________________________________________________________
-    //Dialoge zum Ändern des Sprintnamens und Beschreibung
+    //Dialoge zum Ändern des Sprintnamens, Beschreibung, Startdatum und Enddatum
 
-    dialog = $("#dialog-form-sprint").dialog({
+    dialogSprint = $("#dialog-form-sprint").dialog({
         autoOpen: false,
         height: 300,
         width: 450,
         modal: true,
         buttons: {
             "Sprint umbennen": renameSprint,
-            "Schließen": function() {
-                dialog.dialog("close");
+            "Schließen": function () {
+                dialogSprint.dialog("close");
                 sprintChange = "";
             }
         }
     });
 
     function renameSprint() {
-        if(sprintChange.val != "") {
-            $ajax(
+        if (sprintChange.val != "") {
+            $.ajax(
                 {
                     type: "POST",
                     url: "sprint/rest",
@@ -268,13 +272,13 @@ $(document).ready(function () {
                     dataType: 'json',
                     data: JSON.stringify({
                         "name": sprintChange.val()
-                    }),
+                    })
                 }
-            )
+            );
         }
     }
 
-    dialogShow = $("#dialog-form-description").dialog({
+    dialogDescription = $("#dialog-form-description").dialog({
         autoOpen: false,
         height: 350,
         width: 450,
@@ -282,15 +286,15 @@ $(document).ready(function () {
         buttons: {
             "Beschreibung ändern": changeDescription,
             "Schließen": function () {
-                dialogShow.dialog("close");
+                dialogDescription.dialog("close");
                 descriptionChange = "";
             }
         }
     });
 
     function changeDescription() {
-        if(descriptionChange.val != "") {
-            $ajax(
+        if (descriptionChange.val != "") {
+            $.ajax(
                 {
                     type: "POST",
                     url: "sprint/rest",
@@ -298,9 +302,69 @@ $(document).ready(function () {
                     dataType: 'json',
                     data: JSON.stringify({
                         "description": descriptionChange.val()
-                    }),
+                    })
                 }
-            )
+            );
+        }
+    }
+
+    dialogStartDate = $("#dialog-form-startDate").dialog({
+        autoOpen: false,
+        height: 300,
+        width: 450,
+        modal: true,
+        buttons: {
+            "Startdatum ändern": changeStartDate,
+            "Schließen": function () {
+                dialogStartDate.dialog("close");
+                startDateChange = "";
+            }
+        }
+    });
+
+    function changeStartDate() {
+        if (startDateChange.val != "") {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "sprint/rest",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        "start": startDateChange.val()
+                    })
+                }
+            );
+        }
+    }
+
+    dialogEndDate = $("#dialog-form-endDate").dialog({
+        autoOpen: false,
+        height: 300,
+        width: 450,
+        modal: true,
+        buttons: {
+            "Enddatum ändern": changeEndDate,
+            "Schließen": function () {
+                dialogEndDate.dialog("close");
+                endDateChange = "";
+            }
+        }
+    });
+
+    function changeEndDate() {
+        if (endDateChange.val != "") {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "sprint/rest",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        "end": endDateChange.val()
+                    })
+                }
+            );
         }
     }
 
