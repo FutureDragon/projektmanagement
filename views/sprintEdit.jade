@@ -25,13 +25,13 @@ block content
             .form-group
                 p#messageShowSprint
             .form-group
-                label(for='name') Sprint
-                input#name.form-control.transparent(type='text', name='Sprint')
+                label(for='sprintChange') Sprint
+                textarea#sprintChange.form-control.transparent(rows = '1', name='Sprint')
 
-                #dialog-form-description(title="Beschreibung ändern")
-                    form#renameDescriptionForm(method='post' enctype='application/json')
-                        .form-group
-                            p#messageShowDescription
-                        .form-group
-                            label(for='description') Beschreibung
-                            input#descriptionChange.form-control.transparent(type='text', name='Beschreibung')
+    #dialog-form-description(title="Beschreibung ändern")
+        form#renameDescriptionForm(method='post' enctype='application/json')
+            .form-group
+                p#messageShowDescription
+            .form-group
+                label(for='descriptionChange') Beschreibung
+                textarea#descriptionChange.form-control.transparent(rows= '7', name='Beschreibung')

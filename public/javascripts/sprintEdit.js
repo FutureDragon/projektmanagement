@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    var dialog, form, dialogShow;
+    var sprintChange = $("#sprintChange");
+    var descriptionChange = $("#descriptionChange");
     var sprint;
     var tasks = [];
     var tasks2 = [];
@@ -33,6 +36,8 @@ $(document).ready(function () {
             sprint = data;
         }).done(function () {
             $("#sprintName").text(sprint.name);
+            $("#sprintChange").text(sprint.name);
+            $("#descriptionChange").text(sprint.description);
             getTasksWithoutSprint();
         });
     }
@@ -183,60 +188,47 @@ $(document).ready(function () {
         }
     });
 
-    /*
-     $("#sprintName").click(function () {
-     var title = $(this).text();
-     $(this).html('');
-     $('<input></input>')
-     .attr({
-     'type': 'textarea',
-     'id': 'text_header',
-     'value': title
-     })
-     .appendTo('#sprintName');
-     $('#text_header').focus();
-     });
+    //____________________________________________________________________________
+    //Dialoge zum Ändern des Sprintnamens und Beschreibung
 
-     $(document).on('blur', '#text_header', function () {
-     var title = $(this).val();
-     $.ajax({
-     type: 'post',
-     url: '',
-     success: function () {
-     $('#text_header').text(title);
-     }
-     })
-     });
+    dialog = $("#dialog-form-sprint").dialog({
+        autoOpen: false,
+        height: 300,
+        width: 450,
+        modal: true,
+        buttons: {
+            "Sprint umbennen": renameSprint,
+            "Schließen": function() {
+                dialog.dialog("close");
+                sprintChange = "";
+            }
+        }
+    });
 
-     $("#description").click(function () {
-     var textDescription = $(this).text();
-     $(this).html('');
-     $('<input></input>')
-     .attr({
-     'type': 'textarea',
-     'id': 'text_description',
-     'value': textDescription
-     })
-     .appendTo('#description');
-     $('#text_description').focus();
-     });
+    function renameSprint() {
+        if(sprintChange.val != "") {
+            //$ajax
+        }
+    }
 
-     $(document).on('blur', '#description', function () {
-     var textDescription = $(this).val();
-     $.ajax({
-     type: "POST",
-     url: "/backlog/...",
-     contentType: "application/json; charset=utf-8",
-     dataType: 'json',
-     data: JSON.stringify({
-     "sprint_id": id,
-     "textDescription": description.val()
-     }),
-     success: function () {
-     $('#text_description').text(textDescription);
-     }
-     })
-     });
-     */
+    dialogShow = $("#dialog-form-description").dialog({
+        autoOpen: false,
+        height: 350,
+        width: 450,
+        modal: true,
+        buttons: {
+            "Beschreibung ändern": changeDescription,
+            "Schließen": function () {
+                dialogShow.dialog("close");
+                descriptionChange = "";
+            }
+        }
+    });
+
+    function changeDescription() {
+        if(descriptionChange.val != "") {
+            //$ajax
+        }
+    }
 
 });
