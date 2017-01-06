@@ -89,18 +89,13 @@ $(document).ready(function (event) {
     }
 
     function newSprintSuccess() {
-        $("#newSprintMessage").text("Sprint erfolgreich angelegt").addClass("alert alert-success").fadeIn(200);
-        if ($("#newSprintMessage").length > 0) {
-            $("#newSprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
-            });
-        }
-        setTimeout(createIndex, 200);
+        location.reload();
+        $("#newSprintMessage").text("Sprint erfolgreich angelegt").addClass("alert alert-success");
     }
 
     // ____________________________________________________________________________
 
     function createIndex() {
-        $(".table").hide().find("tr:gt(1)").remove();
         $.getJSON("/sprint/rest", function (data) {
             $.each(data, function (key, val) {
                 var color = "blue";
