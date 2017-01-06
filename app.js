@@ -4,11 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 var backlog = require('./routes/backlog');
 var sprint = require('./routes/sprint');
+var login = require('./routes/login');
 
 var app = express();
 
@@ -28,6 +30,17 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/backlog', backlog);
 app.use('/sprint', sprint);
+app.use('/login', login);
+
+
+app.use(session({
+        secret: 'projektmanagement',
+        proxy: true,
+        resave: true,
+        saveUninitialized: true,
+        cookie: { secure: true }
+    })
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

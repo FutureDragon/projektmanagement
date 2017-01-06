@@ -40,5 +40,20 @@ function User() {
         });
         db.disconnect();
     };
+
+    this.getByMail = function (mail, res) {
+        db.connect();
+        // maybe password validation
+        UserSchema.find({ email: mail }, function(err, user) {
+            if (err){
+                throw err;
+            }
+            else{
+                res.send(user);
+            }
+        });
+        db.disconnect();
+    };
 }
 module.exports = new User();
+
