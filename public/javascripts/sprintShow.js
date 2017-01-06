@@ -1,6 +1,7 @@
 $(document).ready(function () {
     var sprint, task;
     var dialog, form, dialogShow;
+    var openTaskId;
     getSprint($("#sprintId").val());
 
     function getSprint(id) {
@@ -70,11 +71,16 @@ $(document).ready(function () {
         });
     }
 
-    dialogShow = $("#dialog-form-task").dialog({
+    var wWidth = $(window).width();
+    var dWidth = wWidth * 0.4;
+    var wHeight = $(window).height();
+    var dHeight = wHeight * 0.4;
+
+    dialogShow = $( "#dialog-form-task" ).dialog({
         autoOpen: false,
-        height: 500,
-        width: 450,
-        modal: true,
+        height: "auto",
+        width: dWidth,
+        modal: dHeight,
         buttons: {
             "Offen": function () {
                 updateTask(task._id, "Open");
@@ -92,16 +98,38 @@ $(document).ready(function () {
                 updateTask(task._id, "Done");
                 $("#statusShow").text("Done");
             },
+            "Bearbeiten":{
+                id : "change",
+                text : "Bearbeiten",
+                click: function () {
+                }
+            },
+            "Löschen" : function () {
+                $( "#dialog-delete-confirm" ).dialog({
+                    resizable: false,
+                    height: "auto",
+                    width: 400,
+                    modal: true,
+                    buttons: {
+                        "Löschen": function() {
+                            deleteTask();
+                            $( this ).dialog( "close" );
+                        },
+                        "Abbrechen": function() {
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                });
+            },
             "Fenster Schließen": function () {
                 dialogShow.dialog("close");
-                //$("#messageShow").text("").removeClass("alert alert-success fadeIn");
-                //location.reload();
             }
         },
         close: function () {
             $("#messageShow").text("").removeClass("alert alert-success fadeIn");
-            setTimeout(getTasks, 200);
-            //location.reload();
+            $("#taskShow").prop("disabled", true);
+            $("#descriptionShow").prop("disabled", true);
+            $("#change").text("Bearbeiten");
         }
     });
 
@@ -120,6 +148,7 @@ $(document).ready(function () {
 
     function updatesuccess() {
         $("#messageShow").text("Status erfolgreich geändert!").addClass("alert alert-success fadeIn");
+        setTimeout(getTasks, 200);
     }
 
     $(".table").on("click", "td", function () {
@@ -128,6 +157,7 @@ $(document).ready(function () {
     });
 
     function getTask(id) {
+        openTaskId = id;
         $.getJSON("/backlog/rest/" + id, function (data) {
             $("#taskShow").val(data.task);
             $("#descriptionShow").val(data.description);
@@ -139,5 +169,100 @@ $(document).ready(function () {
         });
     }
 
+    $('body').on('click', '#change', function () {
+        if($(this).text() == "Bearbeiten") {
+            $("#taskShow").prop("disabled", false);
+            $("#descriptionShow").prop("disabled", false);
+            var actualPriority = $("#priorityShow").text();
+            if(actualPriority == "Low") {
+                var priorityOption =
+                    '<select name="priority" id="priorityEdit">' +
+                    '<option selected="selected">Low</option>' +
+                    '<option>Medium</option>' +
+                    '<option>High</option>' +
+                    '</select> ';
+            }
+            else if(actualPriority == "Medium") {
+                var priorityOption =
+                    '<select name="priority" id="priorityEdit">' +
+                    '<option>Low</option>' +
+                    '<option selected="selected">Medium</option>' +
+                    '<option>High</option>' +
+                    '</select> ';
+            }
+            else if(actualPriority == "High") {
+                var priorityOption =
+                    '<select name="priority" id="priorityEdit">' +
+                    '<option>Low</option>' +
+                    '<option>Medium</option>' +
+                    '<option selected="selected">High</option>' +
+                    '</select> ';
+            }
+            $("#priorityShow").text("").append(priorityOption);
+            var storyPointsInput = "<input type='number' id='storyPointsEdit' value='" + $("#storyPointsShow").text() + "'>";
+            $("#storyPointsShow").text("").append(storyPointsInput);
+            $(this).text("Speichern");
+        }
+        else {
+            var taskText = $("#taskShow").val();
+            var descriptionText = $("#descriptionShow").val();
+            var priority = $( "#priorityEdit option:selected" ).text();
+            var storyPoints = $( "#storyPointsEdit" ).val();
+            updateTaskDetails(taskText,descriptionText,priority, storyPoints);
+            //$("#messageShow").text("Task erfolgreich geändert").addClass("alert alert-success fadeIn");
+            $("#taskShow").prop("disabled", true);
+            $("#descriptionShow").prop("disabled", true);
+            $("#priorityShow").text(priority);
+            $(this).text("Bearbeiten");
+            $("#storyPointsShow").text(storyPoints);
+        }
+    });
+
+    function updateTaskDetails(task, description, priority, storyPoints) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/backlog/rest/updateTask",
+                contentType: "application/json; charset=utf-8",
+                dataType : 'json',
+                data: JSON.stringify(
+                    {
+                        "id" : openTaskId,
+                        "task": task,
+                        "description" : description,
+                        "priority" : priority,
+                        "story_points" : storyPoints
+                    }),
+                success: taskupdatesuccess()
+            }
+        );
+    }
+    function taskupdatesuccess() {
+        $("#messageShow").text("Task erfolgreich geändert").addClass("alert alert-success fadeIn");
+        setTimeout(getTasks, 200);
+    }
+
+    function deleteTask() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/backlog/rest/delete",
+                contentType: "application/json; charset=utf-8",
+                dataType : 'json',
+                data: JSON.stringify(
+                    {
+                        "id" : openTaskId,
+                    }),
+                success: deleteTaskSuccess()
+            }
+        );
+    }
+    function deleteTaskSuccess() {
+        dialogShow.dialog("close");
+        $("#newTaskMessage").text("Task erfolgreich gelöscht").removeClass("alert-warning").addClass("alert alert-success").fadeIn(200);
+        $('#newTaskMessage').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
+        });
+        setTimeout(getTasks, 200);
+    }
 
 });
