@@ -3,6 +3,7 @@ $(document).ready(function (event) {
     var task;
     task = $( "#task");
     var description = $("#description");
+    var openTaskId;
     getTasks();
 
 // ____________________________________________________________________________
@@ -37,7 +38,13 @@ $(document).ready(function (event) {
                     url: "backlog/rest",
                     contentType: "application/json; charset=utf-8",
                     dataType : 'json',
-                    data: JSON.stringify({"task" : task.val(), "description" : description.val(), "priority" : priority, "story_points" : storyPoint}),
+                    data: JSON.stringify(
+                        {
+                            "task" : task.val(),
+                            "description" : description.val(),
+                            "priority" : priority,
+                            "story_points" : storyPoint
+                        }),
                     success: newTasksuccess()
                 }
             );
@@ -60,7 +67,6 @@ $(document).ready(function (event) {
         $("#newTaskMessage").text("Task erfolgreich angelegt").addClass("alert alert-success").fadeIn(200);
         if($('#newTaskMessage').length>0){
             $('#newTaskMessage').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
-                //$(this).remove();
             });
         }
 
@@ -95,10 +101,6 @@ $(document).ready(function (event) {
                 id : "change",
                 text : "Bearbeiten",
                 click: function () {
-                    /*$("#taskShow").prop("disabled", false);
-                    $("#descriptionShow").prop("disabled", false);
-                    $("#change").text("Speichern");
-                    $("#change").attr("id","saveChanges");*/
               }
             },
             "Fenster Schließen": function () {
@@ -109,7 +111,6 @@ $(document).ready(function (event) {
             $("#messageShow").text("").removeClass("alert alert-success fadeIn");
             $("#taskShow").prop("disabled", true);
             $("#descriptionShow").prop("disabled", true);
-            //location.reload();
             getTasks();
         }
     });
@@ -142,11 +143,15 @@ $(document).ready(function (event) {
                     $("#done tr:last").after(text);
                 }
             });
+            if(data.length == 0) {
+                ("#newTaskMessage").text("");
+            }
             $(".table").fadeIn(500);
         });
     }
 
     function getTask(id) {
+        openTaskId = id;
         $.getJSON( "backlog/rest/"+id, function( data ) {
             $("#taskShow").val(data.task);
             $("#descriptionShow").val(data.description);
@@ -165,7 +170,11 @@ $(document).ready(function (event) {
                 url: "backlog/rest/update",
                 contentType: "application/json; charset=utf-8",
                 dataType : 'json',
-                data: JSON.stringify({"id" : id, "status" : status}),
+                data: JSON.stringify(
+                    {
+                        "id" : id,
+                        "status" : status
+                    }),
                 success: updatesuccess()
             }
         );
@@ -190,7 +199,7 @@ $(document).ready(function (event) {
                 '<option>High</option>' +
                 '</select> ';
             $("#priorityShow").text("").append(priorityOption);
-            var storyPointsInput = "<input type='number' id='storyPointsEdit'>";
+            var storyPointsInput = "<input type='number' id='storyPointsEdit' value='" + $("#storyPointsShow").text() + "'>";
             $("#storyPointsShow").text("").append(storyPointsInput);
             $(this).text("Speichern");
         }
@@ -199,13 +208,36 @@ $(document).ready(function (event) {
             var descriptionText = $("#descriptionShow").val();
             var priority = $( "#priorityEdit option:selected" ).text();
             var storyPoints = $( "#storyPointsEdit" ).val();
-            $("#messageShow").text("Task erfolgreich geändert").addClass("alert alert-success fadeIn");
+            updateTaskDetails(taskText,descriptionText,priority, storyPoints);
+            //$("#messageShow").text("Task erfolgreich geändert").addClass("alert alert-success fadeIn");
             $("#taskShow").prop("disabled", true);
             $("#descriptionShow").prop("disabled", true);
             $("#priorityShow").text(priority);
             $(this).text("Bearbeiten");
             $("#storyPointsShow").text(storyPoints);
         }
-
     });
+
+    function updateTaskDetails(task, description, priority, storyPoints) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "backlog/rest/updateTask",
+                contentType: "application/json; charset=utf-8",
+                dataType : 'json',
+                data: JSON.stringify(
+                    {
+                        "id" : openTaskId,
+                        "task": task,
+                        "description" : description,
+                        "priority" : priority,
+                        "story_points" : storyPoints
+                    }),
+                success: taskupdatesuccess()
+            }
+        );
+    }
+    function taskupdatesuccess() {
+        $("#messageShow").text("Task erfolgreich geändert").addClass("alert alert-success fadeIn");
+    }
 });

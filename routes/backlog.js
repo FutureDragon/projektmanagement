@@ -14,8 +14,12 @@ router.post('/rest', function(req, res, next) {
 
 router.post('/rest/update', function(req, res, next) {
   console.log("Update von : " + req.body.id);
-
   task.updateStatus(req.body.id, req.body.status, res);
+});
+
+router.post('/rest/updateTask', function(req, res, next) {
+    console.log("Update von : " + req.body.id);
+    task.updateTask(req.body.id, req.body.task, req.body.description, req.body.priority, req.body.story_points,  res);
 });
 
 router.get('/new', function(req, res, next) {
