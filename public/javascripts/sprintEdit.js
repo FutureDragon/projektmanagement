@@ -207,7 +207,17 @@ $(document).ready(function () {
 
     function renameSprint() {
         if(sprintChange.val != "") {
-            //$ajax
+            $ajax(
+                {
+                    type: "POST",
+                    url: "sprint/rest",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        "name": sprintChange.val()
+                    }),
+                }
+            )
         }
     }
 
@@ -227,7 +237,17 @@ $(document).ready(function () {
 
     function changeDescription() {
         if(descriptionChange.val != "") {
-            //$ajax
+            $ajax(
+                {
+                    type: "POST",
+                    url: "sprint/rest",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        "description": descriptionChange.val()
+                    }),
+                }
+            )
         }
     }
 
