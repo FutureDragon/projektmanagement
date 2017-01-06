@@ -8,12 +8,26 @@ $(document).ready(function () {
         $.getJSON("/sprint/rest/" + id, function (data) {
             var startDate = new Date(data.start);
             var startDateMonth = startDate.getMonth() + 1;
+            if (startDateMonth.toString().length < 2) {
+                startDateMonth = "0" + startDateMonth;
+            }
+            var startDateDay = startDate.getDate();
+            if (startDateDay.toString().length < 2) {
+                startDateDay = "0" + startDateDay;
+            }
             var endDate = new Date(data.end);
             var endDateMonth = endDate.getMonth() + 1;
+            if (endDateMonth.toString().length < 2) {
+                endDateMonth = "0" + endDateMonth;
+            }
+            var endDateDay = endDate.getDate();
+            if (endDateDay.toString().length < 2) {
+                endDateDay = "0" + endDateDay;
+            }
             $("#description").text(data.description);
             $("#author").text(data._creator);
-            $("#begin").text("Sprint startet: " + startDate.getDate() + "." + startDateMonth + "." + startDate.getFullYear());
-            $("#end").text("Sprint endet: " + endDate.getDate() + "." + endDateMonth + "." + endDate.getFullYear());
+            $("#begin").text("Sprint startet: " + startDateDay + "." + startDateMonth + "." + startDate.getFullYear());
+            $("#end").text("Sprint endet: " + endDateDay + "." + endDateMonth + "." + endDate.getFullYear());
             sprint = data;
         }).done(function () {
             $("#sprintName").text(sprint.name);
