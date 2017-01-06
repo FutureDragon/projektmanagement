@@ -1,5 +1,5 @@
 $(document).ready(function (event) {
-    var dialog, form, dialogShow;
+    var dialog, form, dialogShow, dialogConfirm;
     var task;
     task = $( "#task");
     var description = $("#description");
@@ -107,21 +107,7 @@ $(document).ready(function (event) {
               }
             },
             "Löschen" : function () {
-                $( "#dialog-delete-confirm" ).dialog({
-                    resizable: false,
-                    height: "auto",
-                    width: 400,
-                    modal: true,
-                    buttons: {
-                        "Löschen": function() {
-                            deleteTask();
-                            $( this ).dialog( "close" );
-                        },
-                        "Abbrechen": function() {
-                            $( this ).dialog( "close" );
-                        }
-                    }
-                });
+                dialogConfirm.dialog( "open" );
             },
             "Fenster Schließen": function () {
                 dialogShow.dialog("close");
@@ -134,6 +120,23 @@ $(document).ready(function (event) {
             $("#change").text("Bearbeiten");
             //getTasks();
             //setTimeout(getTasks, 200);
+        }
+    });
+
+    dialogConfirm = $( "#dialog-delete-confirm" ).dialog({
+        autoOpen: false,
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: {
+            "Löschen": function() {
+                deleteTask();
+                $( this ).dialog( "close" );
+            },
+            "Abbrechen": function() {
+                $( this ).dialog( "close" );
+            }
         }
     });
 
@@ -242,7 +245,7 @@ $(document).ready(function (event) {
                     '</select> ';
             }
             $("#priorityShow").text("").append(priorityOption);
-            var storyPointsInput = "<input type='number' id='storyPointsEdit' value='" + $("#storyPointsShow").text() + "'>";
+            var storyPointsInput = "<input class='form-control transparent' type='number' id='storyPointsEdit' value='" + $("#storyPointsShow").text() + "'>";
             $("#storyPointsShow").text("").append(storyPointsInput);
             $(this).text("Speichern");
         }

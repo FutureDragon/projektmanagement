@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var sprint, task;
-    var dialog, form, dialogShow;
+    var dialog, form, dialogShow, dialogConfirm;
     var openTaskId;
     getSprint($("#sprintId").val());
 
@@ -105,21 +105,7 @@ $(document).ready(function () {
                 }
             },
             "Löschen" : function () {
-                $( "#dialog-delete-confirm" ).dialog({
-                    resizable: false,
-                    height: "auto",
-                    width: 400,
-                    modal: true,
-                    buttons: {
-                        "Löschen": function() {
-                            deleteTask();
-                            $( this ).dialog( "close" );
-                        },
-                        "Abbrechen": function() {
-                            $( this ).dialog( "close" );
-                        }
-                    }
-                });
+                dialogConfirm.dialog( "open" );
             },
             "Fenster Schließen": function () {
                 dialogShow.dialog("close");
@@ -264,5 +250,22 @@ $(document).ready(function () {
         });
         setTimeout(getTasks, 200);
     }
+
+    dialogConfirm = $( "#dialog-delete-confirm" ).dialog({
+        autoOpen: false,
+        resizable: false,
+        height: "auto",
+        width: 400,
+        modal: true,
+        buttons: {
+            "Löschen": function() {
+                deleteTask();
+                $( this ).dialog( "close" );
+            },
+            "Abbrechen": function() {
+                $( this ).dialog( "close" );
+            }
+        }
+    });
 
 });

@@ -44,28 +44,28 @@ block content
           input#storyPoints.form-control.transparent(type='number', placeholder='Story Points' name='storypoints')
 
 
-    #dialog-form-task(title="Task")
-      form#showTaskForm(method='post' enctype='application/json')
-        .form-group
-          p#messageShow
-        .form-group
-          label(for='task') Task
-          input#taskShow.form-control.transparent(type='text', name='task' disabled=true)
-        .form-group
-          label(for='description') Beschreibung
-          textarea#descriptionShow.form-control.transparent(rows='7' name='description' disabled=true)
-        .form-group
-          label(for='status') Status
-          p#statusShow
-        .form-group
-          label(for='created') Erstellt:
-          p#createdShow
-        .form-group
-          label(for='priority') Priorität:
-          p#priorityShow
-        .form-group
-          label(for='storypoints') Story Points
-            p#storyPointsShow
+  #dialog-form-task(title="Task")
+    form#showTaskForm(method='post' enctype='application/json')
+      .form-group
+        p#messageShow
+      .form-group
+        label(for='task') Task
+        input#taskShow.form-control.transparent(type='text', name='task' disabled=true)
+      .form-group
+        label(for='description') Beschreibung
+        textarea#descriptionShow.form-control.transparent(rows='7' name='description' disabled=true)
+      .form-group
+        label(for='status') Status
+        p#statusShow
+      .form-group
+        label(for='created') Erstellt:
+        p#createdShow
+      .form-group
+        label(for='priority') Priorität:
+        p#priorityShow
+      .form-group
+        label(for='storypoints') Story Points
+          p#storyPointsShow
 
-    #dialog-delete-confirm(title="Task wirklich löschen?")
-      p  Soll der Task wirklich gelöscht werden?
+  #dialog-delete-confirm(title="Task wirklich löschen?")
+    p  Soll der Task wirklich gelöscht werden?
