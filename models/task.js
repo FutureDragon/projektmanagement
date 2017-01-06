@@ -128,6 +128,16 @@ function Task() {
         });
         db.disconnect();
     }
+
+    //Remove task from a sprint
+    this.removeSprintFromTask = function(taskId, sprintId, res){
+        db.connect();
+        TaskSchema.update({_id: taskId}, {$unset: {_sprint: 1}}, function (err) {
+          if(err) console.log(err);
+          res.sendStatus(200);
+        });
+        db.disconnect();
+    }
 }
 // Exports a new Task Object
 module.exports = new Task();

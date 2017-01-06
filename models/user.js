@@ -6,6 +6,23 @@ function User() {
 
     this.new = function (firstName, lastName, userName, pwd, mail) {
         db.connect();
+
+        // UserSchema.find({$or: [{username: userName}, {email: mail}]}, function (err, users) {
+        //     console.log(users);
+        //     console.log("Anzahl an Usern: " + users.length);
+        //     if(users.length == 0){
+        //         var User = UserSchema({ firstname: firstName, lastname: lastName, username: userName, password: pwd, email: mail});
+        //         User.save(function (err) {
+        //             if(err) console.log(err);
+        //         });
+        //         console.log(User);
+        //     }
+        //     else{
+        //         console.log('User already exists', null);
+        //     }
+        // });
+        // db.disconnect();
+
         var User = UserSchema({ firstname: firstName, lastname: lastName, username: userName, password: pwd, email: mail});
         User.save(function (err) {
             if (err) {
@@ -41,10 +58,11 @@ function User() {
         db.disconnect();
     };
 
+    // Find one user by mail
     this.getByMail = function (mail, res) {
         db.connect();
         // maybe password validation
-        UserSchema.find({ email: mail }, function(err, user) {
+        UserSchema.find({email: mail }, function(err, user) {
             if (err){
                 throw err;
             }
