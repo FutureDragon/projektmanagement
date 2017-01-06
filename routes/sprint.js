@@ -34,6 +34,18 @@ router.get('/rest/:id', function (req, res, next) {
     sprint.get(id, res);
 });
 
+router.post('/rest/delete', function (req, res, next) {
+    var id = req.body.id;
+    console.log("Delete sprint: " + id);
+    sprint.deleteSprintFromTasks(id, res);
+});
+
+router.post('/rest/deleteWithTask', function (req, res, next) {
+    var id = req.body.id;
+    console.log("Delete sprint: " + id);
+    sprint.deleteTasksWithSprintId(id, res);
+});
+
 router.get('/:name', function (req, res, next) {
     var name = req.params.name;
     res.render('sprintShow',{title: name});

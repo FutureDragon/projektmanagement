@@ -55,7 +55,7 @@ function Sprint() {
                 console.log(err);
             }
             else{
-                this.deleteSprint(sprintId, res)
+                deleteSprint(sprintId, res)
             }
 
         });
@@ -70,7 +70,7 @@ function Sprint() {
                 console.log(err);
             }
             else{
-                this.deleteSprint(sprintId, res);
+                deleteSprint(sprintId, res);
             }
         })
         db.disconnect();
