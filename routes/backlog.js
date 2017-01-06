@@ -37,10 +37,13 @@ router.get('/rest/:id', function(req, res, next) {
 
 });
 router.post('/rest/addSprint', function(req, res, next) {
-    //for(var i = 0, len = req.body.tasks.length; i < len; i++) {
     console.log("Update");
     task.assignSprintToTask(req.body.sprint_id, req.body.tasks, res);
-    //}
+});
+
+router.post('/rest/removeSprint', function(req, res, next) {
+    console.log("Remove sprint from task: ");
+    task.assignSprintToTask(req.body.sprint_id, req.body.tasks, res);
 });
 
 router.get('/rest/getTasksToSprint/:id', function(req, res, next) {

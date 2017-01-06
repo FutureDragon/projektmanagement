@@ -11,8 +11,11 @@ block content
     p#begin.row
     p#end.row
     hr
-    p  Task auswählen die in den Sprint sollen:
+
     #message
-    #taskContainer.col-md-4.col-md-offset-4
-    button#save.btn.btn-default.transparent.col-md-8.col-md-offset-2  Speichern
+    #taskContainer.col-md-6
+        p  Task auswählen die in den Sprint sollen:
+    #taskContainer2.col-md-6
+        p  Task auswählen die aus den Sprint sollen:
+    button#save.btn.btn-default.transparent.col-md-12  Speichern
     input#sprintId(type="hidden" value="#{title}")
