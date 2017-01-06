@@ -111,6 +111,7 @@ $(document).ready(function (event) {
             $("#messageShow").text("").removeClass("alert alert-success fadeIn");
             $("#taskShow").prop("disabled", true);
             $("#descriptionShow").prop("disabled", true);
+            $("#change").text("Bearbeiten");
             getTasks();
         }
     });
@@ -193,11 +194,31 @@ $(document).ready(function (event) {
         if($(this).text() == "Bearbeiten") {
             $("#taskShow").prop("disabled", false);
             $("#descriptionShow").prop("disabled", false);
-            var priorityOption = '<select name="priority" id="priorityEdit">' +
-                '<option>Low</option>' +
-                '<option>Medium</option>' +
-                '<option>High</option>' +
-                '</select> ';
+            var actualPriority = $("#priorityShow").text();
+            if(actualPriority == "Low") {
+                var priorityOption =
+                    '<select name="priority" id="priorityEdit">' +
+                    '<option selected="selected">Low</option>' +
+                    '<option>Medium</option>' +
+                    '<option>High</option>' +
+                    '</select> ';
+            }
+            else if(actualPriority == "Medium") {
+                var priorityOption =
+                    '<select name="priority" id="priorityEdit">' +
+                    '<option>Low</option>' +
+                    '<option selected="selected">Medium</option>' +
+                    '<option>High</option>' +
+                    '</select> ';
+            }
+            else if(actualPriority == "High") {
+                var priorityOption =
+                    '<select name="priority" id="priorityEdit">' +
+                    '<option>Low</option>' +
+                    '<option>Medium</option>' +
+                    '<option selected="selected">High</option>' +
+                    '</select> ';
+            }
             $("#priorityShow").text("").append(priorityOption);
             var storyPointsInput = "<input type='number' id='storyPointsEdit' value='" + $("#storyPointsShow").text() + "'>";
             $("#storyPointsShow").text("").append(storyPointsInput);
