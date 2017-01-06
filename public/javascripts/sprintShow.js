@@ -18,7 +18,7 @@ $(document).ready(function () {
     }
 
     function getTasks() {
-        //$(".table").hide().find("tr:gt(1)").remove();
+        $(".table").hide().find("tr:gt(1)").remove();
         $.getJSON( "/backlog/rest/getTasksToSprint/"+$("#sprintId").val(), function( data ) {
             $.each(data, function (key ,val) {
                 var color;
@@ -48,7 +48,7 @@ $(document).ready(function () {
             if(data.length == 0) {
                 $("#message").text("Der Sprint enthält noch keine Tasks").addClass("alert alert-warning");
             }
-            //$(".table").fadeIn(500);
+            $(".table").fadeIn(500);
         });
     }
     dialogShow = $( "#dialog-form-task" ).dialog({
@@ -75,13 +75,14 @@ $(document).ready(function () {
             },
             "Fenster Schließen": function () {
                 dialogShow.dialog("close");
-                $("#messageShow").text("").removeClass("alert alert-success fadeIn");
-                location.reload();
+                //$("#messageShow").text("").removeClass("alert alert-success fadeIn");
+                //location.reload();
             }
         },
         close: function () {
             $("#messageShow").text("").removeClass("alert alert-success fadeIn");
-            location.reload();
+            setTimeout(getTasks, 200);
+            //location.reload();
         }
     });
 
