@@ -4,6 +4,8 @@ block content
     script(src='/javascripts/sprintEdit.js')
     #header
       h1#sprintName
+      #deleteSprint.col-md-12
+          button#deleteSprintBtn.btn.btn-default.transparent Sprint löschen
     hr
     p#descriptionHead Beschreibung:
     p#description.col-md-4.col-md-offset-4
@@ -35,3 +37,22 @@ block content
             .form-group
                 label(for='descriptionChange') Beschreibung
                 textarea#descriptionChange.form-control.transparent(rows= '7', name='Beschreibung')
+
+    #dialog-form-startDate(title="Startdatum ändern")
+        form#changeStartDateForm(method='post' enctype='application/json')
+            .form-group
+                p#messageShowStartDate
+            .form-group
+                label(for='startDateChange') Startdatum
+                textarea#startDateChange.form-control.transparent(rows= '1', name='Startdatum')
+
+    #dialog-form-endDate(title="Enddatum ändern")
+        form#changeEndDateForm(method='post' enctype='application/json')
+            .form-group
+                p#messageShowEndDate
+            .form-group
+                label(for='endDateChange') Enddatum
+                textarea#endDateChange.form-control.transparent(rows= '1', name='Enddatum')
+
+    #dialog-form-delete(title="Sprint wirklich löschen?")
+        p Soll der Sprint wirklich gelöscht werden?

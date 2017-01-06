@@ -1,12 +1,18 @@
 $(document).ready(function () {
-    var dialog, form, dialogShow;
+    var dialog, form, dialogShow, dialogDelete;
     var sprintChange = $("#sprintChange");
     var descriptionChange = $("#descriptionChange");
+    //var startDateChange = $("#startDateChange");
+    //var endDateChange = $("#endDateChange");
     var sprint;
     var tasks = [];
     var tasks2 = [];
     var counter = 0;
     var counter2 = 0;
+
+    //$("#startDateChange").datepicker({dateFormat: 'dd.mm.yy'}).val();
+    //$("#endDateChange").datepicker({dateFormat: 'dd.mm.yy'}).val();
+
     getSprint($("#sprintId").val());
 
     function getSprint(id) {
@@ -38,6 +44,8 @@ $(document).ready(function () {
             $("#sprintName").text(sprint.name);
             $("#sprintChange").text(sprint.name);
             $("#descriptionChange").text(sprint.description);
+            //$("#startDateChange").text(sprint.start);
+            //$("#endDateChange").text(sprint.end);
             getTasksWithoutSprint();
         });
     }
@@ -190,6 +198,48 @@ $(document).ready(function () {
             $(this).addClass("blue");
         }
     });
+
+    $("#deleteSprintBtn").button().on("click", function () {
+        dialogDelete.dialog("open");
+    });
+
+    dialogDelete = $("#dialog-form-delete").dialog({
+        autoOpen: false,
+        height: 500,
+        width: 450,
+        modal: true,
+        buttons: {
+            "Sprint MIT Tasks löschen": deleteSprintAndTasks,
+            "Sprint OHNE Tasks löschen": deleteSprint,
+            "Schließen": function () {
+                dialogDelete.dialog("close");
+            }
+        }
+    });
+
+    function deleteSprintAndTasks() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/sprint/rest/deleteWithTask",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify({"id": $("#sprintId").val()})
+            }
+        );
+    }
+
+    function deleteSprint() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/sprint/rest/delete",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify({"id": $("#sprintId").val()})
+            }
+        );
+    }
 
     //____________________________________________________________________________
     //Dialoge zum Ändern des Sprintnamens und Beschreibung
