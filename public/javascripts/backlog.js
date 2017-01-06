@@ -64,7 +64,7 @@ $(document).ready(function (event) {
     }
 
     function newTasksuccess() {
-        $("#newTaskMessage").text("Task erfolgreich angelegt").addClass("alert alert-success").fadeIn(200);
+        $("#newTaskMessage").text("Task erfolgreich angelegt").removeClass("alert-warning").addClass("alert alert-success").fadeIn(200);
         if($('#newTaskMessage').length>0){
             $('#newTaskMessage').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
             });
@@ -144,7 +144,7 @@ $(document).ready(function (event) {
                 }
             });
             if(data.length == 0) {
-                ("#newTaskMessage").text("");
+                $("#newTaskMessage").text("Es sind noch keine Tasks angelegt").addClass("alert alert-warning");
             }
             $(".table").fadeIn(500);
         });
