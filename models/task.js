@@ -118,6 +118,17 @@ function Task() {
         });
         db.disconnect();
     }
+
+    // Remove a task (with specified ID)
+    this.deleteTask = function(taskId, res){
+        db.connect();
+        TaskSchema.remove({_id: taskId}, function(err){
+            if (err) console.log(err);
+            res.sendStatus(200);
+        });
+        db.disconnect();
+    }
 }
 // Exports a new Task Object
 module.exports = new Task();
+
