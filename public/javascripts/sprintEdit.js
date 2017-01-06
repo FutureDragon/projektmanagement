@@ -133,6 +133,9 @@ $(document).ready(function () {
                 }
             );
         }
+        else {
+            window.location = "/sprint/" + $("#sprintId").val();
+        }
 
     }
 
