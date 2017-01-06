@@ -45,7 +45,7 @@ function Sprint() {
             res.sendStatus(200);
         });
         db.disconnect();
-    }
+    };
 
     // Remove sprintIds from a task
     this.deleteSprintFromTasks = function(sprintId, res){
@@ -60,7 +60,7 @@ function Sprint() {
 
         });
         db.disconnect();
-    }
+    };
 
     //Remove all tasks within a specified sprint
     this.deleteTasksWithSprintId = function (sprintId, res) {
@@ -74,7 +74,7 @@ function Sprint() {
             }
         })
         db.disconnect();
-    }
+    };
 
 }
 module.exports = new Sprint();
