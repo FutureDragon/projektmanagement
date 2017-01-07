@@ -4,30 +4,14 @@ var db = require("./db");
 
 function User() {
 
-    this.new = function (firstName, lastName, userName, pwd, mail) {
+    this.new = function (firstName, lastName, pwd, mail,role, res) {
         db.connect();
-
-        // UserSchema.find({$or: [{username: userName}, {email: mail}]}, function (err, users) {
-        //     console.log(users);
-        //     console.log("Anzahl an Usern: " + users.length);
-        //     if(users.length == 0){
-        //         var User = UserSchema({ firstname: firstName, lastname: lastName, username: userName, password: pwd, email: mail});
-        //         User.save(function (err) {
-        //             if(err) console.log(err);
-        //         });
-        //         console.log(User);
-        //     }
-        //     else{
-        //         console.log('User already exists', null);
-        //     }
-        // });
-        // db.disconnect();
-
-        var User = UserSchema({ firstname: firstName, lastname: lastName, username: userName, password: pwd, email: mail});
+        var User = UserSchema({ firstname: firstName, lastname: lastName, password: pwd, email: mail, role: role});
         User.save(function (err) {
             if (err) {
                 console.log(err);
             }
+            res.sendStatus(200);
         });
         db.disconnect();
     };
@@ -67,7 +51,44 @@ function User() {
                 throw err;
             }
             else{
-                res.send(user);
+                if(user.length == 0) {
+                    res.sendStatus(901)
+                }
+                else{
+                    res.sendStatus(200);
+                }
+
+            }
+        });
+        db.disconnect();
+    };
+
+    this.login = function (email,password, res) {
+        db.connect();
+        // maybe password validation
+        UserSchema.find({ $and: [ { email: email}, { password: password}]}, function(err, user) {
+            if (err){
+                throw err;
+            }
+            else{
+                if(user.length == 0) {
+                    console.log("User nicht gefunden");
+                    res.sendStatus(900);
+                }
+                else{
+                    console.log(user);
+                    console.log("User eingeloggt");
+                    if(user[0].role == "employee") {
+                        res.sendStatus(910);
+                    }
+                    if(user[0].role == "scrummaster") {
+                        res.sendStatus(920);
+                    }
+                    if(user[0].role== "admin") {
+                        res.sendStatus(930);
+                    }
+                }
+
             }
         });
         db.disconnect();

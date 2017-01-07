@@ -27,6 +27,14 @@ h1 {
   width: 100%;
 }
 
+.noLogin{
+  padding-top: 30px;
+  background-color: rgba(189, 187, 210, 0.5);
+  border-radius: 5px;
+  min-height: 100%;
+  width: 100%;
+}
+
 .tableCenter {
   margin-left: auto;
   margin-right: auto;

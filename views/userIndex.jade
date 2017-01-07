@@ -1,7 +1,40 @@
 extends layout
 
 block content
-    script(src='/javascripts/users.js')
-    #header
-        h1= title
-    a.btn.btn-default.transparent(href='/users/new', role='button') Neuen User anlegen
+  script(src='/javascripts/userIndex.js')
+  #header
+  h1= title
+  table#userTable.table.table-hover
+    thead
+      tr
+      th.center  Vorname
+      th.center  Nachname
+      th.center  Email
+      th.center  Rolle
+
+  button#newUserBtn.btn.btn-default  Neuen User anlegen
+
+  #dialog-newUser-form(title="Neuen User anlegen")
+    form#newTaskForm(method='post' enctype='application/json')
+      .form-group
+        #registerUserMessage
+      .form-group
+        p  Geben Sie die User daten ein:
+      .form-group
+        label(for='firstName') Vorname
+        input#firstNameRegister.form-control.transparent(type='text', placeholder='Vorname' name='firstNameRegister')
+      .form-group
+        label(for='lastName') Nachname
+        input#lastNameRegister.form-control.transparent(type='text', placeholder='Nachname' name='lastNameRegister')
+      .form-group
+        label(for='email') Email
+        input#emailRegister.form-control.transparent(type='email', placeholder='Email' name='emailRegister')
+      .form-group
+        label(for='password') Passwort
+        input#passwordRegister.form-control.transparent(type='password', placeholder='Passwort' name='passwordRegister')
+      .form-group
+        label(for='employeeStatus') Status:
+        select(name='employeeStatus' id="employeeStatus")
+          option(value="employee") Mitarbeiter
+          option(value="scrummaster") Scrum Master
+          option(value="admin") Administrator
