@@ -9,6 +9,8 @@ html
     script(src='/javascripts/jquery.js')
     script(src='/javascripts/bootstrap.min.js')
     script(src='/javascripts/jquery-ui/jquery-ui.min.js')
+    script(src='/javascripts/cookie.js')
+    script(src='/javascripts/user.js')
 
 
   body
@@ -26,20 +28,31 @@ html
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav
             li
-              a(href='/')
-                | Index
-                span.sr-only (aktuell)
+              a#backlogNav(href='/backlog') Backlog
             li
-              a(href='/backlog') Backlog
+              a#sprintNav(href='/sprint') Sprint
             li
-              a(href='/sprint') Sprint
+              a#userNav(href='/users') User
           ul.nav.navbar-nav.navbar-right
             li
-              a(href='/login') Login
-            li
-              a(href='/users') Abmelden oder sowas
+              button#login.btn.btn-default Login
         // /.navbar-collapse
       // /.container-fluid
+
+    #dialog-form(title="Login")
+      form#newTaskForm(method='post' enctype='application/json')
+        .form-group
+          p  Bitte geben Sie ihre Anmeldedaten ein:
+        .form-group
+          label(for='email') Email
+          input#emailLogin.form-control.transparent(type='email', placeholder='Email' name='email')
+        .form-group
+          label(for='password') Passwort
+          input#passwordLogin.form-control.transparent(type='password', placeholder='Passwort' name='password')
+
+    #dialog-logout-confirm(title="Logout")
+      p  Möchten Sie sich wirklich ausloggen?
+
 
     #container.container
       #row.col-md-12.center
