@@ -56,8 +56,7 @@ $(document).ready(function (event) {
                         "end": endDateChanged
                     }),
                     success: newSprintSuccess()
-                }
-            );
+                });
             dialog.dialog("close");
             formReset();
         }
@@ -89,12 +88,11 @@ $(document).ready(function (event) {
     }
 
     function newSprintSuccess() {
-        $("#newSprintMessage").text("Sprint erfolgreich angelegt").addClass("alert alert-success").fadeIn(200);
-        if ($("#newSprintMessage").length > 0) {
-            $("#newSprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
-            });
-        }
-        setTimeout(createIndex, 200);
+        $("#newSprintMessage").removeClass("alert-success").hide();
+        $("#newSprintMessage").text("Sprint erfolgreich angelegt").addClass("alert alert-success").fadeIn();
+        $("#newSprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
+        });
+        setTimeout(createIndex, 500);
     }
 
     // ____________________________________________________________________________
@@ -131,7 +129,7 @@ $(document).ready(function (event) {
                 }
                 else {
                     endDate.setHours(23);
-                    endDate.setMilliseconds(59);
+                    endDate.setMinutes(59);
                     endDate.setSeconds(59);
                     if (endDate >= today) {
                         $("#sprintTableStarted tr:last").after(text);

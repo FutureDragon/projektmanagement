@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var dialogSprint, form, dialogDescription, dialogDelete, dialogStartDate, dialogEndDate;
+    var dialog, form, dialogDelete, dialogChange;
     var sprintChange = $("#sprintChange");
     var descriptionChange = $("#descriptionChange");
     var startDateChange = $("#startDateChange");
@@ -41,13 +41,13 @@ $(document).ready(function () {
             $("#author").text(data._creator);
             $("#begin").text("Sprint startet: " + startDateDay + "." + startDateMonth + "." + startDate.getFullYear());
             $("#end").text("Sprint endet: " + endDateDay + "." + endDateMonth + "." + endDate.getFullYear());
+            $("#startDateHead").text("Startdatum ändern (aktuell: " + startDateDay + "." + startDateMonth + "." + startDate.getFullYear() + "):");
+            $("#endDateHead").text("Enddatum ändern (aktuell: " + endDateDay + "." + endDateMonth + "." + endDate.getFullYear() + "):");
             sprint = data;
         }).done(function () {
             $("#sprintName").text(sprint.name);
             $("#sprintChange").text(sprint.name);
             $("#descriptionChange").text(sprint.description);
-            $("#startDateChange").text(sprint.start);
-            $("#endDateChange").text(sprint.end);
             getTasksWithoutSprint();
         });
     }
@@ -201,19 +201,40 @@ $(document).ready(function () {
         }
     });
 
-    $("#deleteSprintBtn").button().on("click", function () {
-        dialogDelete.dialog("open");
+    //____________________________________________________________________________
+    // Ändern und Löschen des Sprints
+
+    $("#changeSprintBtn").button().on("click", function () {
+        dialog.dialog("open");
+    });
+
+    dialog = $("#dialog-form-sprint").dialog({
+        autoOpen: false,
+        heigt: 500,
+        width: 450,
+        modal: true,
+        buttons: {
+            "Sprint löschen": function () {
+                dialogDelete.dialog("open");
+            },
+            "Änderungen übernehmen": function () {
+                dialogChange.dialog("open");
+            },
+            "Schließen": function () {
+                dialog.dialog("close");
+            }
+        }
     });
 
     dialogDelete = $("#dialog-form-delete").dialog({
         autoOpen: false,
-        height: 500,
-        width: 450,
+        height: 180,
+        width: 560,
         modal: true,
         buttons: {
             "Sprint MIT Tasks löschen": deleteSprintAndTasks,
             "Sprint OHNE Tasks löschen": deleteSprint,
-            "Schließen": function () {
+            "Abbrechen": function () {
                 dialogDelete.dialog("close");
             }
         }
@@ -245,24 +266,20 @@ $(document).ready(function () {
         window.location = "/sprint";
     }
 
-    //____________________________________________________________________________
-    //Dialoge zum Ändern des Sprintnamens, Beschreibung, Startdatum und Enddatum
-
-    dialogSprint = $("#dialog-form-sprint").dialog({
+    dialogChange = $("#dialog-form-change").dialog({
         autoOpen: false,
-        height: 300,
-        width: 450,
+        height: 180,
+        width: 420,
         modal: true,
         buttons: {
-            "Sprint umbennen": renameSprint,
-            "Schließen": function () {
-                dialogSprint.dialog("close");
-                sprintChange = "";
+            "OK": changeSprint,
+            "Abbrechen": function () {
+                dialogChange.dialog("close");
             }
         }
     });
 
-    function renameSprint() {
+    function changeSprint() {
         if (sprintChange.val != "") {
             $.ajax(
                 {
@@ -276,23 +293,6 @@ $(document).ready(function () {
                 }
             );
         }
-    }
-
-    dialogDescription = $("#dialog-form-description").dialog({
-        autoOpen: false,
-        height: 350,
-        width: 450,
-        modal: true,
-        buttons: {
-            "Beschreibung ändern": changeDescription,
-            "Schließen": function () {
-                dialogDescription.dialog("close");
-                descriptionChange = "";
-            }
-        }
-    });
-
-    function changeDescription() {
         if (descriptionChange.val != "") {
             $.ajax(
                 {
@@ -306,23 +306,6 @@ $(document).ready(function () {
                 }
             );
         }
-    }
-
-    dialogStartDate = $("#dialog-form-startDate").dialog({
-        autoOpen: false,
-        height: 300,
-        width: 450,
-        modal: true,
-        buttons: {
-            "Startdatum ändern": changeStartDate,
-            "Schließen": function () {
-                dialogStartDate.dialog("close");
-                startDateChange = "";
-            }
-        }
-    });
-
-    function changeStartDate() {
         if (startDateChange.val != "") {
             $.ajax(
                 {
@@ -336,23 +319,6 @@ $(document).ready(function () {
                 }
             );
         }
-    }
-
-    dialogEndDate = $("#dialog-form-endDate").dialog({
-        autoOpen: false,
-        height: 300,
-        width: 450,
-        modal: true,
-        buttons: {
-            "Enddatum ändern": changeEndDate,
-            "Schließen": function () {
-                dialogEndDate.dialog("close");
-                endDateChange = "";
-            }
-        }
-    });
-
-    function changeEndDate() {
         if (endDateChange.val != "") {
             $.ajax(
                 {

@@ -4,10 +4,9 @@ block content
     script(src='/javascripts/sprintEdit.js')
     #header
       h1#sprintName
-      button#deleteSprintBtn.btn.btn-default.transparent.col-md-offset-10 Sprint löschen
-    hr
-    p#descriptionHead.row Beschreibung:
-    p#description.col-md-4.col-md-offset-4
+      hr
+      button#changeSprintBtn.btn.btn-default.transparent.col-md-offset-10 Sprint ändern
+    p#description.row
     p#author.row
     p#begin.row
     p#end.row
@@ -21,37 +20,23 @@ block content
     button#save.btn.btn-default.transparent.col-md-12  Speichern
     input#sprintId(type="hidden" value="#{title}")
 
-    #dialog-form-sprint(title="Sprint umbennen")
+    #dialog-form-sprint(title="Sprint ändern")
         form#renameSprintForm(method='post' enctype='application/json')
             .form-group
-                p#messageShowSprint
-            .form-group
-                label(for='sprintChange') Sprint
+                label(for='sprintChange') Sprintnamen ändern:
                 textarea#sprintChange.form-control.transparent(rows = '1', name='Sprint')
-
-    #dialog-form-description(title="Beschreibung ändern")
-        form#renameDescriptionForm(method='post' enctype='application/json')
             .form-group
-                p#messageShowDescription
-            .form-group
-                label(for='descriptionChange') Beschreibung
+                label(for='descriptionChange') Beschreibung ändern:
                 textarea#descriptionChange.form-control.transparent(rows= '7', name='Beschreibung')
-
-    #dialog-form-startDate(title="Startdatum ändern")
-        form#changeStartDateForm(method='post' enctype='application/json')
             .form-group
-                p#messageShowStartDate
+                p#startDateHead
+                input#startDateChange.form-control.transparent(type='text', name='Startdatum')
             .form-group
-                label(for='startDateChange') Startdatum
-                textarea#startDateChange.form-control.transparent(rows= '1', name='Startdatum')
-
-    #dialog-form-endDate(title="Enddatum ändern")
-        form#changeEndDateForm(method='post' enctype='application/json')
-            .form-group
-                p#messageShowEndDate
-            .form-group
-                label(for='endDateChange') Enddatum
-                textarea#endDateChange.form-control.transparent(rows= '1', name='Enddatum')
+                p#endDateHead
+                input#endDateChange.form-control.transparent(type='text', name='Enddatum')
 
     #dialog-form-delete(title="Sprint wirklich löschen?")
         p Soll der Sprint wirklich gelöscht werden?
+
+    #dialog-form-change(title="Änderungen übernehmen?")
+        p Sollen die Änderungen wirklich übernommen werden?
