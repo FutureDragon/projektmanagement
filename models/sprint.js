@@ -46,42 +46,36 @@ function Sprint() {
         db.disconnect();
     };
 
-    // Remove a sprint (with specified ID)
-    this.deleteSprint = function(sprintId, res){
-        db.connect();
-        SprintSchema.remove({_id: sprintId}, function(err){
-            if (err) console.log(err);
-            res.sendStatus(200);
-        });
-        db.disconnect();
-    };
-
     // Remove sprintIds from a task
     this.deleteSprintFromTasks = function(sprintId, res){
         db.connect();
-        TaskSchema.update({_sprint: sprintId}, {$unset: {_sprint: 1}}, function (err, tasks) {
-            if(err){
-                console.log(err);
+        TaskSchema.find({_sprint: sprintId}).update({}, {$unset: {_sprint: 1}}, {multi: true}).exec(function(err){
+            if (err) throw err;
+            else{
+                SprintSchema.remove({_id: sprintId}, function (err) {
+                    if (err) throw err;
+                    console.log("Löschvorgang erfolgreich");
+                });
             }
-            console.log(tasks);
-            // else{
-            //     deleteSprint(sprintId, res)
-            // }
-
         });
+        res.sendStatus(200);
         db.disconnect();
     };
 
-    //Remove all tasks within a specified sprint
+    //Remove all tasks within a specified sprint and the sprint itself
     this.deleteTasksWithSprintId = function (sprintId, res) {
         db.connect();
-        TaskSchema.find({_sprint: sprintId}, function (err, tasks) {
-            each(tasks, function (task, callback) {
-                task.remove(function (err, result) {
-                    ActionCtrl.saveRemove(result, callback)
+        console.log("Übergeben Sprint ID : " + sprintId);
+        TaskSchema.find({_sprint: sprintId}).remove({}).exec(function(err){
+            if(err){
+                throw err;
+            }
+            else{
+                SprintSchema.remove({_id: sprintId}, function (err) {
+                    if (err) throw err;
                 })
-            })
-        });
+            }
+        })
         res.sendStatus(200);
         db.disconnect();
     };
