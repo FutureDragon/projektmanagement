@@ -29,14 +29,20 @@ function User() {
         db.disconnect();
     };
 
-    this.get = function (name ,res) {
+    this.getById = function (id, res) {
         db.connect();
-        UserSchema.find({ username: name }, function(err, user) {
+        UserSchema.find({_id: id}, function(err, user) {
             if (err){
                 throw err;
             }
             else{
-                res.send(user);
+                if(user.length == 0) {
+                    res.sendStatus(901)
+                }
+                else{
+                    res.send(user);
+                }
+
             }
         });
         db.disconnect();
@@ -59,6 +65,16 @@ function User() {
                 }
 
             }
+        });
+        db.disconnect();
+    };
+
+    // Remove a task (with specified ID)
+    this.delete = function(id, res){
+        db.connect();
+        UserSchema.remove({_id: id}, function(err){
+            if (err) console.log(err);
+            res.sendStatus(200);
         });
         db.disconnect();
     };

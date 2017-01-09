@@ -1,10 +1,11 @@
 $(document).ready(function (event) {
-    var dialogRegister, form ,logoutConfirm;
+    var dialogRegister, form, dialogRegisterShow, formShow;
     var firstName ;
     var lastName;
     var email ;
     var password;
     var employeeStatus;
+    var openUserId;
     getUsers();
 
     dialogRegister = $( "#dialog-newUser-form" ).dialog({
@@ -24,6 +25,29 @@ $(document).ready(function (event) {
             $("#registerUserMessage").text("").removeClass("alert-danger alert-success");
             registerReset();
             location.reload();
+        }
+    });
+
+    dialogRegisterShow = $( "#dialog-showUser-form" ).dialog({
+        autoOpen: false,
+        height: "auto",
+        width: 450,
+        modal: true,
+        buttons: {
+            "Löschen": function () {
+                validateNewUser();
+            },
+            "Bearbeiten":{
+                id : "changeUser",
+                text : "Bearbeiten",
+                click: function () {
+                }
+            },
+            "Abbrechen": function () {
+                dialogRegisterShow.dialog("close");
+            }
+        },
+        close: function () {
         }
     });
 
@@ -58,9 +82,27 @@ $(document).ready(function (event) {
         }
     }
 
+    $('body').on('click', '#changeUser', function () {
+        if($(this).text() == "Bearbeiten") {
+            $(this).text("Speichern");
+            setFormInEditMode();
+        }
+        else {
+            $(this).text("Bearbeiten");
+        }
+
+    });
+
+    function setFormInEditMode() {
+        $("#firstNameShow").prop("disabled", false);
+        $("#lastNameShow").prop("disabled", false);
+        $("#emailShow").prop("disabled", false);
+        $("#passwordShow").prop("disabled", false);
+        $("#employeeStatusShow").prop("disabled", false);
+    }
+
 
     function existUser() {
-
         $.ajax(
             {
                 type: "POST",
@@ -125,7 +167,7 @@ $(document).ready(function (event) {
         $("#userTable").hide();
         $.getJSON( "/users/rest", function( data ) {
             $.each(data, function (key ,val) {
-                var text = '<tr>' +
+                var text = '<tr class="click" id="'+ val._id +'">' +
                     '<td>'+ val.firstname + '</td>' +
                     '<td>'+ val.lastname + '</td>' +
                     '<td>'+ val.email + '</td>' +
@@ -141,5 +183,23 @@ $(document).ready(function (event) {
             $("#userTable").fadeIn(500);
         });
     }
+
+    function getUser() {
+        $.getJSON( "/users/rest/" + openUserId, function( data ) {
+            $("#firstNameShow").val(data[0].firstname);
+            $("#lastNameShow").val(data[0].lastname);
+            $("#emailShow").val(data[0].email);
+            $("#passwordShow").val(data[0].password);
+            
+        }).done(function () {
+            dialogRegisterShow.dialog("open");
+        });
+    }
+
+
+    $('body').on('click', 'table > tbody > tr.click', function () {
+        openUserId = $(this).attr("id");
+        getUser();
+    });
 
 });

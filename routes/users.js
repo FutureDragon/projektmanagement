@@ -11,8 +11,17 @@ router.get('/rest', function (req, res, next) {
     user.getAllUsers(res);
 });
 
+router.get('/rest/:id', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    user.getById(req.params.id, res);
+});
+
 router.post('/rest/existUser', function (req, res, next) {
     user.getByMail(req.body.email, res);
+});
+
+router.post('/rest/delete', function (req, res, next) {
+    user.delete(req.body.id, res);
 });
 
 router.post('/rest', function (req, res, next) {
