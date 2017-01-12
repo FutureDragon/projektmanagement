@@ -10,6 +10,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var backlog = require('./routes/backlog');
 var sprint = require('./routes/sprint');
+var planningPoker = require('./routes/planningpoker');
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/backlog', backlog);
 app.use('/sprint', sprint);
+app.use('/planningPoker', planningPoker);
 
 
 app.use(session({
