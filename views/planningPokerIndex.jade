@@ -1,9 +1,24 @@
 extends layout
 
 block content
-  script(src='/javascripts/userIndex.js')
+  script(src='/javascripts/planningPokerIndex.js')
   #header
   h1= title
   table#pokerTable.table.table-hover
     tr
       th.center  Offene Tasks
+
+
+  #dialog-form-task(title="Task")
+    form#showTaskForm(method='post' enctype='application/json')
+      .form-group
+        p#messageShow
+      .form-group
+        label(for='task') Task
+        input#taskShow.form-control.transparent(type='text', name='task' disabled=true)
+      .form-group
+        label(for='description') Beschreibung
+        textarea#descriptionShow.form-control.transparent(rows='7' name='description' disabled=true)
+      .form-group
+        label(for='storypoints') Story Points
+        input#storyPoints.form-control.transparent(type='number', placeholder='Story Points' name='storypoints')
