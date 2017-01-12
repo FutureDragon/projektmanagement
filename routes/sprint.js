@@ -20,6 +20,16 @@ router.get('/new', function (req, res, next) {
     res.render('sprintNewSprint', {title: 'Sprint anlegen', action: 'none'});
 });
 
+router.post('/rest/update', function (req, res, next) {
+    console.log("Update von: " + req.body.id);
+    sprint.updateSprint(req.body.id, req.body.name, req.body.description,
+        req.body.start, req.body.end, res);
+    console.log("Sprint: " + req.body.name);
+    console.log("Description: " + req.body.description);
+    console.log("Start date: " + req.body.start);
+    console.log("End date: " + req.body.end);
+})
+
 router.get('/rest', function (req, res, next) {
     sprint.getAll(res);
 });
@@ -48,11 +58,11 @@ router.post('/rest/deleteWithTask', function (req, res, next) {
 
 router.get('/:name', function (req, res, next) {
     var name = req.params.name;
-    res.render('sprintShow',{title: name});
+    res.render('sprintShow', {title: name});
 });
 router.get('/:name/edit', function (req, res, next) {
     var name = req.params.name;
-    res.render('sprintEdit',{title: name});
+    res.render('sprintEdit', {title: name});
 });
 
 

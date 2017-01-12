@@ -4,6 +4,7 @@ block content
     script(src='/javascripts/sprintEdit.js')
     #header
       h1#sprintName
+      #sprintMessage.fadeIn
       hr
       button#changeSprintBtn.btn.btn-default.transparent.col-md-offset-10 Sprint ändern
     p#description.row
@@ -29,10 +30,10 @@ block content
                 label(for='descriptionChange') Beschreibung ändern:
                 textarea#descriptionChange.form-control.transparent(rows= '7', name='Beschreibung')
             .form-group
-                p#startDateHead
+                label(for='startDateChange') Startdatum ändern:
                 input#startDateChange.form-control.transparent(type='text', name='Startdatum')
             .form-group
-                p#endDateHead
+                label(for='endDateChange') Enddatum ändern:
                 input#endDateChange.form-control.transparent(type='text', name='Enddatum')
 
     #dialog-form-delete(title="Sprint wirklich löschen?")

@@ -92,7 +92,7 @@ $(document).ready(function (event) {
         $("#newSprintMessage").text("Sprint erfolgreich angelegt").addClass("alert alert-success").fadeIn();
         $("#newSprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
         });
-        setTimeout(createIndex, 500);
+        setTimeout(function(){createIndex();}, 300);
     }
 
     // ____________________________________________________________________________

@@ -10,10 +10,8 @@ $(document).ready(function () {
     var counter = 0;
     var counter2 = 0;
 
-    $("#startDateChange").datepicker().val();
-    $("#endDateChange").datepicker().val();
-    //$("#startDateChange").datepicker({dateFormat: 'dd.mm.yy'}).val();
-    //$("#endDateChange").datepicker({dateFormat: 'dd.mm.yy'}).val();
+    $("#startDateChange").datepicker({dateFormat: 'dd.mm.yy'}).val();
+    $("#endDateChange").datepicker({dateFormat: 'dd.mm.yy'}).val();
 
     getSprint($("#sprintId").val());
 
@@ -37,17 +35,21 @@ $(document).ready(function () {
             if (endDateDay.toString().length < 2) {
                 endDateDay = "0" + endDateDay;
             }
+            var startDateString ="";
+            startDateString = startDateDay + "." + startDateMonth + "." + startDate.getFullYear();
+            var endDateString = "";
+            endDateString = endDateDay + "." + endDateMonth + "." + endDate.getFullYear();
             $("#description").text(data.description);
             $("#author").text(data._creator);
-            $("#begin").text("Sprint startet: " + startDateDay + "." + startDateMonth + "." + startDate.getFullYear());
-            $("#end").text("Sprint endet: " + endDateDay + "." + endDateMonth + "." + endDate.getFullYear());
-            $("#startDateHead").text("Startdatum ändern (aktuell: " + startDateDay + "." + startDateMonth + "." + startDate.getFullYear() + "):");
-            $("#endDateHead").text("Enddatum ändern (aktuell: " + endDateDay + "." + endDateMonth + "." + endDate.getFullYear() + "):");
+            $("#begin").text("Sprint startet: " + startDateString);
+            $("#end").text("Sprint endet: " + endDateString);
+            $("#sprintChange").text(data.name);
+            $("#descriptionChange").text(data.description);
+            $("#startDateChange").val(startDateString);
+            $("#endDateChange").val(endDateString);
             sprint = data;
         }).done(function () {
             $("#sprintName").text(sprint.name);
-            $("#sprintChange").text(sprint.name);
-            $("#descriptionChange").text(sprint.description);
             getTasksWithoutSprint();
         });
     }
@@ -250,7 +252,7 @@ $(document).ready(function () {
                 data: JSON.stringify({"id": $("#sprintId").val()})
             }
         );
-        window.location = "/sprint";
+        setTimeout(function(){window.location = "/sprint";}, 300);
     }
 
     function deleteSprint() {
@@ -263,7 +265,7 @@ $(document).ready(function () {
                 data: JSON.stringify({"id": $("#sprintId").val()})
             }
         );
-        window.location = "/sprint";
+        setTimeout(function(){window.location = "/sprint";}, 300);
     }
 
     dialogChange = $("#dialog-form-change").dialog({
@@ -280,58 +282,41 @@ $(document).ready(function () {
     });
 
     function changeSprint() {
-        if (sprintChange.val != "") {
+        if (sprintChange.val != "" && startDateChange.val() != "" && endDateChange.val() != "") {
+            var startDateFormat = startDateChange.val();
+            var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
+                + "/" + startDateFormat.substring(6, 10);
+            var endDateFormat = endDateChange.val();
+            var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
+                + "/" + endDateFormat.substring(6, 10);
             $.ajax(
                 {
                     type: "POST",
-                    url: "sprint/rest",
+                    url: "/sprint/rest/update",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
                     data: JSON.stringify({
-                        "name": sprintChange.val()
-                    })
+                        "id": $("#sprintId").val(),
+                        "name": sprintChange.val(),
+                        "description": descriptionChange.val(),
+                        "start": startDateChanged,
+                        "end": endDateChanged
+                    }),
+                    success: changeSprintSuccess()
                 }
             );
-        }
-        if (descriptionChange.val != "") {
-            $.ajax(
-                {
-                    type: "POST",
-                    url: "sprint/rest",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    data: JSON.stringify({
-                        "description": descriptionChange.val()
-                    })
-                }
-            );
-        }
-        if (startDateChange.val != "") {
-            $.ajax(
-                {
-                    type: "POST",
-                    url: "sprint/rest",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    data: JSON.stringify({
-                        "start": startDateChange.val()
-                    })
-                }
-            );
-        }
-        if (endDateChange.val != "") {
-            $.ajax(
-                {
-                    type: "POST",
-                    url: "sprint/rest",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    data: JSON.stringify({
-                        "end": endDateChange.val()
-                    })
-                }
-            );
+            dialog.dialog("close");
+            dialogChange.dialog("close");
         }
     }
+
+    function changeSprintSuccess() {
+        $("#sprintMessage").removeClass("alert-success").hide();
+        $("#sprintMessage").text("Sprint erfolgreich geändert").addClass("alert alert-success").fadeIn();
+        $("#sprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
+        });
+        setTimeout(function(){window.location = "/sprint/" + $("#sprintId").val() + "/edit";}, 300);
+    }
+
 
 });

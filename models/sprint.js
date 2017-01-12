@@ -6,7 +6,7 @@ function Sprint() {
 
     this.new = function (name, description, start, end) {
         db.connect();
-        var sprintModel = SprintSchema({ name: name, description: description, start: start, end: end });
+        var sprintModel = SprintSchema({name: name, description: description, start: start, end: end});
         sprintModel.save(function (err) {
             if (err) {
                 console.log(err);
@@ -19,7 +19,7 @@ function Sprint() {
 
     this.getAll = function (res) {
         db.connect();
-        SprintSchema.find({}, function(err, sprints) {
+        SprintSchema.find({}, function (err, sprints) {
             if (err) throw err;
             res.send(sprints);
             return sprints;
@@ -28,30 +28,30 @@ function Sprint() {
     };
 
 
-    this.get = function (id ,res) {
+    this.get = function (id, res) {
         db.connect();
-        SprintSchema.findById(id, function(err, sprints) {
+        SprintSchema.findById(id, function (err, sprints) {
             if (err)throw err;
             res.send(sprints);
         });
         db.disconnect();
     };
 
-    this.getSprintToTaskId = function(taskId, res){
+    this.getSprintToTaskId = function (taskId, res) {
         db.connect();
         SprintSchema.find({tasks: {"$in": [taskId]}}, function (err, sprint) {
-            if(err) console.log(err);
+            if (err) console.log(err);
             res.send(sprint);
         });
         db.disconnect();
     };
 
     // Remove sprintIds from a task
-    this.deleteSprintFromTasks = function(sprintId, res){
+    this.deleteSprintFromTasks = function (sprintId, res) {
         db.connect();
-        TaskSchema.find({_sprint: sprintId}).update({}, {$unset: {_sprint: 1}}, {multi: true}).exec(function(err){
+        TaskSchema.find({_sprint: sprintId}).update({}, {$unset: {_sprint: 1}}, {multi: true}).exec(function (err) {
             if (err) throw err;
-            else{
+            else {
                 SprintSchema.remove({_id: sprintId}, function (err) {
                     if (err) throw err;
                     console.log("Löschvorgang erfolgreich");
@@ -66,19 +66,33 @@ function Sprint() {
     this.deleteTasksWithSprintId = function (sprintId, res) {
         db.connect();
         console.log("Übergeben Sprint ID : " + sprintId);
-        TaskSchema.find({_sprint: sprintId}).remove({}).exec(function(err){
-            if(err){
+        TaskSchema.find({_sprint: sprintId}).remove({}).exec(function (err) {
+            if (err) {
                 throw err;
             }
-            else{
+            else {
                 SprintSchema.remove({_id: sprintId}, function (err) {
                     if (err) throw err;
                 })
             }
-        })
+        });
         res.sendStatus(200);
         db.disconnect();
     };
 
+    // Update all ellements of sprint
+    this.updateSprint = function (id, name, description, start, end, res) {
+        db.connect();
+        SprintSchema.findOneAndUpdate({_id: id}, {
+            name: name, description: description,
+            start: start, end: end
+        }, function (err) {
+            if (err) throw err;
+            else {
+                res.sendStatus(200);
+            }
+        });
+        db.disconnect();
+    }
 }
 module.exports = new Sprint();
