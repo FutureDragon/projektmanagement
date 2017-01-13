@@ -12,6 +12,7 @@ $(document).ready(function (event) {
             $("#noLogin").hide();
             $("#backlogNav").show();
             $("#sprintNav").show();
+            $("#planningPokerNav").show();
             if(Cookies.get("Role") == "admin") {
                 $("#userNav").show();
             }
@@ -25,6 +26,7 @@ $(document).ready(function (event) {
             $("#userNav").hide();
             $("#backlogNav").hide();
             $("#sprintNav").hide();
+            $("#planningPokerNav").hide();
         }
     }
 
