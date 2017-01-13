@@ -190,7 +190,7 @@ $(document).ready(function (event) {
             $("#lastNameShow").val(data[0].lastname);
             $("#emailShow").val(data[0].email);
             $("#passwordShow").val(data[0].password);
-            
+
         }).done(function () {
             dialogRegisterShow.dialog("open");
         });

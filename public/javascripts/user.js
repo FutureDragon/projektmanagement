@@ -90,19 +90,10 @@ $(document).ready(function (event) {
                 statusCode: {
                     900: function (response) {
                         loginfailed();
-                    },
-                    910: function (response) {
-                        loginsuccess("employee");
-                    },
-                    920: function (response) {
-                        loginsuccess("scrum");
-                    },
-                    930: function (response) {
-                        loginsuccess("admin");
                     }
                 },
-                success: function (data) {
-                    alert(data.getResponseHeader());
+                success: function (response) {
+                    loginsuccess(response);
                 }
             }
         );
@@ -110,10 +101,12 @@ $(document).ready(function (event) {
 
 
 
-    function loginsuccess(role) {
+    function loginsuccess(user) {
         $("#login").text("Logout");
         Cookies.set('Login', 'true');
-        Cookies.set('Role', role);
+        Cookies.set('Role', user.role);
+        Cookies.set('Email', user.email);
+        Cookies.set('Id', user._id);
         dialogLogin.dialog("close");
         checkCookie();
     }
@@ -125,6 +118,8 @@ $(document).ready(function (event) {
         $("#login").text("Login");
         Cookies.remove('Login');
         Cookies.remove('Role');
+        Cookies.remove('Email');
+        Cookies.remove('Id');
         logoutConfirm.dialog("close");
         checkCookie()
     }

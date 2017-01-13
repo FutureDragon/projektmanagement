@@ -94,15 +94,7 @@ function User() {
                 else{
                     console.log(user);
                     console.log("User eingeloggt");
-                    if(user[0].role == "employee") {
-                        res.sendStatus(910);
-                    }
-                    if(user[0].role == "scrummaster") {
-                        res.sendStatus(920);
-                    }
-                    if(user[0].role== "admin") {
-                        res.sendStatus(930);
-                    }
+                    res.status(200).send(user[0]);
                 }
 
             }
