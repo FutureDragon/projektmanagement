@@ -12,4 +12,14 @@ router.get('/rest', function(req, res, next) {
   task.getAll(res);
 });
 
+router.post('/rest/update', function(req, res, next) {
+  var userId      = req.body.userId;
+  var taskId      = req.body.taskId;
+  var storyPoints = req.body.storyPoints;
+  console.log(userId);
+  console.log(taskId);
+  console.log(storyPoints);
+  res.status(200).send("asd");
+});
+
 module.exports = router;
