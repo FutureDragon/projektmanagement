@@ -11,6 +11,13 @@ router.get('/rest', function (req, res, next) {
     user.getAllUsers(res);
 });
 
+
+router.get('/rest/getEmployees', function (req, res, next) {
+    console.log("asd");
+    //res.setHeader('Content-Type', 'application/json');
+    user.getAllEmployees(res);
+});
+
 router.get('/rest/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     user.getById(req.params.id, res);
@@ -35,6 +42,7 @@ router.post('/rest/login', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     user.login(email,password,res);
 });
+
 
 
 module.exports = router;

@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    script(src='/javascripts/backlogAddUserToTask.js')
+
+    #header
+      h1#taskName
+    #message
+    #taskDescription
+    p  User dem Task zuweisen:
+    #userContainer
+
+    button#save.btn.btn-default.transparent.col-md-12  Speichern
+    input#taskId(type="hidden" value="#{title}")

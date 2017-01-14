@@ -62,6 +62,26 @@ router.get('/rest/sprintToTask/:id', function(req, res, next) {
     task.getSprintToTaskId(id, res);
 });
 
+router.get('/:id/edit', function(req, res, next) {
+    var id = req.params.id;
+    res.render('backlogAddUserToTask', { title: id});
+});
 
+router.post('/rest/addUserToTask', function(req, res, next) {
+    var userId      = req.body.userId;
+    var taskId      = req.body.taskId;
+    console.log(userId);
+    console.log(taskId);
+    task.addUserToTask(taskId,userId, res);
+});
+
+
+router.post('/rest/addUsersToTask', function(req, res, next) {
+    var usersId     = req.body.userId;
+    var taskId      = req.body.taskId;
+    console.log(usersId);
+    console.log(taskId);
+    //task.addUserToTask(taskId,userId, res);
+});
 
 module.exports = router;

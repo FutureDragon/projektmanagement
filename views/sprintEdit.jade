@@ -24,6 +24,8 @@ block content
     #dialog-form-sprint(title="Sprint ändern")
         form#renameSprintForm(method='post' enctype='application/json')
             .form-group
+                p#messageShow
+            .form-group
                 label(for='sprintChange') Sprintnamen ändern:
                 textarea#sprintChange.form-control.transparent(rows = '1', name='Sprint')
             .form-group
