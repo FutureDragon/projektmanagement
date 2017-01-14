@@ -68,7 +68,7 @@ $(document).ready(function (event) {
         });
     }
 
-    $(".table").on("click", "tr", function() {
+    $(".table").on("click", "tr.click", function() {
         dialogShow.dialog( "open" );
         loadDataInForm($( this ).attr("id"));
     });
