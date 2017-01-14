@@ -41,7 +41,7 @@ html
             li
               a#faq(href='/faq') Faq
             li
-              button#login.btn.btn-default Login
+              button#login.btn.btn-default.navbar-btn Login
         // /.navbar-collapse
       // /.container-fluid
 
@@ -59,7 +59,9 @@ html
     #dialog-logout-confirm(title="Logout")
       p  Möchten Sie sich wirklich ausloggen?
 
-
+    #nav.navbar.navbar-default.navbar-fixed-bottom.transparent
+      #footer.container
+        p#userInformation.center
     #container.container
       #row.col-md-12.center
         block content

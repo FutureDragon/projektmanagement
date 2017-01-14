@@ -19,6 +19,19 @@ $(document).ready(function (event) {
             else {
                 $("#userNav").hide();
             }
+            var userRole;
+            if(Cookies.get("Role") == "admin") {
+                userRole = "Administrator";
+            }
+            else if(Cookies.get("Role") == "scrummaster") {
+                userRole = "Scrum Master";
+            }
+            else{
+                userRole = "Mitarbeiter";
+            }
+
+
+            $("#userInformation").text("Eingeloggt als: " + Cookies.get("Email") + " in der Rolle: " + userRole);
         }
         else{
             $("#container").after("<div id='noLogin' class='noLogin center'>" + loginText + "</div>");
