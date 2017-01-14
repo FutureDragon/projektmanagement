@@ -62,7 +62,7 @@ $(document).ready(function (event) {
 
     function getNotRatedTasks() {
         $("#pokerTable").hide().find("tr:gt(1)").remove();
-        $.getJSON( "/planningPoker/rest", function( data ) {
+        $.getJSON( "/planningPoker/rest/" + Cookies.get("Id"), function( data ) {
             $.each(data, function (key ,val) {
                 tasks[val._id] = data;
                 var text = '<tr class="click" id="'+ val._id +'">' +

@@ -7,8 +7,10 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.get('/rest', function(req, res, next) {
+router.get('/rest/:id', function(req, res, next) {
   res.setHeader('Content-Type', 'application/json');
+  var userId = req.params.id;
+  console.log(userId);
   task.getAll(res);
 });
 
