@@ -20,6 +20,7 @@ $(document).ready(function (event) {
             $("#storyPoints").val("")
             $("#taskShow").val("");
             $("#descriptionShow").val("");
+            $("#pokermessage").text("").removeClass("alert alert-danger");
         }
     });
 
@@ -27,34 +28,40 @@ $(document).ready(function (event) {
     function updateTaskStoryPoints() {
         var storyPoints = $("#storyPoints").val();
         var userId = Cookies.get("Id");
-        $.ajax(
-            {
-                type: "POST",
-                url: "/planningPoker/rest/update",
-                contentType: "application/json; charset=utf-8",
-                dataType : 'json',
-                data: JSON.stringify(
-                    {
-                        "userId" : userId,
-                        "taskId" : openTaskId,
-                        "storyPoints" : storyPoints
-                    }),
-                statusCode: {
-                    900: function (response) {
-                        alert("asdasd");
+        if ($.isNumeric(storyPoints)) {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/planningPoker/rest/update",
+                    contentType: "application/json; charset=utf-8",
+                    dataType : 'json',
+                    data: JSON.stringify(
+                        {
+                            "userId" : userId,
+                            "taskId" : openTaskId,
+                            "storyPoints" : storyPoints
+                        }),
+                    statusCode: {
+                        900: function (response) {
+                            alert("asdasd");
+                        },
+                        200: function (response) {
+
+                        }
                     },
-                    200: function (response) {
-
+                    success: function () {
+                        getNotRatedTasks()
                     }
-                },
-                success: function (response) {
-
                 }
-            }
-        );
+            );
+        }
+        else {
+            $("#pokermessage").text("Bitte story points eingeben").addClass("alert alert-danger");
+        }
     }
 
     function getNotRatedTasks() {
+        $("#pokerTable").hide().find("tr:gt(1)").remove();
         $.getJSON( "/planningPoker/rest", function( data ) {
             $.each(data, function (key ,val) {
                 tasks[val._id] = data;
@@ -66,6 +73,7 @@ $(document).ready(function (event) {
             if(data.length == 0) {
             }
         });
+        $("#pokerTable").fadeIn(500);
     }
 
     $(".table").on("click", "tr.click", function() {
