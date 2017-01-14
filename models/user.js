@@ -114,6 +114,18 @@ function User() {
             }
         });
         db.disconnect();
+    };
+
+    this.update = function (id, first,last,mail,passwd,status,res) {
+        db.connect();
+        UserSchema.findOneAndUpdate({_id: id}, {firstname: first, lastname: last, email: mail,password: passwd, role: status}, function (err, employees) {
+            if (!err) {
+                res.sendStatus(200);
+            } else {
+                throw err;
+            }
+        });
+        db.disconnect();
     }
 }
 module.exports = new User();
