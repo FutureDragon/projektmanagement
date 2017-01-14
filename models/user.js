@@ -104,6 +104,7 @@ function User() {
         // Get all employees
 
     };
+
     this.getAllEmployees = function (res) {
         db.connect();
         UserSchema.find({role: 'employee'}, function (err, employees) {
@@ -116,5 +117,6 @@ function User() {
         db.disconnect();
     }
 }
+
 module.exports = new User();
 

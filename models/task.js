@@ -166,6 +166,7 @@ function Task() {
         db.disconnect();
     }
 
+    // @created: January 14th
     // Get all tasks they belong to a user and are not rated anymore
     this.getAllNotRatedTasksForUser = function (id, res) {
         db.connect();
@@ -188,6 +189,7 @@ function Task() {
         db.disconnect();
     }
 
+    // @created: January 14th
     // Add a user to a task
     this.addUserToTask = function (taskID, userID, res) {
         db.connect();

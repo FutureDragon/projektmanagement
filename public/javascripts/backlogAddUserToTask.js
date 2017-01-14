@@ -57,7 +57,7 @@ $(document).ready(function (event) {
             $("#message").text("Kein User ausgewählt!").addClass("alert alert-danger");
         }
         else {
-            addUsersToTask();
+            addUserToTask();
         }
     });
 
