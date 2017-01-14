@@ -76,4 +76,12 @@ router.post('/rest/addUserToTask', function(req, res, next) {
 });
 
 
+router.post('/rest/addUsersToTask', function(req, res, next) {
+    var usersId     = req.body.userId;
+    var taskId      = req.body.taskId;
+    console.log(usersId);
+    console.log(taskId);
+    //task.addUserToTask(taskId,userId, res);
+});
+
 module.exports = router;

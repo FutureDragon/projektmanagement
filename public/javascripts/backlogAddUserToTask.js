@@ -57,7 +57,7 @@ $(document).ready(function (event) {
             $("#message").text("Kein User ausgewählt!").addClass("alert alert-danger");
         }
         else {
-            addUserToTask();
+            addUsersToTask();
         }
     });
 
@@ -81,6 +81,31 @@ $(document).ready(function (event) {
         else {
 
         }
+    }
+
+    function addUsersToTask() {
+        if (users.length != 0) {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/backlog/rest/addUsersToTask",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    data: JSON.stringify(
+                        {
+                            "userId": users,
+                            "taskId": taskId
+                        }),
+                    success: function () {
+
+                    }
+                }
+            );
+        }
+        else {
+
+        }
+        users.splice(0, users.length);
     }
 
     function addUserToTaskSuccess() {
