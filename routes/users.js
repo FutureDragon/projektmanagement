@@ -43,6 +43,10 @@ router.post('/rest/login', function (req, res, next) {
     user.login(email,password,res);
 });
 
+router.post('/rest/update', function (req, res, next) {
+    user.update(req.body.id,req.body.firstName, req.body.lastName, req.body.password, req.body.email, req.body.role, res);
+});
+
 
 
 module.exports = router;

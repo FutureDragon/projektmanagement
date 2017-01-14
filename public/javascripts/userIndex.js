@@ -88,10 +88,51 @@ $(document).ready(function (event) {
             setFormInEditMode();
         }
         else {
+            // Save Button was clicked
             $(this).text("Bearbeiten");
+            var first   = $("#firstNameShow").val();
+            var last    = $("#lastNameShow").val();
+            var mail    = $("#emailShow").val();
+            var passwd  = $("#passwordShow").val();
+            var status  = $("#employeeStatusShow").val();
+            updateUser(first,last,mail,passwd,status);
         }
-
     });
+
+
+    function updateUser(first,last,mail,passwd,status) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/users/rest/update",
+                contentType: "application/json; charset=utf-8",
+                dataType : 'json',
+                data: JSON.stringify(
+                    {
+                        "id" : openUserId,
+                        "firstName" : first,
+                        "lastName" : last,
+                        "email" : mail,
+                        "password" : passwd,
+                        "role" : status
+                    }),
+                statusCode: {
+                    200: function (response) {
+                        $("#firstNameShow").prop("disabled", true);
+                        $("#lastNameShow").prop("disabled", true);
+                        $("#emailShow").prop("disabled", true);
+                        $("#passwordShow").prop("disabled", true);
+                        $("#employeeStatusShow").prop("disabled", true);
+                        dialogRegisterShow.dialog("close");
+                        setTimeout(getUsers,200);
+                    }
+                },
+                success: function (data) {
+
+                }
+            }
+        );
+    }
 
     function setFormInEditMode() {
         $("#firstNameShow").prop("disabled", false);
@@ -164,7 +205,7 @@ $(document).ready(function (event) {
     }
 
     function getUsers() {
-        $("#userTable").hide();
+        $("#userTable").hide().find("tr:gt(1)").remove();
         $.getJSON( "/users/rest", function( data ) {
             $.each(data, function (key ,val) {
                 var text = '<tr class="click" id="'+ val._id +'">' +
