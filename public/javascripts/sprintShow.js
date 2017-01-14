@@ -25,7 +25,7 @@ $(document).ready(function () {
                 endDateDay = "0" + endDateDay;
             }
             $("#description").text(data.description);
-            $("#author").text(data._creator);
+            $("#author").text("Erstellt von: " + data._creator);
             $("#begin").text("Sprint startet: " + startDateDay + "." + startDateMonth + "." + startDate.getFullYear());
             $("#end").text("Sprint endet: " + endDateDay + "." + endDateMonth + "." + endDate.getFullYear());
             $("#edit").attr("href", $("#sprintId").val() + "/edit");

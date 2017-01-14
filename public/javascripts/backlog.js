@@ -32,6 +32,7 @@ $(document).ready(function (event) {
         if(task.val() != "" && $("#storyPoints").val() != "") {
             var priority = $( "#priority option:selected" ).text();
             var storyPoint = $( "#storyPoints" ).val();
+            var user = Cookies.get("Email");
             $.ajax(
                 {
                     type: "POST",
@@ -43,7 +44,8 @@ $(document).ready(function (event) {
                             "task" : task.val(),
                             "description" : description.val(),
                             "priority" : priority,
-                            "story_points" : storyPoint
+                            "story_points" : storyPoint,
+                            "_creator" : user
                         }),
                     success: newTasksuccess()
                 }
@@ -181,7 +183,7 @@ $(document).ready(function (event) {
             $("#taskShow").val(data.task);
             $("#descriptionShow").val(data.description);
             $("#statusShow").text(data.status);
-            $("#createdShow").text("Von: " + data.author + " am " +data.created);
+            $("#createdShow").text("Von: " + data._creator + " am " +data.created);
             $("#priorityShow").text(data.priority);
             $("#storyPointsShow").text(data.story_points);
             task = data;
