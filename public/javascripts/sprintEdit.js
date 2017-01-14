@@ -207,6 +207,7 @@ $(document).ready(function () {
     // Ändern und Löschen des Sprints
 
     $("#changeSprintBtn").button().on("click", function () {
+        $("#messageShow").text("").removeClass("alert alert-danger fadeIn");
         dialog.dialog("open");
     });
 
@@ -220,7 +221,28 @@ $(document).ready(function () {
                 dialogDelete.dialog("open");
             },
             "Änderungen übernehmen": function () {
-                dialogChange.dialog("open");
+                if (sprintChange.val() != "" && startDateChange.val() != "" && endDateChange.val() != ""
+                    && startDateChange.val() <= endDateChange.val()) {
+                    dialogChange.dialog("open");
+                }
+                else {
+                    if (sprintChange.val() == "") {
+                        $("#messageShow").text("Bitte Sprintnamen eingeben!").addClass("alert alert-danger fadeIn");
+                    }
+                    else {
+                        if (startDateChange.val() == "") {
+                            $("#messageShow").text("Bitte Startdatum eingeben!").addClass("alert alert-danger fadeIn");
+                        }
+                        else {
+                            if (endDateChange.val() == "") {
+                                $("#messageShow").text("Bitte Enddatum eingeben!").addClass("alert alert-danger fadeIn");
+                            }
+                            else {
+                                $("#messageShow").text("Enddatum kann nicht vor dem Startdatum liegen!").addClass("alert alert-danger fadeIn");
+                            }
+                        }
+                    }
+                }
             },
             "Schließen": function () {
                 dialog.dialog("close");
@@ -252,7 +274,7 @@ $(document).ready(function () {
                 data: JSON.stringify({"id": $("#sprintId").val()})
             }
         );
-        setTimeout(function(){window.location = "/sprint";}, 600);
+        setTimeout(function(){window.location = "/sprint";}, 500);
     }
 
     function deleteSprint() {
@@ -265,7 +287,7 @@ $(document).ready(function () {
                 data: JSON.stringify({"id": $("#sprintId").val()})
             }
         );
-        setTimeout(function(){window.location = "/sprint";}, 600);
+        setTimeout(function(){window.location = "/sprint";}, 500);
     }
 
     dialogChange = $("#dialog-form-change").dialog({
@@ -282,7 +304,8 @@ $(document).ready(function () {
     });
 
     function changeSprint() {
-        if (sprintChange.val != "" && startDateChange.val() != "" && endDateChange.val() != "") {
+        if (sprintChange.val() != "" && startDateChange.val() != "" && endDateChange.val() != ""
+            && startDateChange.val() <= endDateChange.val()) {
             var startDateFormat = startDateChange.val();
             var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
                 + "/" + startDateFormat.substring(6, 10);
@@ -312,10 +335,10 @@ $(document).ready(function () {
 
     function changeSprintSuccess() {
         $("#sprintMessage").removeClass("alert-success").hide();
-        $("#sprintMessage").text("Sprint erfolgreich geändert").addClass("alert alert-success").fadeIn();
+        $("#sprintMessage").text("Sprint erfolgreich geändert. Seite aktualisiert...").addClass("alert alert-success").fadeIn();
         $("#sprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
         });
-        setTimeout(function(){window.location = "/sprint/" + $("#sprintId").val() + "/edit";}, 600);
+        setTimeout(function(){window.location = "/sprint/" + $("#sprintId").val() + "/edit";}, 500);
     }
 
 

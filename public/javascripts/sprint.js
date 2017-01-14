@@ -94,13 +94,18 @@ $(document).ready(function (event) {
         $("#newSprintMessage").text("Sprint erfolgreich angelegt").addClass("alert alert-success").fadeIn();
         $("#newSprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
         });
-        setTimeout(function(){createIndex();}, 600);
+        setTimeout(function () {
+            createIndex();
+        }, 500);
     }
 
     // ____________________________________________________________________________
 
     function createIndex() {
         $(".table").hide().find("tr:gt(1)").remove();
+        if (Cookies.get("Role") != "scrummaster") {
+            $("#newSprintBtn").hide();
+        }
         $.getJSON("/sprint/rest", function (data) {
             $.each(data, function (key, val) {
                 var color = "blue";
