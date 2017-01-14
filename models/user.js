@@ -102,18 +102,19 @@ function User() {
         db.disconnect();
 
         // Get all employees
-        this.getAllEmployees = function (res) {
-            db.connect();
-            UserSchema.find({role: 'employee'}, function (err, employees) {
-                if (!err) {
-                    res.send(employees);
-                } else {
-                    throw err;
-                }
-            });
-            db.disconnect();
-        }
+
     };
+    this.getAllEmployees = function (res) {
+        db.connect();
+        UserSchema.find({role: 'employee'}, function (err, employees) {
+            if (!err) {
+                res.send(employees);
+            } else {
+                throw err;
+            }
+        });
+        db.disconnect();
+    }
 }
 module.exports = new User();
 

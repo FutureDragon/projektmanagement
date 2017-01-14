@@ -113,6 +113,9 @@ $(document).ready(function (event) {
             },
             "Fenster Schließen": function () {
                 dialogShow.dialog("close");
+            },
+            "User Hinzufügen" : function () {
+                window.location = "/backlog/"+openTaskId+"/edit";
             }
         },
         close: function () {
