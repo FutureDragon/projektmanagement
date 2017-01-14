@@ -180,10 +180,33 @@ $(document).ready(function (event) {
     function getTask(id) {
         openTaskId = id;
         $.getJSON( "backlog/rest/"+id, function( data ) {
+            var createdDate = new Date(data.created);
+            var createdDateMonth = createdDate.getMonth() + 1;
+            if (createdDateMonth.toString().length < 2) {
+                createdDateMonth = "0" + createdDateMonth;
+            }
+            var createdDateDay = createdDate.getDate();
+            if (createdDateDay.toString().length < 2) {
+                createdDateDay = "0" + createdDateDay;
+            }
+            var createdDateHours = createdDate.getHours();
+            if (createdDateHours.toString().length < 2) {
+                createdDateHours = "0" + createdDateHours;
+            }
+            var createdDateMinutes = createdDate.getMinutes();
+            if (createdDateMinutes.toString().length < 2) {
+                createdDateMinutes = "0" + createdDateMinutes;
+            }
+            var createdDateSeconds = createdDate.getSeconds();
+            if (createdDateSeconds.toString().length < 2) {
+                createdDateSeconds = "0" + createdDateSeconds;
+            }
+            var createdString = createdDateDay + "." + createdDateMonth + "." + createdDate.getFullYear()
+                + "  " + createdDateHours + ":" + createdDateMinutes + ":" + createdDateSeconds;
             $("#taskShow").val(data.task);
             $("#descriptionShow").val(data.description);
             $("#statusShow").text(data.status);
-            $("#createdShow").text("Von: " + data._creator + " am " +data.created);
+            $("#createdShow").text("Von " + data._creator + " am " + createdString);
             $("#priorityShow").text(data.priority);
             $("#storyPointsShow").text(data.story_points);
             task = data;
