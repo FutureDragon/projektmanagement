@@ -335,11 +335,10 @@ $(document).ready(function () {
 
     function changeSprintSuccess() {
         $("#sprintMessage").removeClass("alert-success").hide();
-        $("#sprintMessage").text("Sprint erfolgreich geändert. Seite aktualisiert...").addClass("alert alert-success").fadeIn();
+        $("#sprintMessage").text("Sprint erfolgreich geändert. Seite wird aktualisiert...").addClass("alert alert-success").fadeIn();
         $("#sprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
         });
         setTimeout(function(){window.location = "/sprint/" + $("#sprintId").val() + "/edit";}, 500);
     }
-
 
 });

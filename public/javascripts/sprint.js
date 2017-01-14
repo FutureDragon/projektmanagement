@@ -91,7 +91,7 @@ $(document).ready(function (event) {
 
     function newSprintSuccess() {
         $("#newSprintMessage").removeClass("alert-success").hide();
-        $("#newSprintMessage").text("Sprint erfolgreich angelegt").addClass("alert alert-success").fadeIn();
+        $("#newSprintMessage").text("Sprint erfolgreich angelegt.").addClass("alert alert-success").fadeIn();
         $("#newSprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
         });
         setTimeout(function () {

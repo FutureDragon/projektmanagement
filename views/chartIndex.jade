@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    script(src='/javascripts/chartIndex.js')
+    #header
+        h1= title
+
+    #sprints.col-md-4.col-md-offset-4
+        table#sprintTable.table.table-hover
+            tr
+            th.center Sprint auswählen:
