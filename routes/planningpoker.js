@@ -11,7 +11,7 @@ router.get('/rest/:id', function(req, res, next) {
   res.setHeader('Content-Type', 'application/json');
   var userId = req.params.id;
   console.log(userId);
-  task.getAll(res);
+  task.getAllNotRatedTasksForUser(userId, res);
 });
 
 router.post('/rest/update', function(req, res, next) {

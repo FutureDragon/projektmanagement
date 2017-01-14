@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 var User = require("./user_schema");
 var Sprint = require("./sprint_schema");
 var taskStatus = require("./taskStatus_schema");
+var User = require("./user_schema");
 
 /**
  * Define Schema for tasks
@@ -27,7 +28,12 @@ var taskSchema = new Schema({
     },
     created: {type: Date, default: Date.now},
     updated: Date,
-    story_points: {type: Number, required:true},
+    story_points: {type: Number},
+    assigned_users: [{
+        user_id: {type: mongoose.Schema.Types.ObjectId, Ref: User},
+        rating: Number
+    }],
+    rating_round: {type: Number, default: 1},
     _sprint : {type: String, ref: Sprint}
 });
 

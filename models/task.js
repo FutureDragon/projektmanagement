@@ -6,6 +6,7 @@ var db = require("./db");
 
 function Task() {
 
+    // Create a new task
     this.new = function (task, description, priority, storyPoints, res) {
         db.connect();
         var taskModel = TaskSchema({
@@ -31,6 +32,7 @@ function Task() {
         db.disconnect();
     };
 
+    // get all tasks
     this.getAll = function (res) {
         db.connect();
         TaskSchema.find({}, function (err, tasks) {
@@ -45,6 +47,7 @@ function Task() {
         db.disconnect();
     };
 
+    // Get a task found by id
     this.get = function (id, res) {
         db.connect();
         TaskSchema.findById(id, function (err, task) {
@@ -85,6 +88,7 @@ function Task() {
         db.disconnect();
     }
 
+    // Get all tasks which do not belong to a sprint
     this.getTasksWithoutSprint = function (res) {
         db.connect();
         TaskSchema.find({_sprint: null}, function (err, tasks) {
@@ -95,6 +99,7 @@ function Task() {
         //res.sendStatus(200);
     };
 
+    // Assign a task to a sprint
     this.assignSprintToTask = function (sprint_id, task_id, res) {
         db.connect();
         TaskSchema.findOneAndUpdate({_id: task_id}, {_sprint: sprint_id}, function (err, user) {
@@ -110,6 +115,7 @@ function Task() {
         res.sendStatus(200);
     };
 
+    // Get all tasks which belong to a sprint found by sprint ID
     this.getTasksForSprint = function (sprint_id, res) {
         db.connect();
         console.log(sprint_id);
@@ -140,9 +146,10 @@ function Task() {
         db.disconnect();
     }
 
-    this.getSprintToTaskId = function(id, res) {
+    // Get a Sprint Id for a task
+    this.getSprintToTaskId = function(task_id, res) {
         db.connect();
-        TaskSchema.findById(id, function (err, task) {
+        TaskSchema.findById(task_id, function (err, task) {
             if (err) {
                 throw err;
             }
@@ -152,6 +159,41 @@ function Task() {
         });
         db.disconnect();
     }
+
+    // Get all tasks they belong to a user and are not rated anymore
+    this.getAllNotRatedTasksForUser = function (id, res) {
+        db.connect();
+        TaskSchema.find({$and: [
+            {assigned_users:{user_id: id}},
+            {assigned_users:{rating: null}}
+        ]}, function (err, tasks){
+            if (err){
+                throw err;
+            }
+            else{
+                console.log(tasks);
+                res.send(tasks);
+            }
+        });
+        db.disconnect();
+    }
+
+    // Add a user to a task
+    this.addUserToTask = function (taskID, userID, res) {
+        db.connect();
+        TaskSchema.find({_id: taskID}).update({}, {assigned_users: {user_id: userID}}).exec(function (err) {
+            if(err){
+                throw err;
+            }
+            else{
+                res.sendStatus(200);
+            }
+        });
+
+        db.disconnect();
+    }
+
+
 }
 // Exports a new Task Object
 module.exports = new Task();
