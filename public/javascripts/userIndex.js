@@ -236,6 +236,17 @@ $(document).ready(function (event) {
             $("#lastNameShow").val(data[0].lastname);
             $("#emailShow").val(data[0].email);
             $("#passwordShow").val(data[0].password);
+            if(data[0].role == "admin") {
+                $("#employeeStatus option[value='Administrator']").prop('selected', true);
+            }
+            else if(data[0].role == "scrummaster") {
+                $("#scrummaster").attr('selected','selected');
+            }
+            else {
+                if(data[0].role == "employee") {
+                    $("#employee").attr('selected','selected');
+                }
+            }
 
         }).done(function () {
             dialogRegisterShow.dialog("open");

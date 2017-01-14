@@ -35,9 +35,9 @@ block content
       .form-group
         label(for='employeeStatus') Status:
           select(name='employeeStatus' id="employeeStatus")
-            option(value="employee") Mitarbeiter
-            option(value="scrummaster") Scrum Master
-            option(value="admin") Administrator
+            option(value="employee" id="employee") Mitarbeiter
+            option(value="scrummaster" id="scrummaster") Scrum Master
+            option(value="admin" id="admin") Administrator
 
   #dialog-showUser-form(title="Neuen User anlegen")
     form#showUserForm(method='post' enctype='application/json')
