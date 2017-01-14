@@ -6,13 +6,14 @@ var db = require("./db");
 
 function Task() {
 
-    this.new = function (task, description, priority, storyPoints, res) {
+    this.new = function (task, description, priority, storyPoints, creator, res) {
         db.connect();
         var taskModel = TaskSchema({
             task: task,
             description: description,
             priority: priority,
-            story_points: storyPoints
+            story_points: storyPoints,
+            _creator: creator
         });
         taskModel.save(function (err) {
             if (err) {

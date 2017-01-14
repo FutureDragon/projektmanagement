@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/rest', function(req, res, next) {
-  task.new(req.body.task, req.body.description, req.body.priority, req.body.story_points ,res);
+  task.new(req.body.task, req.body.description, req.body.priority, req.body.story_points , req.body._creator, res);
   console.log("Task: " + req.body.task);
   console.log("Description: " + req.body.description);
 });

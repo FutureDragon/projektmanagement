@@ -8,12 +8,13 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/rest', function (req, res, next) {
-    sprint.new(req.body.name, req.body.description, req.body.start, req.body.end);
+    sprint.new(req.body.name, req.body.description, req.body.start, req.body.end, req.body._creator);
     res.render('sprintNewSprint', {title: 'Sprint anlegen', action: 'success'});
     console.log("Sprint: " + req.body.name);
     console.log("Description: " + req.body.description);
     console.log("Start date: " + req.body.start);
     console.log("End date: " + req.body.end);
+    console.log("Creator: " + req.body._creator);
 });
 
 router.get('/new', function (req, res, next) {

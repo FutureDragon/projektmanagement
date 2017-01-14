@@ -4,9 +4,12 @@ var TaskSchema = require("../schema/task_schema");
 var db = require('./db');
 function Sprint() {
 
-    this.new = function (name, description, start, end) {
+    this.new = function (name, description, start, end, creator) {
         db.connect();
-        var sprintModel = SprintSchema({name: name, description: description, start: start, end: end});
+        var sprintModel = SprintSchema({
+            name: name, description: description,
+            start: start, end: end, _creator: creator
+        });
         sprintModel.save(function (err) {
             if (err) {
                 console.log(err);

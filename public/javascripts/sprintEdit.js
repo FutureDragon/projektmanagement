@@ -35,12 +35,12 @@ $(document).ready(function () {
             if (endDateDay.toString().length < 2) {
                 endDateDay = "0" + endDateDay;
             }
-            var startDateString ="";
+            var startDateString = "";
             startDateString = startDateDay + "." + startDateMonth + "." + startDate.getFullYear();
             var endDateString = "";
             endDateString = endDateDay + "." + endDateMonth + "." + endDate.getFullYear();
             $("#description").text(data.description);
-            $("#author").text(data._creator);
+            $("#author").text("Erstellt von: " + data._creator);
             $("#begin").text("Sprint startet: " + startDateString);
             $("#end").text("Sprint endet: " + endDateString);
             $("#sprintChange").text(data.name);
@@ -252,7 +252,7 @@ $(document).ready(function () {
                 data: JSON.stringify({"id": $("#sprintId").val()})
             }
         );
-        setTimeout(function(){window.location = "/sprint";}, 300);
+        setTimeout(function(){window.location = "/sprint";}, 600);
     }
 
     function deleteSprint() {
@@ -265,7 +265,7 @@ $(document).ready(function () {
                 data: JSON.stringify({"id": $("#sprintId").val()})
             }
         );
-        setTimeout(function(){window.location = "/sprint";}, 300);
+        setTimeout(function(){window.location = "/sprint";}, 600);
     }
 
     dialogChange = $("#dialog-form-change").dialog({
@@ -315,7 +315,7 @@ $(document).ready(function () {
         $("#sprintMessage").text("Sprint erfolgreich geändert").addClass("alert alert-success").fadeIn();
         $("#sprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
         });
-        setTimeout(function(){window.location = "/sprint/" + $("#sprintId").val() + "/edit";}, 300);
+        setTimeout(function(){window.location = "/sprint/" + $("#sprintId").val() + "/edit";}, 600);
     }
 
 

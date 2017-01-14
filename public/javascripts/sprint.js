@@ -43,6 +43,7 @@ $(document).ready(function (event) {
             var endDateFormat = endd.val();
             var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
                 + "/" + endDateFormat.substring(6, 10);
+            var user = Cookies.get("Email");
             $.ajax(
                 {
                     type: "POST",
@@ -53,7 +54,8 @@ $(document).ready(function (event) {
                         "name": sprint.val(),
                         "description": description.val(),
                         "start": startDateChanged,
-                        "end": endDateChanged
+                        "end": endDateChanged,
+                        "_creator": user
                     }),
                     success: newSprintSuccess()
                 });
@@ -92,7 +94,7 @@ $(document).ready(function (event) {
         $("#newSprintMessage").text("Sprint erfolgreich angelegt").addClass("alert alert-success").fadeIn();
         $("#newSprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
         });
-        setTimeout(function(){createIndex();}, 300);
+        setTimeout(function(){createIndex();}, 600);
     }
 
     // ____________________________________________________________________________
