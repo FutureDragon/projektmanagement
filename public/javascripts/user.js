@@ -13,6 +13,7 @@ $(document).ready(function (event) {
             $("#backlogNav").show();
             $("#sprintNav").show();
             $("#planningPokerNav").show();
+            $("#chartNav").show();
             if(Cookies.get("Role") == "admin") {
                 $("#userNav").show();
             }
@@ -39,6 +40,7 @@ $(document).ready(function (event) {
             $("#sprintNav").hide();
             $("#planningPokerNav").hide();
             $("#footer").hide();
+            $("#chartNav").hide();
             $("#userInformation").text("Bitte Loggen Sie sich ein");
         }
     }
