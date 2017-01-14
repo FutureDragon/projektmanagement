@@ -30,7 +30,6 @@ $(document).ready(function (event) {
                 userRole = "Mitarbeiter";
             }
 
-            $("#userInformation").text("Eingeloggt als: " + Cookies.get("Email") + " in der Rolle: " + userRole);
         }
         else{
             $("#container").after("<div id='noLogin' class='noLogin center'>" + loginText + "</div>");
