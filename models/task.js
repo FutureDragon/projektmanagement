@@ -6,12 +6,7 @@ var db = require("./db");
 
 function Task() {
 
-<<<<<<< HEAD
-    // Create a new task
-    this.new = function (task, description, priority, storyPoints, res) {
-=======
     this.new = function (task, description, priority, storyPoints, creator, res) {
->>>>>>> 614ec040f91226fc501b7620ba1e38892ebc2e52
         db.connect();
         var taskModel = TaskSchema({
             task: task,
@@ -24,10 +19,10 @@ function Task() {
             if (err) {
                 console.log(err);
             }
-            else{
-                TaskSchema.find({},{_id: 1}).sort({$natural: -1}).limit(1).exec(function (err, taskID) {
-                    if(err) throw err;
-                    else{
+            else {
+                TaskSchema.find({}, {_id: 1}).sort({$natural: -1}).limit(1).exec(function (err, taskID) {
+                    if (err) throw err;
+                    else {
                         TaskStatus.newTaskStatus(taskID[0]._id, 'Open', res);
                     }
                 });
@@ -75,18 +70,24 @@ function Task() {
             }
             else {
                 // Call the function in taskStatus.js to create a new model which contains information about the taskStatus History
-                TaskStatus.newTaskStatus(id,status,res);
+                TaskStatus.newTaskStatus(id, status, res);
             }
         });
         db.disconnect();
     };
 
     // Update all elements of a task (without status)
-    this.updateTask = function(id, task, description, priority, storypoints, res){
+    this.updateTask = function (id, task, description, priority, storypoints, res) {
         db.connect();
-        TaskSchema.findOneAndUpdate({_id: id}, {task: task, description: description, priority: priority,updated: Date.now(), story_points: storypoints},function(err){
-            if(err) throw err;
-            else{
+        TaskSchema.findOneAndUpdate({_id: id}, {
+            task: task,
+            description: description,
+            priority: priority,
+            updated: Date.now(),
+            story_points: storypoints
+        }, function (err) {
+            if (err) throw err;
+            else {
                 res.sendStatus(200);
             }
         });
@@ -124,17 +125,17 @@ function Task() {
     this.getTasksForSprint = function (sprint_id, res) {
         db.connect();
         console.log(sprint_id);
-        TaskSchema.find({_sprint: sprint_id}, function (err, tasks){
-           if(err) console.error(err);
-           res.send(tasks);
+        TaskSchema.find({_sprint: sprint_id}, function (err, tasks) {
+            if (err) console.error(err);
+            res.send(tasks);
         });
         db.disconnect();
     }
 
     // Remove a task (with specified ID)
-    this.deleteTask = function(taskId, res){
+    this.deleteTask = function (taskId, res) {
         db.connect();
-        TaskSchema.remove({_id: taskId}, function(err){
+        TaskSchema.remove({_id: taskId}, function (err) {
             if (err) console.log(err);
             res.sendStatus(200);
         });
@@ -142,17 +143,17 @@ function Task() {
     }
 
     //Remove task from a sprint
-    this.removeSprintFromTask = function(taskId, sprintId, res){
+    this.removeSprintFromTask = function (taskId, sprintId, res) {
         db.connect();
         TaskSchema.update({_id: taskId}, {$unset: {_sprint: 1}}, function (err) {
-          if(err) console.log(err);
-          res.sendStatus(200);
+            if (err) console.log(err);
+            res.sendStatus(200);
         });
         db.disconnect();
     }
 
     // Get a Sprint Id for a task
-    this.getSprintToTaskId = function(task_id, res) {
+    this.getSprintToTaskId = function (task_id, res) {
         db.connect();
         TaskSchema.findById(task_id, function (err, task) {
             if (err) {
@@ -168,14 +169,16 @@ function Task() {
     // Get all tasks they belong to a user and are not rated anymore
     this.getAllNotRatedTasksForUser = function (id, res) {
         db.connect();
-        TaskSchema.find({$and: [
-            {assigned_users:{user_id: id}},
-            {assigned_users:{rating: null}}
-        ]}, function (err, tasks){
-            if (err){
+        TaskSchema.find({
+            $and: [
+                {assigned_users: {user_id: id}},
+                {assigned_users: {rating: null}}
+            ]
+        }, function (err, tasks) {
+            if (err) {
                 throw err;
             }
-            else{
+            else {
                 console.log(tasks);
                 res.send(tasks);
             }
@@ -186,20 +189,19 @@ function Task() {
     // Add a user to a task
     this.addUserToTask = function (taskID, userID, res) {
         db.connect();
-        TaskSchema.find({_id: taskID}).update({}, {assigned_users: {user_id: userID}}).exec(function (err) {
-            if(err){
+        TaskSchema.find({_id: taskID}).update({$push: {assigned_users: {user_id: userID}}}).exec(function (err) {
+            if (err) {
                 throw err;
             }
-            else{
+            else {
                 res.sendStatus(200);
             }
         });
 
         db.disconnect();
     }
-
-
 }
+
 // Exports a new Task Object
 module.exports = new Task();
 
