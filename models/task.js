@@ -170,16 +170,18 @@ function Task() {
     this.getAllNotRatedTasksForUser = function (id, res) {
         db.connect();
         TaskSchema.find({
-            $and: [
-                {assigned_users: {user_id: id}},
-                {assigned_users: {rating: null}}
-            ]
-        }, function (err, tasks) {
+            assigned_users:{
+                $elemMatch:{
+                    user_id: id,
+                    rating: null
+                }
+            }
+        },
+        function (err, tasks) {
             if (err) {
                 throw err;
             }
             else {
-                console.log(tasks);
                 res.send(tasks);
             }
         });
@@ -190,14 +192,11 @@ function Task() {
     this.addUserToTask = function (taskID, userID, res) {
         db.connect();
         TaskSchema.find({_id: taskID}).update({$push: {assigned_users: {user_id: userID}}}).exec(function (err) {
-            if (err) {
+            if (!err) res.sendStatus(200);
+            else {
                 throw err;
             }
-            else {
-                res.sendStatus(200);
-            }
         });
-
         db.disconnect();
     }
 }
