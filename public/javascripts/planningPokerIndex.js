@@ -71,6 +71,7 @@ $(document).ready(function (event) {
                 $("#pokerTable tr:last").after(text);
             });
             if(data.length == 0) {
+                $("#pokermessages").text("Keine offenen Tasks zum Bewerten vorhanden").addClass("alert alert-warning")
             }
         });
         $("#pokerTable").fadeIn(500);
