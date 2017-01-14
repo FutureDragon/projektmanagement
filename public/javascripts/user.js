@@ -30,7 +30,6 @@ $(document).ready(function (event) {
                 userRole = "Mitarbeiter";
             }
 
-
             $("#userInformation").text("Eingeloggt als: " + Cookies.get("Email") + " in der Rolle: " + userRole);
         }
         else{
@@ -40,6 +39,8 @@ $(document).ready(function (event) {
             $("#backlogNav").hide();
             $("#sprintNav").hide();
             $("#planningPokerNav").hide();
+            $("#footer").hide();
+            $("#userInformation").text("Bitte Loggen Sie sich ein");
         }
     }
 
