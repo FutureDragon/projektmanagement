@@ -212,7 +212,7 @@ $(document).ready(function () {
                     '</select> ';
             }
             $("#priorityShow").text("").append(priorityOption);
-            var storyPointsInput = "<input type='number' id='storyPointsEdit' value='" + $("#storyPointsShow").text() + "'>";
+            var storyPointsInput = "<input disabled='true' type='number' id='storyPointsEdit' value='" + $("#storyPointsShow").text() + "'>";
             $("#storyPointsShow").text("").append(storyPointsInput);
             $(this).text("Speichern");
         }
