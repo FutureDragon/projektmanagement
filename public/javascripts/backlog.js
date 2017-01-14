@@ -326,11 +326,11 @@ $(document).ready(function (event) {
     function getSprint(id) {
         var element = "#"+id;
 
-        $.getJSON("/backlog/rest/sprintToTask/" + id, function (data) {
+        /*$.getJSON("/backlog/rest/sprintToTask/" + id, function (data) {
             sprint = data;
         }).done(function () {
             $(element).attr("title","Sprint: " + sprint.name);
-        });
+        });*/
     }
 
     $(document).tooltip();
