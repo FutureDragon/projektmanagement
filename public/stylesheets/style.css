@@ -101,3 +101,7 @@ h1 {
 input[type="checkbox"]{
   display: none;
 }
+
+.addUserToTask {
+  background-color: rgba(0, 0, 0, 0.1);
+}

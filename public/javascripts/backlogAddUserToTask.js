@@ -19,7 +19,7 @@ $(document).ready(function (event) {
     function getEmployees() {
         $.getJSON("/users/rest/getEmployees", function (data) {
             $.each(data, function (key, val) {
-                var text = '<div class="checkbox sprintCheckbox">' +
+                var text = '<div class="checkbox sprintCheckbox addUserToTask">' +
                     '<label class="sprintname">' +
                     '<input class="checkbox-check" type="checkbox" name="user" value="' + val._id + '">' +
                     '<p>' + val.email + '</p>' +
@@ -41,11 +41,11 @@ $(document).ready(function (event) {
         var checkbox = $(this).find(".checkbox-check");
         if (checkbox.is(":checked")) {
             $(this).find(".checkbox-check").prop('checked', false);
-            $(this).removeClass("blue");
+            $(this).removeClass("blue").addClass("addUserToTask");
         }
         else {
             $(this).find(".checkbox-check").prop('checked', true);
-            $(this).addClass("blue");
+            $(this).addClass("blue").removeClass("addUserToTask");
         }
     });
 
