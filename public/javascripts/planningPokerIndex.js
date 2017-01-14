@@ -45,6 +45,9 @@ $(document).ready(function (event) {
                         200: function (response) {
                             dialogShow.dialog("close");
                             setTimeout(getNotRatedTasks, 200);
+                            $('#pokermessages').text("Story Points wurden gespeichert").addClass("alert alert-success");
+                            $('#pokermessages').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
+                            });
                         }
                     }
                 }

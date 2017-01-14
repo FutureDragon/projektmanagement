@@ -125,6 +125,9 @@ $(document).ready(function (event) {
                         $("#employeeStatusShow").prop("disabled", true);
                         dialogRegisterShow.dialog("close");
                         setTimeout(getUsers,200);
+                        $("#messages").text("User erfolgreich geändert").removeClass("alert-danger").addClass("alert alert-success");
+                        $('#messages').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
+                        });
                     }
                 },
                 success: function (data) {
@@ -187,6 +190,8 @@ $(document).ready(function (event) {
                 statusCode: {
                     200: function (response) {
                         $("#registerUserMessage").text("User erfolgreich angelegt").removeClass("alert-danger").addClass("alert alert-success");
+                        $('#registerUserMessage').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
+                        });
                         registerReset();
                     }
                 },
@@ -205,7 +210,7 @@ $(document).ready(function (event) {
     }
 
     function getUsers() {
-        $("#userTable").hide().find("tr:gt(1)").remove();
+        $("#userTable").hide().find("tr:gt(0)").remove();
         $.getJSON( "/users/rest", function( data ) {
             $.each(data, function (key ,val) {
                 var text = '<tr class="click" id="'+ val._id +'">' +
