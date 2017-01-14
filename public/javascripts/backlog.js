@@ -29,9 +29,8 @@ $(document).ready(function (event) {
     });
     function createTask() {
         task = $( "#task");
-        if(task.val() != "" && $("#storyPoints").val() != "") {
+        if(task.val() != "") {
             var priority = $( "#priority option:selected" ).text();
-            var storyPoint = $( "#storyPoints" ).val();
             var user = Cookies.get("Email");
             $.ajax(
                 {
@@ -44,7 +43,7 @@ $(document).ready(function (event) {
                             "task" : task.val(),
                             "description" : description.val(),
                             "priority" : priority,
-                            "story_points" : storyPoint,
+                            "story_points" : 0,
                             "_creator" : user
                         }),
                     success: newTasksuccess()

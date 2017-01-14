@@ -42,15 +42,10 @@ $(document).ready(function (event) {
                             "storyPoints" : storyPoints
                         }),
                     statusCode: {
-                        900: function (response) {
-                            alert("asdasd");
-                        },
                         200: function (response) {
-
+                            dialogShow.dialog("close");
+                            setTimeout(getNotRatedTasks, 200);
                         }
-                    },
-                    success: function () {
-                        getNotRatedTasks()
                     }
                 }
             );
@@ -61,7 +56,7 @@ $(document).ready(function (event) {
     }
 
     function getNotRatedTasks() {
-        $("#pokerTable").hide().find("tr:gt(1)").remove();
+        $("#pokerTable").hide().find("tr:gt(0)").remove();
         $.getJSON( "/planningPoker/rest/" + Cookies.get("Id"), function( data ) {
             $.each(data, function (key ,val) {
                 tasks[val._id] = data;
