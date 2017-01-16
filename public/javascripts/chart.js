@@ -1,5 +1,7 @@
 $(function () {
     var sprint;
+    var dataPoints = [];
+    var countTasks = 0;
     var startDate;
     var endDate;
     var startDay;
@@ -8,6 +10,10 @@ $(function () {
     var endDay;
     var endMonth;
     var endYear;
+    var endDateAxis;
+    var endDateAxisDay;
+    var endDateAxisMonth;
+    var endDateAxisYear;
 
     getSprint($("#sprintId").val());
 
@@ -16,53 +22,113 @@ $(function () {
     function getSprint(id) {
         $.getJSON("/sprint/rest/" + id, function (data) {
             sprint = data;
+        }).done(function () {
             startDate = new Date(sprint.start);
-            day = startDate.getDate();
             endDate = new Date(sprint.end);
+            startDay = startDate.getDate();
+            startMonth = startDate.getMonth();
+            startYear = startDate.getFullYear();
+            endDay = endDate.getDate();
+            endMonth = endDate.getMonth();
+            endYear = endDate.getFullYear();
+            endDateAxisDay = endDay;
+            endDateAxisMonth = endMonth;
+            endDateAxisYear = endYear;
+            setTimeout(function () {
+                getTasks();
+            }, 20);
+        })
+    }
 
-            var options = {
-                title: {
-                    text: "Burn-Down-Chart"
-                },
-                animationEnabled: true,
-                axisX: {
-                    labelFormatter: function (e) {
-                        return CanvasJS.formatDate(e.value, "DD MMM");
+    function getTasks() {
+        // TODO: getJSON umstellen
+        /*$.getJSON("/backlog/rest/getTasksToSprint/" + $("#sprintId").val(), function (data) {
+         $.each(data, function (key, val) {
+         tasks.push(val.enddate);
+         });
+         });
+         */
+        $.getJSON("/sprint/rest", function (data) {
+            $.each(data, function (key, val) {
+                countTasks++;
+            });
+        }).done(function () {
+            dataPoints.push({x: new Date(startYear, startMonth, startDay), y: countTasks});
+            setTimeout(function () {
+                $.getJSON("/sprint/rest", function (data) {
+                    $.each(data, function (key, val) {
+                        dataPoints.push({x: new Date(val.start), y: countTasks});
+                    });
+                }).done(function () {
+                    dataPoints.sort(function (a, b) {
+                        return a.x - b.x
+                    });
+                    for (var i = 0; i < dataPoints.length; i++) {
+                        dataPoints[i].y = countTasks - i;
                     }
-                },
-                data: [
-                    {
-                        type: "spline",
-                        showInLegend: true,
-                        legendText: "Geschätzter Projektaufwand",
-                        dataPoints: [
-                            { x: new Date(2017, 0, day), y: 80},
-                            { x: new Date(2017, 0, 30), y: 70}
-                        ]
-                    },
-                    {
-                        type: "spline",
-                        showInLegend: true,
-                        legendText: "Verbleibender Projektaufwand",
-                        dataPoints: [
-                            { x: new Date(2017, 01, 1), y: 26},
-                            { x: new Date(2017, 01, 3), y: 38},
-                            { x: new Date(2017, 01, 5), y: 43},
-                            { x: new Date(2017, 01, 7), y: 29},
-                            { x: new Date(2017, 01, 11), y: 41},
-                            { x: new Date(2017, 01, 13), y: 54},
-                            { x: new Date(2017, 01, 20), y: 66},
-                            { x: new Date(2017, 01, 21), y: 60},
-                            { x: new Date(2017, 01, 25), y: 53},
-                            { x: new Date(2017, 01, 27), y: 60}
-                        ]
+                    //alert(JSON.stringify(dataPoints));
+                    if(dataPoints[countTasks].x > endDate) {
+                        endDateAxis = new Date(dataPoints[countTasks].x);
+                        endDateAxisDay = endDateAxis.getDate();
+                        endDateAxisMonth = endDateAxis.getMonth();
+                        endDateAxisYear = endDateAxis.getFullYear();
                     }
-                ]
-
-            };
-
-            $("#chartContainer").CanvasJSChart(options);
+                    createChart();
+                });
+            }, 20);
         });
+    }
+
+    // ____________________________________________________________________________
+
+    function createChart() {
+        var options = {
+            title: {
+                text: "Burn-Down-Chart - " + sprint.name
+            },
+            animationEnabled: true,
+            axisX: {
+                minimum: new Date(startYear, startMonth, startDay - 1),
+                maximum: new Date(endDateAxisYear, endDateAxisMonth, endDateAxisDay + 1),
+                labelFormatter: function (e) {
+                    return CanvasJS.formatDate(e.value, "DD.MM.");
+                }
+            },
+            data: [
+                {
+                    type: "line",
+                    color: "blue",
+                    showInLegend: true,
+                    legendText: "Geschätzter Aufwand",
+                    dataPoints: [
+                        {x: new Date(startYear, startMonth, startDay), y: countTasks, indexLabel: "geplanter Start"},
+                        {x: new Date(endYear, endMonth, endDay), y: 0, indexLabel: "geplantes Ende"}
+                    ]
+                },
+                {
+                    type: "line",
+                    color: "red",
+                    showInLegend: true,
+                    legendText: "Verbleibende Tasks",
+                    dataPoints: dataPoints
+                }
+            ]
+        };
+        if (countTasks > 0) {
+            if (countTasks < 3) {
+                $("#showMessage").removeClass("alert-warning").hide();
+                $("#showMessage").text("Warnung: Der Sprint enthält " +
+                    "nur wenige Tasks.").addClass("alert alert-warning").fadeIn();
+                $("#showMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
+                });
+            }
+            $("#chartContainer").CanvasJSChart(options);
+        }
+        else {
+            $("#showMessage").removeClass("alert-danger").hide();
+            $("#showMessage").text("Der Sprint enthält keine Tasks. Deshalb kann kein " +
+                "Burn-Down-Chart erstellt werden!").addClass("alert alert-danger").fadeIn();
+        }
     }
 
 });
