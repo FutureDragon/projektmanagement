@@ -67,3 +67,11 @@ block content
 
   #dialog-delete-confirm(title="Task wirklich löschen?")
     p  Soll der Task wirklich gelöscht werden?
+
+  #dialog-form-end(title="Task beenden")
+    form#endTaskForm(method='post' enctype='application/json')
+      .form-group
+        p Bitte eingeben, an welchem Datum der Task beendet wurde. Achtung: Das Enddatum sollte nicht vor dem Anfangsdatum des Sprints liegen!
+      .form-group
+        label(for='endDate') Enddatum:
+        input#endDate.form-control.transparent(type='text', name='Enddatum')

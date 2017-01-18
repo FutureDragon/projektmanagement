@@ -1,7 +1,11 @@
 $(document).ready(function () {
     var sprint, task;
-    var dialog, form, dialogShow, dialogConfirm;
+    var dialog, form, dialogShow, dialogConfirm, dialogEnd;
     var openTaskId;
+    var endDate = $("#endDate");
+
+    $("#endDate").datepicker({dateFormat: 'dd.mm.yy'}).val();
+
     getSprint($("#sprintId").val());
 
     function getSprint(id) {
@@ -99,8 +103,7 @@ $(document).ready(function () {
                 $("#statusShow").text("Code Review");
             },
             "Fertig": function () {
-                updateTask(task._id, "Done");
-                $("#statusShow").text("Done");
+                dialogEnd.dialog("open");
             },
             "Bearbeiten":{
                 id : "change",
@@ -130,10 +133,53 @@ $(document).ready(function () {
                 url: "/backlog/rest/update",
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                data: JSON.stringify({"id": id, "status": status}),
+                data: JSON.stringify(
+                    {
+                        "id": id,
+                        "status": status,
+                        "end": undefined
+                    }),
                 success: updatesuccess()
             }
         );
+    }
+
+    dialogEnd = $("#dialog-form-end").dialog({
+        autoOpen: false,
+        height: 300,
+        width: 500,
+        modal: true,
+        buttons: {
+            "OK": function() {
+                updateTaskEnd(task._id, "Done");
+            },
+            "Abbrechen": function () {
+                dialogEnd.dialog("close");
+            }
+        }
+    });
+
+    function updateTaskEnd(id, status) {
+        $("#statusShow").text("Done");
+        var endDateFormat = endDate.val();
+        var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
+            + "/" + endDateFormat.substring(6, 10);
+        $.ajax(
+            {
+                type: "POST",
+                url: "backlog/rest/updateEnd",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {
+                        "id": id,
+                        "status": status,
+                        "end": endDateChanged
+                    }),
+                success: updatesuccess()
+            }
+        );
+        dialogEnd.dialog("close");
     }
 
     function updatesuccess() {

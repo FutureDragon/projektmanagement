@@ -2,18 +2,13 @@ $(function () {
     var sprint;
     var dataPoints = [];
     var countTasks = 0;
-    var startDate;
-    var endDate;
-    var startDay;
-    var startMonth;
-    var startYear;
-    var endDay;
-    var endMonth;
-    var endYear;
-    var endDateAxis;
-    var endDateAxisDay;
-    var endDateAxisMonth;
-    var endDateAxisYear;
+    var countTasksW = 0;
+    var countStoryPoints = 0;
+    var countStoryPointsMax = 0;
+    var calcStoryPoints = 0;
+    var startDate, startDay, startMonth, startYear;
+    var endDate, endDay, endMonth, endYear;
+    var endDateAxis, endDateAxisDay, endDateAxisMonth, endDateAxisYear;
 
     getSprint($("#sprintId").val());
 
@@ -41,37 +36,51 @@ $(function () {
     }
 
     function getTasks() {
-        // TODO: getJSON umstellen
-        /*$.getJSON("/backlog/rest/getTasksToSprint/" + $("#sprintId").val(), function (data) {
-         $.each(data, function (key, val) {
-         tasks.push(val.enddate);
-         });
-         });
-         */
-        $.getJSON("/sprint/rest", function (data) {
+        $.getJSON("/backlog/rest/getTasksToSprint/" + $("#sprintId").val(), function (data) {
             $.each(data, function (key, val) {
                 countTasks++;
+                if (data.story_points > 0) {
+                    countStoryPoints = countStoryPoints + data.story_points;
+                }
+                else {
+                    countTasksW++;
+                }
             });
         }).done(function () {
-            dataPoints.push({x: new Date(startYear, startMonth, startDay), y: countTasks});
+            dataPoints.push({x: new Date(startYear, startMonth, startDay), y: countStoryPoints});
             setTimeout(function () {
-                $.getJSON("/sprint/rest", function (data) {
+                $.getJSON("/backlog/rest/getTasksToSprint/" + $("#sprintId").val(), function (data) {
                     $.each(data, function (key, val) {
-                        dataPoints.push({x: new Date(val.start), y: countTasks});
+                        if (data.story_points > 0) {
+                            dataPoints.push({x: new Date(val.end), y: data.story_points});
+                        }
+                        else {
+                            dataPoints.push({x: undefined, y: 0});
+                        }
                     });
                 }).done(function () {
                     dataPoints.sort(function (a, b) {
                         return a.x - b.x
                     });
-                    for (var i = 0; i < dataPoints.length; i++) {
-                        dataPoints[i].y = countTasks - i;
+                    countStoryPointsMax = countStoryPoints;
+                    for (var i = 1; i < dataPoints.length; i++) {
+                        calcStoryPoints = countStoryPoints;
+                        countStoryPoints = calcStoryPoints - dataPoints[i].y;
+                        dataPoints[i].y = countStoryPoints;
                     }
-                    //alert(JSON.stringify(dataPoints));
-                    if(dataPoints[countTasks].x > endDate) {
-                        endDateAxis = new Date(dataPoints[countTasks].x);
-                        endDateAxisDay = endDateAxis.getDate();
-                        endDateAxisMonth = endDateAxis.getMonth();
-                        endDateAxisYear = endDateAxis.getFullYear();
+                    for (var i = 0; i < dataPoints.length; i++) {
+                        if (dataPoints[i].x == null || dataPoints[i].x == undefined || dataPoints[i].y == 0) {
+                            dataPoints[i].x = undefined;
+                            dataPoints[i].y = undefined;
+                        }
+                    }
+                    for (var i = 0; i < dataPoints.length; i++) {
+                        if (dataPoints[i].x > endDate) {
+                            endDateAxis = new Date(dataPoints[i].x);
+                            endDateAxisDay = endDateAxis.getDate();
+                            endDateAxisMonth = endDateAxis.getMonth();
+                            endDateAxisYear = endDateAxis.getFullYear();
+                        }
                     }
                     createChart();
                 });
@@ -94,6 +103,9 @@ $(function () {
                     return CanvasJS.formatDate(e.value, "DD.MM.");
                 }
             },
+            axisY: {
+                title: "Story Points"
+            },
             data: [
                 {
                     type: "line",
@@ -101,7 +113,11 @@ $(function () {
                     showInLegend: true,
                     legendText: "Geschätzter Aufwand",
                     dataPoints: [
-                        {x: new Date(startYear, startMonth, startDay), y: countTasks, indexLabel: "geplanter Start"},
+                        {
+                            x: new Date(startYear, startMonth, startDay),
+                            y: countStoryPointsMax,
+                            indexLabel: "geplanter Start"
+                        },
                         {x: new Date(endYear, endMonth, endDay), y: 0, indexLabel: "geplantes Ende"}
                     ]
                 },
@@ -109,25 +125,43 @@ $(function () {
                     type: "line",
                     color: "red",
                     showInLegend: true,
-                    legendText: "Verbleibende Tasks",
+                    legendText: "Verbleibender Aufwand",
                     dataPoints: dataPoints
                 }
             ]
         };
-        if (countTasks > 0) {
-            if (countTasks < 3) {
+        var rest = endDate.getDate() - startDate.getDate();
+        if (rest < 7) {
+            options.axisX = {
+                minimum: new Date(startYear, startMonth, startDay - 1),
+                maximum: new Date(endDateAxisYear, endDateAxisMonth, endDateAxisDay + 1),
+                interval: 1,
+                intervalType: "day",
+                labelFormatter: function (e) {
+                    return CanvasJS.formatDate(e.value, "DD.MM.");
+                }
+            };
+        }
+        if (countTasks > 0  && countStoryPointsMax > 0) {
+            if (countTasksW > 0) {
                 $("#showMessage").removeClass("alert-warning").hide();
-                $("#showMessage").text("Warnung: Der Sprint enthält " +
-                    "nur wenige Tasks.").addClass("alert alert-warning").fadeIn();
-                $("#showMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
-                });
+                $("#showMessage").text("Warnung: Der Sprint enthält " + countTasksW + " Tasks, denen noch keine Story " +
+                    "Points zugeordnet wurden. Diese werden nicht im Burn-Down-Chart " +
+                    "angezeigt!").addClass("alert alert-warning").fadeIn();
             }
             $("#chartContainer").CanvasJSChart(options);
         }
         else {
-            $("#showMessage").removeClass("alert-danger").hide();
-            $("#showMessage").text("Der Sprint enthält keine Tasks. Deshalb kann kein " +
-                "Burn-Down-Chart erstellt werden!").addClass("alert alert-danger").fadeIn();
+            if (countTasks == 0) {
+                $("#showMessage").removeClass("alert-danger").hide();
+                $("#showMessage").text("Der Sprint enthält keine Tasks. Deshalb kann kein " +
+                    "Burn-Down-Chart erstellt werden!").addClass("alert alert-danger").fadeIn();
+            }
+            else {
+                $("#showMessage").removeClass("alert-danger").hide();
+                $("#showMessage").text("Die Tasks, die diesem Sprint zugeordnet sind, enthalten keine Story Points. " +
+                    "Deshalb kann kein Burn-Down-Chart erstellt werden!").addClass("alert alert-danger").fadeIn();
+            }
         }
     }
 

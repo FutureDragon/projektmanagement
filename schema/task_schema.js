@@ -34,7 +34,8 @@ var taskSchema = new Schema({
         rating: Number
     }],
     rating_round: {type: Number, default: 1},
-    _sprint : {type: String, ref: Sprint}
+    _sprint : {type: String, ref: Sprint},
+    end: Date
 });
 
 // Create new model for a task
