@@ -51,7 +51,7 @@ $(function () {
             setTimeout(function () {
                 $.getJSON("/backlog/rest/getTasksToSprint/" + $("#sprintId").val(), function (data) {
                     $.each(data, function (key, val) {
-                        if (data.story_points > 0) {
+                        if (data.story_points > 0 && data.end != null && data.end != undefined) {
                             dataPoints.push({x: new Date(val.end), y: data.story_points});
                         }
                         else {
@@ -59,17 +59,25 @@ $(function () {
                         }
                     });
                 }).done(function () {
+                    for (var i = 0; i < dataPoints.length; i++) {
+                        if (dataPoints[i].x == null || dataPoints[i].x == undefined || dataPoints[i].y == 0) {
+                            dataPoints[i].x = new Date(2999, 0, 1);
+                            dataPoints[i].y = undefined;
+                        }
+                    }
                     dataPoints.sort(function (a, b) {
                         return a.x - b.x
                     });
                     countStoryPointsMax = countStoryPoints;
                     for (var i = 1; i < dataPoints.length; i++) {
-                        calcStoryPoints = countStoryPoints;
-                        countStoryPoints = calcStoryPoints - dataPoints[i].y;
-                        dataPoints[i].y = countStoryPoints;
+                        if (dataPoints[i].y != undefined) {
+                            calcStoryPoints = countStoryPoints;
+                            countStoryPoints = calcStoryPoints - dataPoints[i].y;
+                            dataPoints[i].y = countStoryPoints;
+                        }
                     }
                     for (var i = 0; i < dataPoints.length; i++) {
-                        if (dataPoints[i].x == null || dataPoints[i].x == undefined || dataPoints[i].y == 0) {
+                        if (dataPoints[i].x == null || dataPoints[i].x == undefined || dataPoints[i].y == undefined) {
                             dataPoints[i].x = undefined;
                             dataPoints[i].y = undefined;
                         }
@@ -82,6 +90,7 @@ $(function () {
                             endDateAxisYear = endDateAxis.getFullYear();
                         }
                     }
+                    //alert(JSON.stringify(dataPoints));
                     createChart();
                 });
             }, 20);
@@ -142,7 +151,7 @@ $(function () {
                 }
             };
         }
-        if (countTasks > 0  && countStoryPointsMax > 0) {
+        if (countTasks > 0 && countStoryPointsMax > 0) {
             if (countTasksW > 0) {
                 $("#showMessage").removeClass("alert-warning").hide();
                 $("#showMessage").text("Warnung: Der Sprint enthält " + countTasksW + " Tasks, denen noch keine Story " +
