@@ -2,6 +2,7 @@
  * Created by Florian on 02.01.2017.
  */
 var Sprint = require('./sprint_schema');
+var User = require('./user_schema');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
