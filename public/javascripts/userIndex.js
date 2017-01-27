@@ -34,9 +34,6 @@ $(document).ready(function (event) {
         width: 450,
         modal: true,
         buttons: {
-            "Löschen": function () {
-                validateNewUser();
-            },
             "Bearbeiten":{
                 id : "changeUser",
                 text : "Bearbeiten",
@@ -48,6 +45,7 @@ $(document).ready(function (event) {
             }
         },
         close: function () {
+            setFormInShowMode();
         }
     });
 
@@ -143,6 +141,15 @@ $(document).ready(function (event) {
         $("#emailShow").prop("disabled", false);
         $("#passwordShow").prop("disabled", false);
         $("#employeeStatusShow").prop("disabled", false);
+    }
+
+    function setFormInShowMode() {
+        $("#firstNameShow").prop("disabled", true);
+        $("#lastNameShow").prop("disabled", true);
+        $("#emailShow").prop("disabled", true);
+        $("#passwordShow").prop("disabled", true);
+        $("#employeeStatusShow").prop("disabled", true);
+        $("#changeUser").text("Bearbeiten");
     }
 
 
