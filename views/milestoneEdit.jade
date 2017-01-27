@@ -1,33 +1,33 @@
 extends layout
 
 block content
-    script(src='/javascripts/sprintEdit.js')
+    script(src='/javascripts/milestoneIndex.js')
     #header
-      h1#sprintName
-      #sprintMessage.fadeIn
+      h1#milestoneName
+      #milestoneMessage.fadeIn
       hr
-      button#changeSprintBtn.btn.btn-default.transparent.col-md-offset-10 Sprint ändern
+      button#changeMilestoneBtn.btn.btn-default.transparent.col-md-oddset-10 Meilenstein ändern
     p#description.row
-    p#author.row
+    p#creator.row
     p#begin.row
     p#end.row
     hr
 
     #message
-    #taskContainer.col-md-6
-        p  Tasks auswählen die in den Sprint sollen:
-    #taskContainer2.col-md-6
-        p  Tasks auswählen die aus dem Sprint sollen:
+    #sprintContainer.col-md-6
+        p Sprints dem Meilenstein zuordnen:
+    #sprintContainer2.col-md-6
+        p Sprints aus dem Meilenstein entfernen:
     button#save.btn.btn-default.transparent.col-md-12  Speichern
-    input#sprintId(type="hidden" value="#{title}")
+    input#milestoneId(type="hidden" value="#{title}")
 
-    #dialog-form-sprint(title="Sprint ändern")
-        form#renameSprintForm(method='post' enctype='application/json')
+    #dialog-form-milestone(title="Meilenstein ändern")
+        form#renameMilestoneForm(method='post' enctype='application/json')
             .form-group
                 p#messageShow
             .form-group
-                label(for='sprintChange') Sprintnamen ändern:
-                textarea#sprintChange.form-control.transparent(rows = '1', name='Sprint')
+                label(for='milestoneChange') Namen ändern:
+                textarea#milestoneChange.form-control.transparent(rows = '1', name='Milestone')
             .form-group
                 label(for='descriptionChange') Beschreibung ändern:
                 textarea#descriptionChange.form-control.transparent(rows= '7', name='Beschreibung')
@@ -38,8 +38,8 @@ block content
                 label(for='endDateChange') Enddatum ändern:
                 input#endDateChange.form-control.transparent(type='text', name='Enddatum')
 
-    #dialog-form-delete(title="Sprint wirklich löschen?")
-        p Soll der Sprint wirklich gelöscht werden?
+    #dialog-form-delete(title="Meilenstein wirklich löschen?")
+        p Soll der Meilenstein wirklich gelöscht werden?
 
     #dialog-form-change(title="Änderungen übernehmen?")
         p Sollen die Änderungen wirklich übernommen werden?

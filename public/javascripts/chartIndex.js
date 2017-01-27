@@ -29,7 +29,7 @@ $(document).ready(function (event) {
                 }
                 var text = '<tr><td id="' + val._id + '" class="click tdBig ' + color + '">'
                     + '<b>' + val.name + '</b>' + '<br>' + 'Erstellt von: ' + val._creator
-                    + '</b>' + '<br>' + startDateDay + '.' + startDateMonth + '.' + startDate.getFullYear()
+                    + '<br>' + startDateDay + '.' + startDateMonth + '.' + startDate.getFullYear()
                     + ' - ' + endDateDay + '.' + endDateMonth + '.' + endDate.getFullYear() + '</td></tr>';
                 $("#sprintTable tr:last").after(text);
             });

@@ -32,6 +32,7 @@ router.post('/rest/update', function (req, res, next) {
 })
 
 router.get('/rest', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
     sprint.getAll(res);
 });
 
@@ -61,10 +62,10 @@ router.get('/:name', function (req, res, next) {
     var name = req.params.name;
     res.render('sprintShow', {title: name});
 });
+
 router.get('/:name/edit', function (req, res, next) {
     var name = req.params.name;
     res.render('sprintEdit', {title: name});
 });
-
 
 module.exports = router;
