@@ -6,11 +6,11 @@ function Sprint() {
 
     this.new = function (name, description, start, end, creator) {
         db.connect();
-        var milstoneModel  = MilestoneSchema({
+        var milestoneModel  = MilestoneSchema({
             name: name, description: description,
             start: start, end: end, _creator: creator
         });
-        milstoneModel.save(function (err) {
+        milestoneModel.save(function (err) {
             if (err) {
                 console.log(err);
             } else {

@@ -3,6 +3,7 @@
  */
 var Task = require('./task_schema');
 var User = require('./user_schema');
+var Milestone = require('./milestone_schema');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -15,7 +16,8 @@ var sprintSchema = new Schema({
     end: {type: Date, required: true},
     _creator: {type: String, ref: User},
     participants: [{type: mongoose.Schema.Types.ObjectId, ref: User}],
-    tasks: [{type: mongoose.Schema.Types.ObjectId, ref: Task}]
+    tasks: [{type: mongoose.Schema.Types.ObjectId, ref: Task}],
+    _milestone : {type: String, ref: Milestone}
 });
 
 // Create model for a sprint

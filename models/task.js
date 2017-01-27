@@ -145,7 +145,7 @@ function Task() {
             res.send(tasks);
         });
         db.disconnect();
-    }
+    };
 
     // Remove a task (with specified ID)
     this.deleteTask = function (taskId, res) {
@@ -155,7 +155,7 @@ function Task() {
             res.sendStatus(200);
         });
         db.disconnect();
-    }
+    };
 
     //Remove task from a sprint
     this.removeSprintFromTask = function (taskId, sprintId, res) {
@@ -165,7 +165,7 @@ function Task() {
             res.sendStatus(200);
         });
         db.disconnect();
-    }
+    };
 
     // Get a Sprint Id for a task
     this.getSprintToTaskId = function (task_id, res) {
