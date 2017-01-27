@@ -109,3 +109,7 @@ input[type="checkbox"]{
 #chartContainer {
   margin-top:50px;
 }
+
+.cursor {
+  cursor: pointer;
+}

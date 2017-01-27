@@ -64,7 +64,7 @@ $(document).ready(function (event) {
             $.each(data, function (key ,val) {
                 tasks[val._id] = data;
                 var text = '<tr class="click tdBig" id="'+ val._id +'">' +
-                    '<td>'+ val.task+ '<br>Runde: ' + val.rating_round + '</td>' +
+                    '<td class="cursor">'+ val.task+ '<br>Runde: ' + val.rating_round + '</td>' +
                     '</tr>';
                 $("#pokerTable tr:last").after(text);
             });

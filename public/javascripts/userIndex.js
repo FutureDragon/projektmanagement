@@ -221,10 +221,10 @@ $(document).ready(function (event) {
         $.getJSON( "/users/rest", function( data ) {
             $.each(data, function (key ,val) {
                 var text = '<tr class="click" id="'+ val._id +'">' +
-                    '<td>'+ val.firstname + '</td>' +
-                    '<td>'+ val.lastname + '</td>' +
-                    '<td>'+ val.email + '</td>' +
-                    '<td>'+ val.role + '</td>' +
+                    '<td class="cursor">'+ val.firstname + '</td>' +
+                    '<td class="cursor">'+ val.lastname + '</td>' +
+                    '<td class="cursor">'+ val.email + '</td>' +
+                    '<td class="cursor">'+ val.role + '</td>' +
                     '</tr>';
 
                 $("#userTable tr:last").after(text);
