@@ -68,6 +68,11 @@ h1 {
   border-radius: 5px;
 }
 
+.sprintCheckbox:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .sprintname {
   width: 900px;
 

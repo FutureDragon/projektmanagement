@@ -33,6 +33,10 @@ $(document).ready(function (event) {
                     + ' - ' + endDateDay + '.' + endDateMonth + '.' + endDate.getFullYear() + '</td></tr>';
                 $("#sprintTable tr:last").after(text);
             });
+            if (data.length == 0) {
+                var text = "<div class='alert alert-warning'><p>Keine Sprints vorhanden!</p></div>";
+                $("#sprintTable").append(text);
+            }
             $(".table").fadeIn(500);
         });
     }

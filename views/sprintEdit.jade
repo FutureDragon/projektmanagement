@@ -15,9 +15,9 @@ block content
 
     #message
     #taskContainer.col-md-6
-        p  Tasks auswählen die in den Sprint sollen:
+        p Tasks auswählen, die dem Sprint zugeordnet werden sollen:
     #taskContainer2.col-md-6
-        p  Tasks auswählen die aus dem Sprint sollen:
+        p Tasks auswählen, die aus dem Sprint entfernt werden sollen:
     button#save.btn.btn-default.transparent.col-md-12  Speichern
     input#sprintId(type="hidden" value="#{title}")
 
@@ -41,5 +41,5 @@ block content
     #dialog-form-delete(title="Sprint wirklich löschen?")
         p Soll der Sprint wirklich gelöscht werden?
 
-    #dialog-form-change(title="Änderungen übernehmen?")
+    #dialog-form-change(title="Änderungen wirklich übernehmen?")
         p Sollen die Änderungen wirklich übernommen werden?

@@ -4,7 +4,13 @@ $(document).ready(function () {
     var openTaskId;
     var endDate = $("#endDate");
 
-    $("#endDate").datepicker({dateFormat: 'dd.mm.yy'}).val();
+    $("#endDate").datepicker({
+        dateFormat: 'dd.mm.yy',
+        dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+        monthNames: [ "Januar", "Februar", "März", "April", "Mai", "Juni",
+            "Juli", "August", "September", "Oktober", "November", "Dezember" ],
+        firstDay: 1
+    }).val();
 
     getSprint($("#sprintId").val());
 

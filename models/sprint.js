@@ -102,7 +102,7 @@ function Sprint() {
     // Get all sprints which do not belong to a milestone
     this.getSprintsWithoutMilestone = function (res) {
         db.connect();
-        MilestoneSchema.find({_milestone: null}, function (err, sprints) {
+        SprintSchema.find({_milestone: null}, function (err, sprints) {
             if (err) throw err;
             res.send(sprints);
         });
@@ -110,34 +110,33 @@ function Sprint() {
         //res.sendStatus(200);
     };
 
+    // Get all sprints which belong to a milestone found by milestone ID
+    this.getSprintsForMilestone = function (milestone_id, res) {
+        db.connect();
+        console.log(milestone_id);
+        SprintSchema.find({_milestone: milestone_id}, function (err, sprints) {
+            if (err) console.error(err);
+            res.send(sprints);
+        });
+        db.disconnect();
+    };
 
 }
 
-// Assign a milestone to a sprint
-this.assignMilestoneToSprint = function (sprint_id, milestone_id, res) {
-    db.connect();
-    SprintSchema.findOneAndUpdate({_id: sprint_id}, {_milestone: milestone_id}, function (err, user) {
-        if (err) {
-            throw err;
-        }
-        else {
-            // we have the updated user returned to us
-            console.log(user);
-        }
-    });
-    db.disconnect();
-    res.sendStatus(200);
-};
-
-// Get all sprints which belong to a milestone found by milestone ID
-this.getSprintsForMilestone = function (milestone_id, res) {
-    db.connect();
-    console.log(sprint_id);
-    SprintSchema.find({_milestone: milestone_id}, function (err, sprint) {
-        if (err) console.error(err);
-        res.send(sprint);
-    });
-    db.disconnect();
-};
+    // Assign a milestone to a sprint
+    this.assignMilestoneToSprint = function (sprint_id, milestone_id, res) {
+        db.connect();
+        SprintSchema.findOneAndUpdate({_id: sprint_id}, {_milestone: milestone_id}, function (err, user) {
+            if (err) {
+                throw err;
+            }
+            else {
+                // we have the updated user returned to us
+                console.log(user);
+            }
+        });
+        db.disconnect();
+        res.sendStatus(200);
+    };
 
 module.exports = new Sprint();

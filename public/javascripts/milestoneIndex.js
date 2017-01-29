@@ -53,6 +53,13 @@ $(document).ready(function (event) {
                     + ' - ' + endDateDay + '.' + endDateMonth + '.' + endDate.getFullYear() + '</td></tr>';
                 $("#milestoneTable tr:last").after(text);
             });
+            if (data.length == 0) {
+                var text = "<div class='alert alert-warning'><p>Keine Meilensteine vorhanden!</p></div>";
+                $("#noMilestone").append(text);
+            }
+            else {
+                $("#noMilestone").hide();
+            }
             $(".table").fadeIn(500);
         });
     }
@@ -61,7 +68,7 @@ $(document).ready(function (event) {
         window.location = "/milestone/" + $(this).attr("id");
     });
 
-    // ____________________________________________________________________________
+// ____________________________________________________________________________
 
     dialog = $("#dialog-form").dialog({
         autoOpen: false,

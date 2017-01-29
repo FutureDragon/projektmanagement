@@ -29,7 +29,7 @@ router.post('/rest/update', function (req, res, next) {
     console.log("Description: " + req.body.description);
     console.log("Start date: " + req.body.start);
     console.log("End date: " + req.body.end);
-})
+});
 
 router.get('/rest', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
@@ -39,6 +39,11 @@ router.get('/rest', function (req, res, next) {
 router.get('/rest/taskWithoutSprint', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     task.getTasksWithoutSprint(res);
+});
+
+router.get('/rest/getSprintsToMilestone/:id', function (req, res, next) {
+    var id = req.params.id;
+    sprint.getSprintsForMilestone(id, res);
 });
 
 router.get('/rest/:id', function (req, res, next) {
