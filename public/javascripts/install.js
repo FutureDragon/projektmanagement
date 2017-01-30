@@ -123,6 +123,8 @@ $(document).ready(function (event) {
 
     function finsihedtasks() {
         $("#log").append("<p class='green logrow'>Finished to Insert Tasks</p>");
+        $("#log").append("<p class='logrow'>Start to Insert Sprints</p>");
+        setTimeout(addSprint,200);
     }
     function addTask2() {
         $.ajax(
@@ -187,6 +189,163 @@ $(document).ready(function (event) {
                 statusCode: {
                     200: function (response) {
 
+                    }
+                }
+            }
+        );
+    }
+
+    function addSprint() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/rest/install/addSprint",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {}),
+                statusCode: {
+                    200: function (response) {
+                        setTimeout(addSprint2, 200);
+                    }
+                }
+            }
+        );
+    }
+    function addSprint2() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/rest/install/addSprint2",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {}),
+                statusCode: {
+                    200: function (response) {
+                        setTimeout(addSprint3, 200);
+                    }
+                }
+            }
+        );
+    }
+    function addSprint3() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/rest/install/addSprint3",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {}),
+                statusCode: {
+                    200: function (response) {
+                        setTimeout(addSprint4, 200);
+                    }
+                }
+            }
+        );
+    }
+    function addSprint4() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/rest/install/addSprint4",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {}),
+                statusCode: {
+                    200: function (response) {
+                        setTimeout(addSprint5, 200);
+                    }
+                }
+            }
+        );
+    }
+    function addSprint5() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/rest/install/addSprint5",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {}),
+                statusCode: {
+                    200: function (response) {
+                        $("#log").append("<p class='green logrow'>Finished to Insert Sprints</p>");
+                        $("#log").append("<p class='logrow'>Start to Insert Milestones</p>");
+                        setTimeout(addMilestone, 200);
+                    }
+                }
+            }
+        );
+    }
+
+    function addMilestone() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/rest/install/addMilestone",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {}),
+                statusCode: {
+                    200: function (response) {
+                        setTimeout(addMilestone2, 200);
+                    }
+                }
+            }
+        );
+    }
+    function addMilestone2() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/rest/install/addMilestone2",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {}),
+                statusCode: {
+                    200: function (response) {
+                        setTimeout(addMilestone3, 200);
+                    }
+                }
+            }
+        );
+    }
+    function addMilestone3() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/rest/install/addMilestone3",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {}),
+                statusCode: {
+                    200: function (response) {
+                        setTimeout(addMilestone4, 200);
+                    }
+                }
+            }
+        );
+    }
+    function addMilestone4() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/rest/install/addMilestone4",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {}),
+                statusCode: {
+                    200: function (response) {
+                        $("#log").append("<p class='green logrow'>Finished to Insert Milestones</p>");
                     }
                 }
             }

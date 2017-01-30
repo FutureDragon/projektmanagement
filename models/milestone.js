@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var MilestoneSchema = require("../schema/milestone_schema");
 var TaskSchema = require("../schema/task_schema");
 var db = require('./db');
-function Sprint() {
+function Milestone() {
 
     this.new = function (name, description, start, end, creator) {
         db.connect();
@@ -41,4 +41,4 @@ function Sprint() {
     };
 
 }
-module.exports = new Sprint();
+module.exports = new Milestone();
