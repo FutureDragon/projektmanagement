@@ -5,6 +5,17 @@ $(document).ready(function (event) {
     var description = $("#description");
     var openTaskId;
     var endDate = $("#endDate");
+    var today = new Date();
+    var endDateMonth = today.getMonth() + 1;
+    if (endDateMonth.toString().length < 2) {
+        endDateMonth = "0" + endDateMonth;
+    }
+    var endDateDay = today.getDate();
+    if (endDateDay.toString().length < 2) {
+        endDateDay = "0" + endDateDay;
+    }
+    var endDateString = "";
+    endDateString = endDateDay + "." + endDateMonth + "." + today.getFullYear();
 
     $("#endDate").datepicker({
         dateFormat: 'dd.mm.yy',
@@ -12,7 +23,7 @@ $(document).ready(function (event) {
         monthNames: [ "Januar", "Februar", "März", "April", "Mai", "Juni",
             "Juli", "August", "September", "Oktober", "November", "Dezember" ],
         firstDay: 1
-    }).val();
+    }).val(endDateString);
 
     getTasks();
 

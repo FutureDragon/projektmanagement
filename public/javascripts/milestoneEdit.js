@@ -13,15 +13,15 @@ $(document).ready(function () {
     $("#startDateChange").datepicker({
         dateFormat: 'dd.mm.yy',
         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-        monthNames: [ "Januar", "Februar", "März", "April", "Mai", "Juni",
-            "Juli", "August", "September", "Oktober", "November", "Dezember" ],
+        monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni",
+            "Juli", "August", "September", "Oktober", "November", "Dezember"],
         firstDay: 1
     }).val();
     $("#endDateChange").datepicker({
         dateFormat: 'dd.mm.yy',
         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-        monthNames: [ "Januar", "Februar", "März", "April", "Mai", "Juni",
-            "Juli", "August", "September", "Oktober", "November", "Dezember" ],
+        monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni",
+            "Juli", "August", "September", "Oktober", "November", "Dezember"],
         firstDay: 1
     }).val();
 
@@ -147,12 +147,12 @@ $(document).ready(function () {
     function addSprintsToMilestoneSuccess() {
         counter++;
         if (counter != sprints.length) {
-            setTimeout(function() {
+            setTimeout(function () {
                 addSprintsToMilestone();
             }, 200);
         }
         else {
-            setTimeout(function() {
+            setTimeout(function () {
                 removeSprintsFromMilestone();
             }, 200);
             sprints.splice(0, sprints.length);
@@ -181,7 +181,7 @@ $(document).ready(function () {
     function removeSprintsFromMilestoneSuccess() {
         counter2++;
         if (counter2 != sprints2.length) {
-            setTimeout(function() {
+            setTimeout(function () {
                 removeSprintsFromMilestone();
             }, 200);
         }
@@ -195,13 +195,13 @@ $(document).ready(function () {
         var checkbox = $(this).find(".checkbox-check");
         if (checkbox.is(":checked")) {
             $(this).find(".checkbox-check").prop('checked', false);
-            $(this).removeClass("blue");
-            $(this).addClass("green");
+            $(this).removeClass("green");
+            $(this).addClass("blue");
         }
         else {
             $(this).find(".checkbox-check").prop('checked', true);
-            $(this).removeClass("green");
-            $(this).addClass("blue");
+            $(this).removeClass("blue");
+            $(this).addClass("green");
         }
     });
 
@@ -215,15 +215,25 @@ $(document).ready(function () {
 
     dialog = $("#dialog-form-milestone").dialog({
         autoOpen: false,
+        height: 570,
         width: 450,
         modal: true,
         buttons: {
+            /* Meilenstein löschen
             "Meilenstein löschen": function () {
                 dialogDelete.dialog("open");
-            },
+            },*/
             "Änderungen übernehmen": function () {
+                var startDateFormat = startDateChange.val();
+                var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
+                    + "/" + startDateFormat.substring(6, 10);
+                var endDateFormat = endDateChange.val();
+                var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
+                    + "/" + endDateFormat.substring(6, 10);
+                var startDate = new Date(startDateChanged);
+                var endDate = new Date(endDateChanged);
                 if (milestoneChange.val() != "" && startDateChange.val() != "" && endDateChange.val() != ""
-                    && startDateChange.val() <= endDateChange.val()) {
+                    && startDate <= endDate) {
                     dialogChange.dialog("open");
                 }
                 else {
@@ -251,6 +261,7 @@ $(document).ready(function () {
         }
     });
 
+    /* Meilenstein löschen
     dialogDelete = $("#dialog-form-delete").dialog({
         autoOpen: false,
         height: 180,
@@ -274,8 +285,11 @@ $(document).ready(function () {
                 data: JSON.stringify({"id": $("#milestoneId").val()})
             }
         );
-        setTimeout(function(){window.location = "/milestone";}, 500);
+        setTimeout(function () {
+            window.location = "/milestone";
+        }, 500);
     }
+    */
 
     dialogChange = $("#dialog-form-change").dialog({
         autoOpen: false,
@@ -291,14 +305,17 @@ $(document).ready(function () {
     });
 
     function changeMilestone() {
+        var startDateFormat = startDateChange.val();
+        var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
+            + "/" + startDateFormat.substring(6, 10);
+        var endDateFormat = endDateChange.val();
+        var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
+            + "/" + endDateFormat.substring(6, 10);
+        var startDate = new Date(startDateChanged);
+        var endDate = new Date(endDateChanged);
         if (milestoneChange.val() != "" && startDateChange.val() != "" && endDateChange.val() != ""
-            && startDateChange.val() <= endDateChange.val()) {
-            var startDateFormat = startDateChange.val();
-            var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
-                + "/" + startDateFormat.substring(6, 10);
-            var endDateFormat = endDateChange.val();
-            var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
-                + "/" + endDateFormat.substring(6, 10);
+            && startDate <= endDate) {
+            var id = $("#milestoneId").val();
             $.ajax(
                 {
                     type: "POST",
@@ -306,7 +323,7 @@ $(document).ready(function () {
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
                     data: JSON.stringify({
-                        "id": $("#milestoneId").val(),
+                        "id": id,
                         "name": milestoneChange.val(),
                         "description": descriptionChange.val(),
                         "start": startDateChanged,
@@ -325,7 +342,9 @@ $(document).ready(function () {
         $("#milestoneMessage").text("Meilenstein erfolgreich geändert. Seite wird aktualisiert...").addClass("alert alert-success").fadeIn();
         $("#milestoneMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
         });
-        setTimeout(function(){window.location = "/milestone/" + $("#milestoneId").val();}, 500);
+        setTimeout(function () {
+            window.location = "/milestone/" + $("#milestoneId").val();
+        }, 500);
     }
 
 });

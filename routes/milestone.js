@@ -16,6 +16,16 @@ router.post('/rest', function (req, res, next) {
     milestone.new(req.body.name, req.body.description, req.body.start, req.body.end, req.body._creator);
 });
 
+router.post('/rest/update', function (req, res, next) {
+    console.log("Update von: " + req.body.id);
+    milestone.updateMilestone(req.body.id, req.body.name, req.body.description,
+        req.body.start, req.body.end, res);
+    console.log("Sprint: " + req.body.name);
+    console.log("Description: " + req.body.description);
+    console.log("Start date: " + req.body.start);
+    console.log("End date: " + req.body.end);
+});
+
 router.get('/rest/sprintWithoutMilestone', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     sprint.getSprintsWithoutMilestone(res);

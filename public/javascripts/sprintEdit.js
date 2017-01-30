@@ -13,15 +13,15 @@ $(document).ready(function () {
     $("#startDateChange").datepicker({
         dateFormat: 'dd.mm.yy',
         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-        monthNames: [ "Januar", "Februar", "März", "April", "Mai", "Juni",
-            "Juli", "August", "September", "Oktober", "November", "Dezember" ],
+        monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni",
+            "Juli", "August", "September", "Oktober", "November", "Dezember"],
         firstDay: 1
     }).val();
     $("#endDateChange").datepicker({
         dateFormat: 'dd.mm.yy',
         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-        monthNames: [ "Januar", "Februar", "März", "April", "Mai", "Juni",
-            "Juli", "August", "September", "Oktober", "November", "Dezember" ],
+        monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni",
+            "Juli", "August", "September", "Oktober", "November", "Dezember"],
         firstDay: 1
     }).val();
 
@@ -232,8 +232,16 @@ $(document).ready(function () {
                 dialogDelete.dialog("open");
             },
             "Änderungen übernehmen": function () {
+                var startDateFormat = startDateChange.val();
+                var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
+                    + "/" + startDateFormat.substring(6, 10);
+                var endDateFormat = endDateChange.val();
+                var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
+                    + "/" + endDateFormat.substring(6, 10);
+                var startDate = new Date(startDateChanged);
+                var endDate = new Date(endDateChanged);
                 if (sprintChange.val() != "" && startDateChange.val() != "" && endDateChange.val() != ""
-                    && startDateChange.val() <= endDateChange.val()) {
+                    && startDate <= endDate) {
                     dialogChange.dialog("open");
                 }
                 else {
@@ -285,7 +293,9 @@ $(document).ready(function () {
                 data: JSON.stringify({"id": $("#sprintId").val()})
             }
         );
-        setTimeout(function(){window.location = "/sprint";}, 500);
+        setTimeout(function () {
+            window.location = "/sprint";
+        }, 500);
     }
 
     function deleteSprint() {
@@ -298,7 +308,9 @@ $(document).ready(function () {
                 data: JSON.stringify({"id": $("#sprintId").val()})
             }
         );
-        setTimeout(function(){window.location = "/sprint";}, 500);
+        setTimeout(function () {
+            window.location = "/sprint";
+        }, 500);
     }
 
     dialogChange = $("#dialog-form-change").dialog({
@@ -315,14 +327,16 @@ $(document).ready(function () {
     });
 
     function changeSprint() {
+        var startDateFormat = startDateChange.val();
+        var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
+            + "/" + startDateFormat.substring(6, 10);
+        var endDateFormat = endDateChange.val();
+        var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
+            + "/" + endDateFormat.substring(6, 10);
+        var startDate = new Date(startDateChanged);
+        var endDate = new Date(endDateChanged);
         if (sprintChange.val() != "" && startDateChange.val() != "" && endDateChange.val() != ""
-            && startDateChange.val() <= endDateChange.val()) {
-            var startDateFormat = startDateChange.val();
-            var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
-                + "/" + startDateFormat.substring(6, 10);
-            var endDateFormat = endDateChange.val();
-            var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
-                + "/" + endDateFormat.substring(6, 10);
+            && startDate <= endDate) {
             $.ajax(
                 {
                     type: "POST",
@@ -349,7 +363,9 @@ $(document).ready(function () {
         $("#sprintMessage").text("Sprint erfolgreich geändert. Seite wird aktualisiert...").addClass("alert alert-success").fadeIn();
         $("#sprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
         });
-        setTimeout(function(){window.location = "/sprint/" + $("#sprintId").val() + "/edit";}, 500);
+        setTimeout(function () {
+            window.location = "/sprint/" + $("#sprintId").val() + "/edit";
+        }, 500);
     }
 
 });

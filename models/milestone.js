@@ -30,7 +30,6 @@ function Milestone() {
         db.disconnect();
     };
 
-
     this.get = function (id, res) {
         db.connect();
         MilestoneSchema.findById(id, function (err, sprints) {
@@ -40,5 +39,18 @@ function Milestone() {
         db.disconnect();
     };
 
+    this.updateMilestone = function (id, name, description, start, end, res) {
+        db.connect();
+        MilestoneSchema.findOneAndUpdate({_id: id}, {
+            name: name, description: description,
+            start: start, end: end
+        }, function (err) {
+            if (err) throw err;
+            else {
+                res.sendStatus(200);
+            }
+        });
+        db.disconnect();
+    }
 }
 module.exports = new Milestone();

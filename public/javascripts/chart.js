@@ -139,7 +139,7 @@ $(function () {
                 }
             ]
         };
-        var rest = endDate.getDate() - startDate.getDate();
+        var rest = endDate.getTime() - startDate.getTime();
         if (rest < 7) {
             options.axisX = {
                 minimum: new Date(startYear, startMonth, startDay - 1),

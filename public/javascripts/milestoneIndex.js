@@ -8,15 +8,15 @@ $(document).ready(function (event) {
     $("#start").datepicker({
         dateFormat: 'dd.mm.yy',
         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-        monthNames: [ "Januar", "Februar", "März", "April", "Mai", "Juni",
-            "Juli", "August", "September", "Oktober", "November", "Dezember" ],
+        monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni",
+            "Juli", "August", "September", "Oktober", "November", "Dezember"],
         firstDay: 1
     }).val();
     $("#end").datepicker({
         dateFormat: 'dd.mm.yy',
         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-        monthNames: [ "Januar", "Februar", "März", "April", "Mai", "Juni",
-            "Juli", "August", "September", "Oktober", "November", "Dezember" ],
+        monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni",
+            "Juli", "August", "September", "Oktober", "November", "Dezember"],
         firstDay: 1
     }).val();
 
@@ -96,13 +96,15 @@ $(document).ready(function (event) {
     });
 
     function createMilestone() {
-        if (milestone.val() != "" && startd.val() != "" && endd.val() != "" && startd.val() <= endd.val()) {
-            var startDateFormat = startd.val();
-            var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
-                + "/" + startDateFormat.substring(6, 10);
-            var endDateFormat = endd.val();
-            var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
-                + "/" + endDateFormat.substring(6, 10);
+        var startDateFormat = startd.val();
+        var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
+            + "/" + startDateFormat.substring(6, 10);
+        var endDateFormat = endd.val();
+        var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
+            + "/" + endDateFormat.substring(6, 10);
+        var startDate = new Date(startDateChanged);
+        var endDate = new Date(endDateChanged);
+        if (milestone.val() != "" && startd.val() != "" && endd.val() != "" && startDate <= endDate) {
             var user = Cookies.get("Email");
             $.ajax(
                 {
