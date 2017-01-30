@@ -27,7 +27,7 @@ $(document).ready(function (event) {
 
     function createIndex() {
         $(".table").hide().find("tr:gt(1)").remove();
-        if (Cookies.get("Role") != "scrummaster") {
+        if (Cookies.get("Role") != "scrummaster" && Cookies.get("Role") != "admin") {
             $("#newSprintBtn").hide();
         }
         $.getJSON("/sprint/rest", function (data) {
