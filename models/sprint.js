@@ -121,22 +121,28 @@ function Sprint() {
         db.disconnect();
     };
 
-}
-
     // Assign a milestone to a sprint
-    this.assignMilestoneToSprint = function (sprint_id, milestone_id, res) {
+    this.assignSprintToMilestone = function (sprint_id, milestone_id, res) {
         db.connect();
         SprintSchema.findOneAndUpdate({_id: sprint_id}, {_milestone: milestone_id}, function (err, user) {
             if (err) {
                 throw err;
             }
-            else {
-                // we have the updated user returned to us
-                console.log(user);
-            }
         });
         db.disconnect();
         res.sendStatus(200);
     };
+
+    //Remove sprint from milestone
+    this.removeSprintFromMilestone = function (sprint_id, sprintId, res) {
+        db.connect();
+        SprintSchema.update({_id: sprint_id}, {$unset: {_milestone: 1}}, function (err) {
+            if (err) console.log(err);
+            res.sendStatus(200);
+        });
+        db.disconnect();
+    };
+
+}
 
 module.exports = new Sprint();

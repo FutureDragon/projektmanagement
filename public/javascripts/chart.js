@@ -39,8 +39,8 @@ $(function () {
         $.getJSON("/backlog/rest/getTasksToSprint/" + $("#sprintId").val(), function (data) {
             $.each(data, function (key, val) {
                 countTasks++;
-                if (data.story_points > 0) {
-                    countStoryPoints = countStoryPoints + data.story_points;
+                if (val.story_points > 0) {
+                    countStoryPoints = countStoryPoints + val.story_points;
                 }
                 else {
                     countTasksW++;
@@ -51,8 +51,8 @@ $(function () {
             setTimeout(function () {
                 $.getJSON("/backlog/rest/getTasksToSprint/" + $("#sprintId").val(), function (data) {
                     $.each(data, function (key, val) {
-                        if (data.story_points > 0 && data.end != null && data.end != undefined) {
-                            dataPoints.push({x: new Date(val.end), y: data.story_points});
+                        if (val.story_points > 0 && val.end != null && val.end != undefined) {
+                            dataPoints.push({x: new Date(val.end), y: val.story_points});
                         }
                         else {
                             dataPoints.push({x: undefined, y: 0});

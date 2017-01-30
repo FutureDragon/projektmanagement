@@ -110,7 +110,6 @@ $(document).ready(function () {
 
 //____________________________________________________________________________
 
-    //TODO: urls
     $("#save").click(function () {
         $("input:checkbox[name=sprint]:checked").each(function () {
             sprints.push($(this).val());
@@ -119,7 +118,7 @@ $(document).ready(function () {
             sprints2.push($(this).val());
         });
         if (sprints.length == 0 && sprints2.length == 0) {
-            $("#message").text("Keinen Sprint ausgewählt!").addClass("alert alert-danger");
+            $("#message").text("Kein Sprint ausgewählt!").addClass("alert alert-danger");
         }
         else {
             addSprintsToMilestone();
@@ -197,9 +196,11 @@ $(document).ready(function () {
         if (checkbox.is(":checked")) {
             $(this).find(".checkbox-check").prop('checked', false);
             $(this).removeClass("blue");
+            $(this).addClass("green");
         }
         else {
             $(this).find(".checkbox-check").prop('checked', true);
+            $(this).removeClass("green");
             $(this).addClass("blue");
         }
     });
@@ -212,7 +213,7 @@ $(document).ready(function () {
         dialog.dialog("open");
     });
 
-    dialog = $("#dialog-form-sprint").dialog({
+    dialog = $("#dialog-form-milestone").dialog({
         autoOpen: false,
         width: 450,
         modal: true,
