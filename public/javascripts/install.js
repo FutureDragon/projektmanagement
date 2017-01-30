@@ -2,6 +2,7 @@ $(document).ready(function (event) {
     var tasksIds = [];
     var sprintIds = [];
     var milestonesIds = [];
+    var employeesIds = [];
     $("#message").hide();
     $("#installBtn").click(function () {
         $(".logrow").remove();
@@ -130,6 +131,17 @@ $(document).ready(function (event) {
             }
         );
     }
+
+    function getEmployees() {
+        $.getJSON("/users/rest/getEmployees", function (data) {
+            $.each(data, function (key, val) {
+                employeesIds.push(val._id);
+            });
+        }).done(function () {
+
+        });
+    }
+
     function addTask() {
         $.ajax(
             {
@@ -158,7 +170,8 @@ $(document).ready(function (event) {
         $("#log").append("<p class='green logrow'>Finished to Insert Tasks</p>");
         $("#log").append("<p class='logrow'>Start to Insert Sprints</p>");
         setTimeout(getTasks, 200);
-        setTimeout(addSprint,500);
+        setTimeout(updateTaskStatus, 500);
+
     }
     function addTask2() {
         $.ajax(
@@ -259,6 +272,46 @@ $(document).ready(function (event) {
             });
 
         });
+    }
+
+    function updateTaskStatus() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "backlog/rest/update",
+                contentType: "application/json; charset=utf-8",
+                dataType : 'json',
+                data: JSON.stringify(
+                    {
+                        "id" : tasksIds[0],
+                        "status" : "In Progress",
+                        "end": undefined
+                    }),
+                statusCode: {
+                    200: function (response) {
+                        setTimeout(addUserToTask,200);
+                        setTimeout(addSprint,1000);
+                    }
+                }
+            }
+        );
+
+    }
+
+    function addUserToTask() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/backlog/rest/addUsersToTask",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {
+                        "userId": employeesIds[0],
+                        "taskId": tasksIds[0]
+                    }),
+            }
+        );
     }
 
     function addSprint() {
@@ -529,7 +582,7 @@ $(document).ready(function (event) {
                         $("#log").append("<p class='green logrow'>Finished to Insert Milestones</p>");
                         $("#log").append("<p class='logrow'>Start to make some other things</p>");
                         setTimeout(getMilestones,200);
-                        installFinished();
+                        setTimeout(addSprintToMilestone,400);
                     }
                 }
             }
@@ -541,6 +594,23 @@ $(document).ready(function (event) {
                 milestonesIds.push(val._id);
             });
         });
+    }
+
+    function addSprintToMilestone() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/sprint/rest/addMilestone",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify({"milestone_id": milestonesIds[0], "sprints": sprintIds[0]}),
+                statusCode: {
+                    200: function (response) {
+                        installFinished();
+                    }
+                }
+    }
+        );
     }
 
     function installFinished() {
