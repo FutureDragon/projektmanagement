@@ -44,6 +44,10 @@ $(document).ready(function (event) {
             $("#chartNav").hide();
             $("#milestoneNav").hide();
             $("#userInformation").text("Bitte Loggen Sie sich ein");
+            if ($("#installHidden").val() == "install") {
+                $("#container").show();
+                $("#noLogin").hide();
+            }
         }
     }
 
