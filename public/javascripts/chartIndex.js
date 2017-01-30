@@ -27,7 +27,7 @@ $(document).ready(function (event) {
                 if (endDateDay.toString().length < 2) {
                     endDateDay = "0" + endDateDay;
                 }
-                var text = '<tr><td id="' + val._id + '" class="click tdBig ' + color + '">'
+                var text = '<tr><td id="' + val._id + '" class="click sprint tdBig ' + color + '">'
                     + '<b>' + val.name + '</b>' + '<br>' + 'Erstellt von: ' + val._creator
                     + '<br>' + startDateDay + '.' + startDateMonth + '.' + startDate.getFullYear()
                     + ' - ' + endDateDay + '.' + endDateMonth + '.' + endDate.getFullYear() + '</td></tr>';
@@ -64,7 +64,7 @@ $(document).ready(function (event) {
                 if (endDateDay.toString().length < 2) {
                     endDateDay = "0" + endDateDay;
                 }
-                var text = '<tr><td id="' + val._id + '" class="click tdBig ' + color + '">'
+                var text = '<tr><td id="' + val._id + '" class="click milestone tdBig ' + color + '">'
                     + '<b>' + val.name + '</b>' + '<br>'
                     + startDateDay + '.' + startDateMonth + '.' + startDate.getFullYear()
                     + ' - ' + endDateDay + '.' + endDateMonth + '.' + endDate.getFullYear() + '</td></tr>';
@@ -78,8 +78,12 @@ $(document).ready(function (event) {
         });
     }
 
-    $(".table").on("click", "td", function () {
+    $(".table").on("click", "td.sprint", function () {
         window.location = "/chart/" + $(this).attr("id");
+    });
+
+    $(".table").on("click", "td.milestone", function () {
+        window.location = "/chart/milestone/" + $(this).attr("id");
     });
 
 });
