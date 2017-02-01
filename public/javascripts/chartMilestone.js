@@ -2,6 +2,7 @@ $(function () {
     var milestone;
     var dataPoints = [];
     var countSprints = 0;
+    var check = false;
     var startDate, startDay, startMonth, startYear;
     var endDate, endDay, endMonth, endYear;
     var endDateAxis, endDateAxisDay, endDateAxisMonth, endDateAxisYear;
@@ -74,6 +75,11 @@ $(function () {
                             endDateAxisYear = endDateAxis.getFullYear();
                         }
                     }
+                    for (var i = 0; i < dataPoints.length; i++) {
+                        if (dataPoints[i].x < startDate) {
+                            check = true;
+                        }
+                    }
                     createChart();
                 });
             }, 20);
@@ -116,7 +122,7 @@ $(function () {
                     type: "line",
                     color: "red",
                     showInLegend: true,
-                    legendText: "Sprints",
+                    legendText: "Endzeitpunkte der Sprints",
                     dataPoints: dataPoints
                 }
             ]
@@ -134,6 +140,11 @@ $(function () {
             };
         }
         if (countSprints > 0) {
+            if (check == true) {
+                $("#showMessage").removeClass("alert-danger").hide();
+                $("#showMessage").text("Mindestens ein Sprint endet, bevor der Meilenstein " +
+                    "beginnt!").addClass("alert alert-danger").fadeIn();
+            }
             $("#chartContainer").CanvasJSChart(options);
         }
         else {
