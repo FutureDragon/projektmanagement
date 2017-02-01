@@ -48,6 +48,9 @@ $(document).ready(function (event) {
                 $("#container").show();
                 $("#noLogin").hide();
             }
+            if($("#indexHide").val() == "true"){
+                $("#noLogin").hide();
+            }
         }
     }
 
