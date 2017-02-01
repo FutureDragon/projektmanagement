@@ -68,6 +68,11 @@ h1 {
   border-radius: 5px;
 }
 
+.sprintCheckbox:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .sprintname {
   width: 900px;
 
@@ -104,4 +109,12 @@ input[type="checkbox"]{
 
 .addUserToTask {
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+#chartContainer {
+  margin-top:50px;
+}
+
+.cursor {
+  cursor: pointer;
 }

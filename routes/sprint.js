@@ -21,6 +21,11 @@ router.get('/new', function (req, res, next) {
     res.render('sprintNewSprint', {title: 'Sprint anlegen', action: 'none'});
 });
 
+router.get('/rest', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    sprint.getAll(res);
+});
+
 router.post('/rest/update', function (req, res, next) {
     console.log("Update von: " + req.body.id);
     sprint.updateSprint(req.body.id, req.body.name, req.body.description,
@@ -29,10 +34,6 @@ router.post('/rest/update', function (req, res, next) {
     console.log("Description: " + req.body.description);
     console.log("Start date: " + req.body.start);
     console.log("End date: " + req.body.end);
-})
-
-router.get('/rest', function (req, res, next) {
-    sprint.getAll(res);
 });
 
 router.get('/rest/taskWithoutSprint', function (req, res, next) {
@@ -40,9 +41,9 @@ router.get('/rest/taskWithoutSprint', function (req, res, next) {
     task.getTasksWithoutSprint(res);
 });
 
-router.get('/rest/:id', function (req, res, next) {
+router.get('/rest/getSprintsToMilestone/:id', function (req, res, next) {
     var id = req.params.id;
-    sprint.get(id, res);
+    sprint.getSprintsForMilestone(id, res);
 });
 
 router.post('/rest/delete', function (req, res, next) {
@@ -57,14 +58,29 @@ router.post('/rest/deleteWithTask', function (req, res, next) {
     sprint.deleteTasksWithSprintId(id, res);
 });
 
+router.post('/rest/addMilestone', function(req, res, next) {
+    console.log("Update ");
+    sprint.assignSprintToMilestone(req.body.sprints, req.body.milestone_id, res);
+});
+
+router.post('/rest/removeMilestone', function(req, res, next) {
+    console.log("Remove sprint from milestone: ");
+    sprint.removeSprintFromMilestone(req.body.sprints, req.body.milestone_id, res);
+});
+
+router.get('/rest/:id', function (req, res, next) {
+    var id = req.params.id;
+    sprint.get(id, res);
+});
+
 router.get('/:name', function (req, res, next) {
     var name = req.params.name;
     res.render('sprintShow', {title: name});
 });
+
 router.get('/:name/edit', function (req, res, next) {
     var name = req.params.name;
     res.render('sprintEdit', {title: name});
 });
-
 
 module.exports = router;

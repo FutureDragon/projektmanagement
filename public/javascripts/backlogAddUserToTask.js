@@ -116,6 +116,7 @@ $(document).ready(function (event) {
         else {
             //setTimeout(removeTasksFromSprint, 200);
             users.splice(0, users.length);
+            window.location = "/backlog";
             //window.location = "/sprint/" + $("#sprintId").val();
         }
     }

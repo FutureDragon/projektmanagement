@@ -45,6 +45,9 @@ $(document).ready(function (event) {
                         200: function (response) {
                             dialogShow.dialog("close");
                             setTimeout(getNotRatedTasks, 200);
+                            $('#pokermessages').text("Story Points wurden gespeichert").addClass("alert alert-success");
+                            $('#pokermessages').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
+                            });
                         }
                     }
                 }
@@ -60,8 +63,8 @@ $(document).ready(function (event) {
         $.getJSON( "/planningPoker/rest/" + Cookies.get("Id"), function( data ) {
             $.each(data, function (key ,val) {
                 tasks[val._id] = data;
-                var text = '<tr class="click" id="'+ val._id +'">' +
-                    '<td>'+ val.task+ '</td>' +
+                var text = '<tr class="click tdBig" id="'+ val._id +'">' +
+                    '<td class="cursor">'+ val.task+ '<br>Runde: ' + val.rating_round + '</td>' +
                     '</tr>';
                 $("#pokerTable tr:last").after(text);
             });

@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    script(src='/javascripts/install.js')
+    .jumbotron.transparent.fadeIn
+        h1= title
+        button#installBtn.btn-default.btn  Install
+    #message
+    #log
+    input#installHidden(type="hidden" value="install")
+
+
+

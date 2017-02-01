@@ -31,16 +31,21 @@ html
               a#backlogNav(href='/backlog') Backlog
             li
               a#sprintNav(href='/sprint') Sprint
-              li
-                a#planningPokerNav(href='/planningPoker') Planning Poker
+            li
+              a#planningPokerNav(href='/planningPoker') Planning Poker
+            li
+              a#milestoneNav(href='/milestone') Milestones
+            li
+              a#chartNav(href='/chart') Burn-Down-Chart
             li
               a#userNav(href='/users') User
           ul.nav.navbar-nav.navbar-right
             li
-              button#login.btn.btn-default Login
+              a#faq(href='/faq') Faq
+            li
+              button#login.btn.btn-default.navbar-btn Login
         // /.navbar-collapse
       // /.container-fluid
-
     #dialog-form(title="Login")
       form#newTaskForm(method='post' enctype='application/json')
         .form-group
@@ -54,7 +59,6 @@ html
 
     #dialog-logout-confirm(title="Logout")
       p  Möchten Sie sich wirklich ausloggen?
-
 
     #container.container
       #row.col-md-12.center

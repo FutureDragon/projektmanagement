@@ -13,12 +13,25 @@ $(document).ready(function (event) {
             $("#backlogNav").show();
             $("#sprintNav").show();
             $("#planningPokerNav").show();
+            $("#chartNav").show();
+            $("#milestoneNav").show();
             if(Cookies.get("Role") == "admin") {
                 $("#userNav").show();
             }
             else {
                 $("#userNav").hide();
             }
+            var userRole;
+            if(Cookies.get("Role") == "admin") {
+                userRole = "Administrator";
+            }
+            else if(Cookies.get("Role") == "scrummaster") {
+                userRole = "Scrum Master";
+            }
+            else{
+                userRole = "Mitarbeiter";
+            }
+
         }
         else{
             $("#container").after("<div id='noLogin' class='noLogin center'>" + loginText + "</div>");
@@ -27,6 +40,14 @@ $(document).ready(function (event) {
             $("#backlogNav").hide();
             $("#sprintNav").hide();
             $("#planningPokerNav").hide();
+            $("#footer").hide();
+            $("#chartNav").hide();
+            $("#milestoneNav").hide();
+            $("#userInformation").text("Bitte Loggen Sie sich ein");
+            if ($("#installHidden").val() == "install") {
+                $("#container").show();
+                $("#noLogin").hide();
+            }
         }
     }
 

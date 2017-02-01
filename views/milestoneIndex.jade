@@ -1,0 +1,36 @@
+extends layout
+
+block content
+    script(src='/javascripts/milestoneIndex.js')
+    #header
+        h1= title
+
+    #newMilestoneMessage.fadeIn
+
+    #milestones.col-md-4.col-md-offset-4
+        table#milestoneTable.table.table-hover
+            tr
+                th.center Meilenstein auswählen:
+
+
+    #noMilestone.col-md-4.col-md-offset-4
+
+    #newMilestone.col-md-12
+        button#newMilestoneBtn.btn.btn-default.transparent Neuen Meilenstein anlegen
+
+    #dialog-form(title="Neuen Meilenstein anlegen")
+        form#newMilestoneForm(method='post' enctype='application/json')
+            .form-group
+                p#messageShow
+            .form-group
+                label(for='name') Name
+                input#name.form-control.transparent(type='text', placeholder='Meilenstein', name='Sprint')
+            .form-group
+                label(for='description') Beschreibung
+                textarea#description.form-control.transparent(rows='7', placeholder='Beschreibung des Meilensteins', name='description')
+            .form-group
+                label(for='start') Startdatum
+                input#start.form-control.transparent(type='text', name='start')
+            .form-group
+                label(for='end') Enddatum
+                input#end.form-control.transparent(type='text', name='end')

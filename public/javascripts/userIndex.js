@@ -34,9 +34,6 @@ $(document).ready(function (event) {
         width: 450,
         modal: true,
         buttons: {
-            "Löschen": function () {
-                validateNewUser();
-            },
             "Bearbeiten":{
                 id : "changeUser",
                 text : "Bearbeiten",
@@ -48,6 +45,7 @@ $(document).ready(function (event) {
             }
         },
         close: function () {
+            setFormInShowMode();
         }
     });
 
@@ -125,6 +123,9 @@ $(document).ready(function (event) {
                         $("#employeeStatusShow").prop("disabled", true);
                         dialogRegisterShow.dialog("close");
                         setTimeout(getUsers,200);
+                        $("#messages").text("User erfolgreich geändert").removeClass("alert-danger").addClass("alert alert-success");
+                        $('#messages').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
+                        });
                     }
                 },
                 success: function (data) {
@@ -140,6 +141,15 @@ $(document).ready(function (event) {
         $("#emailShow").prop("disabled", false);
         $("#passwordShow").prop("disabled", false);
         $("#employeeStatusShow").prop("disabled", false);
+    }
+
+    function setFormInShowMode() {
+        $("#firstNameShow").prop("disabled", true);
+        $("#lastNameShow").prop("disabled", true);
+        $("#emailShow").prop("disabled", true);
+        $("#passwordShow").prop("disabled", true);
+        $("#employeeStatusShow").prop("disabled", true);
+        $("#changeUser").text("Bearbeiten");
     }
 
 
@@ -187,6 +197,8 @@ $(document).ready(function (event) {
                 statusCode: {
                     200: function (response) {
                         $("#registerUserMessage").text("User erfolgreich angelegt").removeClass("alert-danger").addClass("alert alert-success");
+                        $('#registerUserMessage').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
+                        });
                         registerReset();
                     }
                 },
@@ -205,14 +217,14 @@ $(document).ready(function (event) {
     }
 
     function getUsers() {
-        $("#userTable").hide().find("tr:gt(1)").remove();
+        $("#userTable").hide().find("tr:gt(0)").remove();
         $.getJSON( "/users/rest", function( data ) {
             $.each(data, function (key ,val) {
                 var text = '<tr class="click" id="'+ val._id +'">' +
-                    '<td>'+ val.firstname + '</td>' +
-                    '<td>'+ val.lastname + '</td>' +
-                    '<td>'+ val.email + '</td>' +
-                    '<td>'+ val.role + '</td>' +
+                    '<td class="cursor">'+ val.firstname + '</td>' +
+                    '<td class="cursor">'+ val.lastname + '</td>' +
+                    '<td class="cursor">'+ val.email + '</td>' +
+                    '<td class="cursor">'+ val.role + '</td>' +
                     '</tr>';
 
                 $("#userTable tr:last").after(text);
@@ -231,6 +243,17 @@ $(document).ready(function (event) {
             $("#lastNameShow").val(data[0].lastname);
             $("#emailShow").val(data[0].email);
             $("#passwordShow").val(data[0].password);
+            if(data[0].role == "admin") {
+                $("#employeeStatus option[value='Administrator']").prop('selected', true);
+            }
+            else if(data[0].role == "scrummaster") {
+                $("#scrummaster").attr('selected','selected');
+            }
+            else {
+                if(data[0].role == "employee") {
+                    $("#employee").attr('selected','selected');
+                }
+            }
 
         }).done(function () {
             dialogRegisterShow.dialog("open");

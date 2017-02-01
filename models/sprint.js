@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var SprintSchema = require("../schema/sprint_schema");
 var TaskSchema = require("../schema/task_schema");
+var MilestoneSchema = require("../schema/milestone_schema");
 var db = require('./db');
 function Sprint() {
 
@@ -96,6 +97,52 @@ function Sprint() {
             }
         });
         db.disconnect();
-    }
+    };
+
+    // Get all sprints which do not belong to a milestone
+    this.getSprintsWithoutMilestone = function (res) {
+        db.connect();
+        SprintSchema.find({_milestone: null}, function (err, sprints) {
+            if (err) throw err;
+            res.send(sprints);
+        });
+        db.disconnect();
+        //res.sendStatus(200);
+    };
+
+    // Get all sprints which belong to a milestone found by milestone ID
+    this.getSprintsForMilestone = function (milestone_id, res) {
+        db.connect();
+        console.log(milestone_id);
+        SprintSchema.find({_milestone: milestone_id}, function (err, sprints) {
+            if (err) console.error(err);
+            res.send(sprints);
+        });
+        db.disconnect();
+    };
+
+    // Assign a milestone to a sprint
+    this.assignSprintToMilestone = function (sprint_id, milestone_id, res) {
+        db.connect();
+        SprintSchema.findOneAndUpdate({_id: sprint_id}, {_milestone: milestone_id}, function (err, user) {
+            if (err) {
+                throw err;
+            }
+        });
+        db.disconnect();
+        res.sendStatus(200);
+    };
+
+    //Remove sprint from milestone
+    this.removeSprintFromMilestone = function (sprint_id, sprintId, res) {
+        db.connect();
+        SprintSchema.update({_id: sprint_id}, {$unset: {_milestone: 1}}, function (err) {
+            if (err) console.log(err);
+            res.sendStatus(200);
+        });
+        db.disconnect();
+    };
+
 }
+
 module.exports = new Sprint();

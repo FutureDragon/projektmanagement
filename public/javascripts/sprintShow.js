@@ -1,7 +1,28 @@
 $(document).ready(function () {
     var sprint, task;
-    var dialog, form, dialogShow, dialogConfirm;
+    var dialog, form, dialogShow, dialogConfirm, dialogEnd;
     var openTaskId;
+    var endDate = $("#endDate");
+    var today = new Date();
+    var endDateMonth = today.getMonth() + 1;
+    if (endDateMonth.toString().length < 2) {
+        endDateMonth = "0" + endDateMonth;
+    }
+    var endDateDay = today.getDate();
+    if (endDateDay.toString().length < 2) {
+        endDateDay = "0" + endDateDay;
+    }
+    var endDateString = "";
+    endDateString = endDateDay + "." + endDateMonth + "." + today.getFullYear();
+
+    $("#endDate").datepicker({
+        dateFormat: 'dd.mm.yy',
+        dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+        monthNames: [ "Januar", "Februar", "März", "April", "Mai", "Juni",
+            "Juli", "August", "September", "Oktober", "November", "Dezember" ],
+        firstDay: 1
+    }).val(endDateString);
+
     getSprint($("#sprintId").val());
 
     function getSprint(id) {
@@ -99,8 +120,7 @@ $(document).ready(function () {
                 $("#statusShow").text("Code Review");
             },
             "Fertig": function () {
-                updateTask(task._id, "Done");
-                $("#statusShow").text("Done");
+                dialogEnd.dialog("open");
             },
             "Bearbeiten":{
                 id : "change",
@@ -130,10 +150,53 @@ $(document).ready(function () {
                 url: "/backlog/rest/update",
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                data: JSON.stringify({"id": id, "status": status}),
+                data: JSON.stringify(
+                    {
+                        "id": id,
+                        "status": status,
+                        "end": undefined
+                    }),
                 success: updatesuccess()
             }
         );
+    }
+
+    dialogEnd = $("#dialog-form-end").dialog({
+        autoOpen: false,
+        height: 300,
+        width: 500,
+        modal: true,
+        buttons: {
+            "OK": function() {
+                updateTaskEnd(task._id, "Done");
+            },
+            "Abbrechen": function () {
+                dialogEnd.dialog("close");
+            }
+        }
+    });
+
+    function updateTaskEnd(id, status) {
+        $("#statusShow").text("Done");
+        var endDateFormat = endDate.val();
+        var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
+            + "/" + endDateFormat.substring(6, 10);
+        $.ajax(
+            {
+                type: "POST",
+                url: "/backlog/rest/updateEnd",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {
+                        "id": id,
+                        "status": status,
+                        "end": endDateChanged
+                    }),
+                success: updatesuccess()
+            }
+        );
+        dialogEnd.dialog("close");
     }
 
     function updatesuccess() {

@@ -62,9 +62,24 @@ function Task() {
     };
 
     // Update the status of a task
-    this.updateStatus = function (id, status, res) {
+    this.updateStatus = function (id, status, end, res) {
         db.connect();
-        TaskSchema.findOneAndUpdate({_id: id}, {status: status, updated: Date.now()}, function (err, task) {
+        TaskSchema.findOneAndUpdate({_id: id}, {status: status, updated: Date.now(), end: end}, function (err, task) {
+            if (err) {
+                throw err;
+            }
+            else {
+                // Call the function in taskStatus.js to create a new model which contains information about the taskStatus History
+                TaskStatus.newTaskStatus(id, status, res);
+            }
+        });
+        db.disconnect();
+    };
+
+    // End a task
+    this.updateStatusEnd = function (id, status, end, res) {
+        db.connect();
+        TaskSchema.findOneAndUpdate({_id: id}, {status: status, updated: Date.now(), end: end}, function (err, task) {
             if (err) {
                 throw err;
             }
@@ -130,7 +145,7 @@ function Task() {
             res.send(tasks);
         });
         db.disconnect();
-    }
+    };
 
     // Remove a task (with specified ID)
     this.deleteTask = function (taskId, res) {
@@ -140,7 +155,7 @@ function Task() {
             res.sendStatus(200);
         });
         db.disconnect();
-    }
+    };
 
     //Remove task from a sprint
     this.removeSprintFromTask = function (taskId, sprintId, res) {
@@ -150,7 +165,7 @@ function Task() {
             res.sendStatus(200);
         });
         db.disconnect();
-    }
+    };
 
     // Get a Sprint Id for a task
     this.getSprintToTaskId = function (task_id, res) {

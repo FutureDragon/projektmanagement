@@ -1,12 +1,12 @@
 $(document).ready(function () {
     var dialog, form, dialogDelete, dialogChange;
-    var sprintChange = $("#sprintChange");
+    var milestoneChange = $("#milestoneChange");
     var descriptionChange = $("#descriptionChange");
     var startDateChange = $("#startDateChange");
     var endDateChange = $("#endDateChange");
-    var sprint;
-    var tasks = [];
-    var tasks2 = [];
+    var milestone;
+    var sprints = [];
+    var sprints2 = [];
     var counter = 0;
     var counter2 = 0;
 
@@ -25,10 +25,12 @@ $(document).ready(function () {
         firstDay: 1
     }).val();
 
-    getSprint($("#sprintId").val());
+    getMilestone($("#milestoneId").val());
 
-    function getSprint(id) {
-        $.getJSON("/sprint/rest/" + id, function (data) {
+//____________________________________________________________________________
+
+    function getMilestone(id) {
+        $.getJSON("/milestone/rest/" + id, function (data) {
             var startDate = new Date(data.start);
             var startDateMonth = startDate.getMonth() + 1;
             if (startDateMonth.toString().length < 2) {
@@ -52,185 +54,175 @@ $(document).ready(function () {
             var endDateString = "";
             endDateString = endDateDay + "." + endDateMonth + "." + endDate.getFullYear();
             $("#description").text(data.description);
-            $("#author").text("Erstellt von: " + data._creator);
-            $("#begin").text("Sprint startet: " + startDateString);
-            $("#end").text("Sprint endet: " + endDateString);
-            $("#sprintChange").text(data.name);
+            $("#creator").text("Erstellt von: " + data._creator);
+            $("#begin").text("Meilenstein startet: " + startDateString);
+            $("#end").text("Meilenstein endet: " + endDateString);
+            $("#milestoneChange").text(data.name);
             $("#descriptionChange").text(data.description);
             $("#startDateChange").val(startDateString);
             $("#endDateChange").val(endDateString);
-            sprint = data;
+            $("#milestoneName").text(data.name);
+            milestone = data;
         }).done(function () {
-            $("#sprintName").text(sprint.name);
-            getTasksWithoutSprint();
+            getSprintsWithoutMilestone();
         });
     }
 
-    function getTasksWithoutSprint() {
-        $.getJSON("/sprint/rest/taskWithoutSprint", function (data) {
+    function getSprintsWithoutMilestone() {
+        $.getJSON("/milestone/rest/sprintWithoutMilestone", function (data) {
             $.each(data, function (key, val) {
-                if (val.priority == "Low") {
-                    color = "green";
-                }
-                else if (val.priority == "Medium") {
-                    color = "yellow";
-                }
-                else if (val.priority == "High") {
-                    color = "red";
-                }
+                color = "blue";
                 var text = '<div class="checkbox sprintCheckbox ' + color + '">' +
                     '<label class="sprintname">' +
-                    '<input class="checkbox-check" type="checkbox" name="task" value="' + val._id + '">' +
-                    '<p>' + val.task + '</p>' +
+                    '<input class="checkbox-check" type="checkbox" name="sprint" value="' + val._id + '">' +
+                    '<p>' + val.name + '</p>' +
                     '</label>' +
                     '</div>';
-                $("#taskContainer").append(text);
+                $("#sprintContainer").append(text);
             });
             if (data.length == 0) {
-                var text = "<div class='alert alert-warning'><p>Keine Offenen Tasks vorhanden</p></div>";
-                $("#taskContainer").append(text);
-                //$("#save").prop("disabled", true);
+                var text = "<div class='alert alert-warning'><p>Keine offenen Sprints vorhanden</p></div>";
+                $("#sprintContainer").append(text);
             }
         }).done(function () {
-            getTasks();
+            getSprints();
         });
     }
 
-    function getTasks() {
-        $.getJSON("/backlog/rest/getTasksToSprint/" + $("#sprintId").val(), function (data) {
+    function getSprints() {
+        $.getJSON("/sprint/rest/getSprintsToMilestone/" + $("#milestoneId").val(), function (data) {
             $.each(data, function (key, val) {
-                if (val.priority == "Low") {
-                    color = "green";
-                }
-                else if (val.priority == "Medium") {
-                    color = "yellow";
-                }
-                else if (val.priority == "High") {
-                    color = "red";
-                }
+                color = "blue";
                 var text = '<div class="checkbox sprintCheckbox ' + color + '">' +
                     '<label class="sprintname">' +
-                    '<input class="checkbox-check" type="checkbox" name="task2" value="' + val._id + '">' +
-                    '<p>' + val.task + '</p>' +
+                    '<input class="checkbox-check" type="checkbox" name="sprint2" value="' + val._id + '">' +
+                    '<p>' + val.name + '</p>' +
                     '</label>' +
                     '</div>';
-                $("#taskContainer2").append(text);
+                $("#sprintContainer2").append(text);
             });
             if (data.length == 0) {
-                var text = "<div class='alert alert-warning'><p>Der Sprint besitzt noch keine Tasks</p></div>";
-                $("#taskContainer2").append(text);
-                //$("#save") .prop("disabled", true);
+                var text = "<div class='alert alert-warning'><p>Der Meilenstein besitzt noch keine Sprints</p></div>";
+                $("#sprintContainer2").append(text);
             }
         });
     }
 
-    function addTasksToSprint() {
-        var id = $("#sprintId").val();
-        if (tasks.length != 0) {
-            $.ajax(
-                {
-                    type: "POST",
-                    url: "/backlog/rest/addSprint",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    data: JSON.stringify({"sprint_id": id, "tasks": tasks[counter]}),
-                    success: addTaskToSprintSuccess()
-                }
-            );
-        }
-        else {
-            removeTasksFromSprint();
-        }
-    }
-
-    function removeTasksFromSprint() {
-        var id = $("#sprintId").val();
-        if (tasks2.length != 0) {
-            $.ajax(
-                {
-                    type: "POST",
-                    url: "/backlog/rest/removeSprint",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: 'json',
-                    data: JSON.stringify({"sprint_id": id, "tasks": tasks2[counter2]}),
-                    success: removeTaskFromSprintSuccess()
-                }
-            );
-        }
-        else {
-            window.location = "/sprint/" + $("#sprintId").val();
-        }
-
-    }
-
-    function removeTaskFromSprintSuccess() {
-        counter2++;
-        if (counter2 != tasks2.length) {
-            setTimeout(removeTasksFromSprint, 200);
-        }
-        else {
-            tasks2.splice(0, tasks2.length);
-            window.location = "/sprint/" + $("#sprintId").val();
-        }
-    }
-
-    function addTaskToSprintSuccess() {
-        counter++;
-        if (counter != tasks.length) {
-            setTimeout(addTasksToSprint, 200);
-        }
-        else {
-            setTimeout(removeTasksFromSprint, 200);
-            tasks.splice(0, tasks.length);
-            //window.location = "/sprint/" + $("#sprintId").val();
-        }
-    }
+//____________________________________________________________________________
 
     $("#save").click(function () {
-        $("input:checkbox[name=task]:checked").each(function () {
-            tasks.push($(this).val());
+        $("input:checkbox[name=sprint]:checked").each(function () {
+            sprints.push($(this).val());
         });
-        $("input:checkbox[name=task2]:checked").each(function () {
-            tasks2.push($(this).val());
+        $("input:checkbox[name=sprint2]:checked").each(function () {
+            sprints2.push($(this).val());
         });
-        if (tasks.length == 0 && tasks2.length == 0) {
-            $("#message").text("Kein Task ausgewählt!").addClass("alert alert-danger");
+        if (sprints.length == 0 && sprints2.length == 0) {
+            $("#message").text("Kein Sprint ausgewählt!").addClass("alert alert-danger");
         }
         else {
-            addTasksToSprint();
+            addSprintsToMilestone();
         }
-
-
     });
+
+    function addSprintsToMilestone() {
+        var id = $("#milestoneId").val();
+        if (sprints.length != 0) {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/sprint/rest/addMilestone",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    data: JSON.stringify({"milestone_id": id, "sprints": sprints[counter]}),
+                    success: addSprintsToMilestoneSuccess()
+                }
+            );
+        }
+        else {
+            removeSprintsFromMilestone();
+        }
+    }
+
+    function addSprintsToMilestoneSuccess() {
+        counter++;
+        if (counter != sprints.length) {
+            setTimeout(function () {
+                addSprintsToMilestone();
+            }, 200);
+        }
+        else {
+            setTimeout(function () {
+                removeSprintsFromMilestone();
+            }, 200);
+            sprints.splice(0, sprints.length);
+        }
+    }
+
+    function removeSprintsFromMilestone() {
+        var id = $("#milestoneId").val();
+        if (sprints2.length != 0) {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/sprint/rest/removeMilestone",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    data: JSON.stringify({"milestone_id": id, "sprints": sprints2[counter2]}),
+                    success: removeSprintsFromMilestoneSuccess()
+                }
+            );
+        }
+        else {
+            window.location = "/milestone/" + $("#milestoneId").val();
+        }
+    }
+
+    function removeSprintsFromMilestoneSuccess() {
+        counter2++;
+        if (counter2 != sprints2.length) {
+            setTimeout(function () {
+                removeSprintsFromMilestone();
+            }, 200);
+        }
+        else {
+            sprints2.splice(0, sprints2.length);
+            window.location = "/milestone/" + $("#milestoneId").val();
+        }
+    }
 
     $('body').on('click', '.checkbox', function () {
         var checkbox = $(this).find(".checkbox-check");
         if (checkbox.is(":checked")) {
             $(this).find(".checkbox-check").prop('checked', false);
-            $(this).removeClass("blue");
+            $(this).removeClass("green");
+            $(this).addClass("blue");
         }
         else {
             $(this).find(".checkbox-check").prop('checked', true);
-            $(this).addClass("blue");
+            $(this).removeClass("blue");
+            $(this).addClass("green");
         }
     });
 
-    //____________________________________________________________________________
-    // Ändern und Löschen des Sprints
+//____________________________________________________________________________
+// Ändern und Löschen des Meilensteins
 
-    $("#changeSprintBtn").button().on("click", function () {
+    $("#changeMilestoneBtn").button().on("click", function () {
         $("#messageShow").text("").removeClass("alert alert-danger fadeIn");
         dialog.dialog("open");
     });
 
-    dialog = $("#dialog-form-sprint").dialog({
+    dialog = $("#dialog-form-milestone").dialog({
         autoOpen: false,
+        height: 570,
         width: 450,
         modal: true,
         buttons: {
-            "Sprint löschen": function () {
+            /* Meilenstein löschen
+            "Meilenstein löschen": function () {
                 dialogDelete.dialog("open");
-            },
+            },*/
             "Änderungen übernehmen": function () {
                 var startDateFormat = startDateChange.val();
                 var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
@@ -240,13 +232,13 @@ $(document).ready(function () {
                     + "/" + endDateFormat.substring(6, 10);
                 var startDate = new Date(startDateChanged);
                 var endDate = new Date(endDateChanged);
-                if (sprintChange.val() != "" && startDateChange.val() != "" && endDateChange.val() != ""
+                if (milestoneChange.val() != "" && startDateChange.val() != "" && endDateChange.val() != ""
                     && startDate <= endDate) {
                     dialogChange.dialog("open");
                 }
                 else {
-                    if (sprintChange.val() == "") {
-                        $("#messageShow").text("Bitte Sprintnamen eingeben!").addClass("alert alert-danger fadeIn");
+                    if (milestoneChange.val() == "") {
+                        $("#messageShow").text("Bitte Namen eingeben!").addClass("alert alert-danger fadeIn");
                     }
                     else {
                         if (startDateChange.val() == "") {
@@ -269,49 +261,35 @@ $(document).ready(function () {
         }
     });
 
+    /* Meilenstein löschen
     dialogDelete = $("#dialog-form-delete").dialog({
         autoOpen: false,
         height: 180,
         width: 560,
         modal: true,
         buttons: {
-            "Sprint MIT Tasks löschen": deleteSprintAndTasks,
-            "Sprint OHNE Tasks löschen": deleteSprint,
+            "Meilenstein löschen": deleteMilestone,
             "Abbrechen": function () {
                 dialogDelete.dialog("close");
             }
         }
     });
 
-    function deleteSprintAndTasks() {
+    function deleteMilestone() {
         $.ajax(
             {
                 type: "POST",
-                url: "/sprint/rest/deleteWithTask",
+                url: "/milestone/rest/delete",
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                data: JSON.stringify({"id": $("#sprintId").val()})
+                data: JSON.stringify({"id": $("#milestoneId").val()})
             }
         );
         setTimeout(function () {
-            window.location = "/sprint";
+            window.location = "/milestone";
         }, 500);
     }
-
-    function deleteSprint() {
-        $.ajax(
-            {
-                type: "POST",
-                url: "/sprint/rest/delete",
-                contentType: "application/json; charset=utf-8",
-                dataType: 'json',
-                data: JSON.stringify({"id": $("#sprintId").val()})
-            }
-        );
-        setTimeout(function () {
-            window.location = "/sprint";
-        }, 500);
-    }
+    */
 
     dialogChange = $("#dialog-form-change").dialog({
         autoOpen: false,
@@ -319,14 +297,14 @@ $(document).ready(function () {
         width: 420,
         modal: true,
         buttons: {
-            "OK": changeSprint,
+            "OK": changeMilestone,
             "Abbrechen": function () {
                 dialogChange.dialog("close");
             }
         }
     });
 
-    function changeSprint() {
+    function changeMilestone() {
         var startDateFormat = startDateChange.val();
         var startDateChanged = startDateFormat.substring(3, 5) + "/" + startDateFormat.substring(0, 2)
             + "/" + startDateFormat.substring(6, 10);
@@ -335,22 +313,23 @@ $(document).ready(function () {
             + "/" + endDateFormat.substring(6, 10);
         var startDate = new Date(startDateChanged);
         var endDate = new Date(endDateChanged);
-        if (sprintChange.val() != "" && startDateChange.val() != "" && endDateChange.val() != ""
+        if (milestoneChange.val() != "" && startDateChange.val() != "" && endDateChange.val() != ""
             && startDate <= endDate) {
+            var id = $("#milestoneId").val();
             $.ajax(
                 {
                     type: "POST",
-                    url: "/sprint/rest/update",
+                    url: "/milestone/rest/update",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
                     data: JSON.stringify({
-                        "id": $("#sprintId").val(),
-                        "name": sprintChange.val(),
+                        "id": id,
+                        "name": milestoneChange.val(),
                         "description": descriptionChange.val(),
                         "start": startDateChanged,
                         "end": endDateChanged
                     }),
-                    success: changeSprintSuccess()
+                    success: changeMilestoneSuccess()
                 }
             );
             dialog.dialog("close");
@@ -358,13 +337,13 @@ $(document).ready(function () {
         }
     }
 
-    function changeSprintSuccess() {
-        $("#sprintMessage").removeClass("alert-success").hide();
-        $("#sprintMessage").text("Sprint erfolgreich geändert. Seite wird aktualisiert...").addClass("alert alert-success").fadeIn();
-        $("#sprintMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
+    function changeMilestoneSuccess() {
+        $("#milestoneMessage").removeClass("alert-success").hide();
+        $("#milestoneMessage").text("Meilenstein erfolgreich geändert. Seite wird aktualisiert...").addClass("alert alert-success").fadeIn();
+        $("#milestoneMessage").animate({opacity: 1.0}, 2000).fadeOut('slow', function () {
         });
         setTimeout(function () {
-            window.location = "/sprint/" + $("#sprintId").val() + "/edit";
+            window.location = "/milestone/" + $("#milestoneId").val();
         }, 500);
     }
 
