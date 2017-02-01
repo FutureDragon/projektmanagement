@@ -201,6 +201,47 @@ function Task() {
         });
         db.disconnect();
     }
+
+    // @created: January 14th
+    // Add story points from a specific user to a task
+    this.addStoryPointsToTaskForUser = function (taskID, userID, storyPoints, res) {
+        db.connect();
+        TaskSchema.update({_id: taskID, "assigned_users.user_id": userID}, {$inc: {"assigned_users.$.rating": storyPoints}}, function (err) {
+            if (err) throw err;
+            else{
+                TaskSchema.find({_id: taskID, "assigned_users.rating": null}, function (err, task) {
+                    if(err) throw err;
+                    else{
+                        if (task.length == 0){
+                            console.log("Alle Tasks sind bewertet!");
+                            TaskSchema.find({_id: taskID}, {_id: 0, "assigned_users.rating": 1}, function (err, ratings) {
+                                console.log("Ratings:" + ratings.assigned_users);
+                            });
+                        }
+                        else{
+                            console.log("Es sind noch Bewertungen offen!");
+                            console.log("Task: " + task);
+                        }
+                        res.sendStatus(200);
+                    }
+                });
+            }
+        });
+        db.disconnect();
+    }
+
+    // @created: January 14th
+    // Check if all participants have rated a tasks. If all people have rated check whether all people ratings are equal.
+    // If they are equal set the story points for a task. If the are not equal all people have to rate once more.
+    // this.checkRatings = function (taskID, res) {
+    //     TaskSchema.find({_id: taskID, "assigned_users.rating": null}, function (err, task) {
+    //         if(err) throw err;
+    //         else{
+    //             console.log("Task: " + task);
+    //             res.sendStatus(200);
+    //         }
+    //     });
+    // }
 }
 
 // Exports a new Task Object
