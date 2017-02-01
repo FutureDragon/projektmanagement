@@ -3,7 +3,7 @@ html {
 }
 body {
   padding-top: 30px;
-  background: url("/images/zusammenarbeit.jpg") no-repeat center center fixed;
+  background: url("/images/background-8.jpg") no-repeat center center fixed;
   background-position-y: 30px;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -21,7 +21,7 @@ h1 {
 }
 
 #container {
-  background-color: rgba(189, 187, 210, 0.5);
+  background-color: rgba(189, 187, 210, 0.3);
   border-radius: 5px;
   min-height: 100%;
   width: 100%;
@@ -57,7 +57,7 @@ h1 {
 
 .tdBig {
   height: 70px;
-  border-radius: 5px;
+  /*border-radius: 5px;*/
   text-align:center;
   vertical-align:middle;
 }
