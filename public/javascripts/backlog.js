@@ -96,7 +96,7 @@ $(document).ready(function (event) {
     }
 // ____________________________________________________________________________
     var wWidth = $(window).width();
-    var dWidth = wWidth * 0.4;
+    var dWidth = wWidth * 0.5;
     var wHeight = $(window).height();
     var dHeight = wHeight * 0.4;
 
@@ -130,11 +130,11 @@ $(document).ready(function (event) {
             "Löschen" : function () {
                 dialogConfirm.dialog( "open" );
             },
-            "Fenster Schließen": function () {
-                dialogShow.dialog("close");
-            },
             "User Hinzufügen" : function () {
                 window.location = "/backlog/"+openTaskId+"/edit";
+            },
+            "Fenster Schließen": function () {
+                dialogShow.dialog("close");
             }
         },
         close: function () {
