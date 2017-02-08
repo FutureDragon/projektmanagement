@@ -326,6 +326,46 @@ function Task() {
         });
         db.disconnect();
     };
+
+    this.countTasksInProgress = function (res) {
+        db.connect();
+        TaskSchema.count({status : "In Progress"}, function (err, sprints) {
+            if (err) throw err;
+            res.send(JSON.parse(JSON.stringify("{\"count\": \"" + sprints + "\"}")));
+            return sprints;
+        });
+        db.disconnect();
+    };
+
+    this.countTasksInReview = function (res) {
+        db.connect();
+        TaskSchema.count({status : "Code Review"}, function (err, sprints) {
+            if (err) throw err;
+            res.send(JSON.parse(JSON.stringify("{\"count\": \"" + sprints + "\"}")));
+            return sprints;
+        });
+        db.disconnect();
+    };
+
+    this.countTasksInDone = function (res) {
+        db.connect();
+        TaskSchema.count({status : "Done"}, function (err, sprints) {
+            if (err) throw err;
+            res.send(JSON.parse(JSON.stringify("{\"count\": \"" + sprints + "\"}")));
+            return sprints;
+        });
+        db.disconnect();
+    };
+
+    this.countTasksInOpen= function (res) {
+        db.connect();
+        TaskSchema.count({status : "Open"}, function (err, sprints) {
+            if (err) throw err;
+            res.send(JSON.parse(JSON.stringify("{\"count\": \"" + sprints + "\"}")));
+            return sprints;
+        });
+        db.disconnect();
+    };
 // @created: January 14th
     // Check if all participants have rated a tasks. If all people have rated check whether all people ratings are equal.
     // If they are equal set the story points for a task. If the are not equal all people have to rate once more.

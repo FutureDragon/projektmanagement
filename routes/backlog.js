@@ -16,6 +16,23 @@ router.get('/rest/count', function(req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     task.countTasks(res);
 });
+router.get('/rest/countInProgress', function(req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    task.countTasksInProgress(res);
+});
+router.get('/rest/countInDone', function(req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    task.countTasksInDone(res);
+});
+router.get('/rest/countInReview', function(req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    task.countTasksInReview(res);
+});
+router.get('/rest/countInOpen', function(req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    task.countTasksInOpen(res);
+});
+
 
 router.post('/rest/update', function(req, res, next) {
   console.log("Update von : " + req.body.id);
