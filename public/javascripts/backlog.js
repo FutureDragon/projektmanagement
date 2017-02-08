@@ -275,7 +275,6 @@ $(document).ready(function (event) {
         modal: true,
         buttons: {
             "OK": function() {
-                $("#endDate").val(endDateString);
                 updateTaskEnd(task._id, "Done");
             },
             "Abbrechen": function () {
