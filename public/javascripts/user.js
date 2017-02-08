@@ -43,6 +43,7 @@ $(document).ready(function (event) {
             $("#footer").hide();
             $("#chartNav").hide();
             $("#milestoneNav").hide();
+            $("#roadmapNav").hide();
             $("#userInformation").text("Bitte Loggen Sie sich ein");
             if ($("#installHidden").val() == "install") {
                 $("#container").show();
