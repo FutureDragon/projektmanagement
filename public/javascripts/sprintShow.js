@@ -26,10 +26,6 @@ $(document).ready(function () {
     getSprint($("#sprintId").val());
 
     function getSprint(id) {
-        if (Cookies.get("Role") != "scrummaster") {
-            $("#scrumboardHead").hide();
-            $("#edit").hide();
-        }
         $.getJSON("/sprint/rest/" + id, function (data) {
             var startDate = new Date(data.start);
             var startDateMonth = startDate.getMonth() + 1;
