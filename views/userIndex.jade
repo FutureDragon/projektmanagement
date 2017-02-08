@@ -14,7 +14,7 @@ block content
 
   button#newUserBtn.btn.btn-default  Neuen User anlegen
 
-  #dialog-newUser-form(title="Neuen User anlegen")
+  #dialog-newUser-form.forms(title="Neuen User anlegen")
     form#newUserForm(method='post' enctype='application/json')
       .form-group
         #registerUserMessage
@@ -39,7 +39,7 @@ block content
             option(value="scrummaster" id="scrummaster") Scrum Master
             option(value="admin" id="admin") Administrator
 
-  #dialog-showUser-form(title="Neuen User anlegen")
+  #dialog-showUser-form.forms(title="Neuen User anlegen")
     form#showUserForm(method='post' enctype='application/json')
       .form-group
         #userMessageShow

@@ -21,7 +21,7 @@ block content
     button#save.btn.btn-default.transparent.col-md-12  Speichern
     input#sprintId(type="hidden" value="#{title}")
 
-    #dialog-form-sprint(title="Sprint ändern")
+    #dialog-form-sprint.forms(title="Sprint ändern")
         form#renameSprintForm(method='post' enctype='application/json')
             .form-group
                 p#messageShow
@@ -38,8 +38,8 @@ block content
                 label(for='endDateChange') Enddatum ändern:
                 input#endDateChange.form-control.transparent(type='text', name='Enddatum')
 
-    #dialog-form-delete(title="Sprint wirklich löschen?")
+    #dialog-form-delete.forms(title="Sprint wirklich löschen?")
         p Soll der Sprint wirklich gelöscht werden?
 
-    #dialog-form-change(title="Änderungen wirklich übernehmen?")
+    #dialog-form-change.forms(title="Änderungen wirklich übernehmen?")
         p Sollen die Änderungen wirklich übernommen werden?

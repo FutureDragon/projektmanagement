@@ -31,7 +31,7 @@ block content
             th.center Fertig
     input#sprintId(type="hidden" value="#{title}")
 
-    #dialog-form-task(title="Task")
+    #dialog-form-task.forms(title="Task")
         form#showTaskForm(method='post' enctype='application/json')
             .form-group
                 p#messageShow
@@ -54,10 +54,10 @@ block content
                 label(for='storypoints') Story Points
                     p#storyPointsShow
 
-        #dialog-delete-confirm(title="Task wirklich löschen?")
+        #dialog-delete-confirm.forms(title="Task wirklich löschen?")
             p  Soll der Task wirklich gelöscht werden?
 
-        #dialog-form-end(title="Task beenden")
+        #dialog-form-end.forms(title="Task beenden")
             form#endTaskForm(method='post' enctype='application/json')
                 .form-group
                     p Bitte eingeben, an welchem Datum der Task beendet wurde. Achtung: Das Enddatum sollte nicht vor dem Anfangsdatum des Sprints liegen!

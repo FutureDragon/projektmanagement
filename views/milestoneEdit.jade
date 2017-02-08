@@ -21,7 +21,7 @@ block content
     button#save.btn.btn-default.transparent.col-md-12  Speichern
     input#milestoneId(type="hidden" value="#{title}")
 
-    #dialog-form-milestone(title="Meilenstein ändern")
+    #dialog-form-milestone.forms(title="Meilenstein ändern")
         form#renameMilestoneForm(method='post' enctype='application/json')
             .form-group
                 p#messageShow
@@ -38,5 +38,5 @@ block content
                 label(for='endDateChange') Enddatum ändern:
                 input#endDateChange.form-control.transparent(type='text', name='Enddatum')
 
-    #dialog-form-change(title="Änderungen wirklich übernehmen?")
+    #dialog-form-change.forms(title="Änderungen wirklich übernehmen?")
         p Sollen die Änderungen wirklich übernommen werden?

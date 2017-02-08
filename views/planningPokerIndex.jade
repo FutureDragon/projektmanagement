@@ -10,7 +10,7 @@ block content
       th.center  Offene Tasks
 
 
-  #dialog-form-task(title="Task")
+  #dialog-form-task.forms(title="Task")
     #pokermessage
     form#showTaskForm(method='post' enctype='application/json')
       .form-group
@@ -25,5 +25,5 @@ block content
         label(for='storypoints') Story Points
         input#storyPoints.form-control.transparent(type='number', placeholder='Story Points' name='storypoints')
 
-  #waitDialog(title="Bitte warten")
+  #waitDialog.forms(title="Bitte warten")
     p  Planning Poker wird durchgeführt...

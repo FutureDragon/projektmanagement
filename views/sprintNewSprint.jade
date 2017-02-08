@@ -5,7 +5,7 @@ block content
     #header
         h1= title
         #newSprintMessage.fadeIn
-            form#newSprintForm(method='post' enctype='application/json')
+            form#newSprintForm.forms(method='post' enctype='application/json')
                 .form-group
                     label(for='name') Sprint
                     input#name.form-control.transparent(type='text', placeholder='Sprint', name='Sprint')
