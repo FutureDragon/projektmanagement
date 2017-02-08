@@ -135,6 +135,7 @@ $(document).ready(function (event) {
         Cookies.set('Id', user._id);
         dialogLogin.dialog("close");
         checkCookie();
+        location.reload(true);
     }
     function loginfailed() {
         alert("Login nicht Erfolgreich");

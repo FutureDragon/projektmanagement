@@ -48,9 +48,12 @@ $(document).ready(function (event) {
     $("#backlog").hide();
     $("#sprint").hide();
     $("#milestone").hide();
-    $("#backlog").show("slide", "", 700);
+    if(Cookies.get("Login") == "true") {
+        $("#backlog").show("slide", "", 700);
 
-    $("#sprint").show("slide", "", 700);
+        $("#sprint").show("slide", "", 700);
 
-    $("#milestone").show("slide", "", 700);
+        $("#milestone").show("slide", "", 700);
+    }
+
 });
