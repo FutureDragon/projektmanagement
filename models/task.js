@@ -217,6 +217,50 @@ function Task() {
         db.disconnect();
     };
 
+    this.addUserRating = function (taskID, userID, storyPoints, res) {
+        db.connect();
+
+        TaskSchema.update({_id: taskID, "assigned_users.user_id": userID}, {$inc: {"assigned_users.$.rating": storyPoints}}).exec(function (err) {
+            if (!err) res.sendStatus(200);
+            else {
+                throw err;
+            }
+        });
+        db.disconnect();
+    };
+
+    this.isTaskRatingComplete = function (taskID, res) {
+        /*
+        Damit Warte Dialog verschwindet muss res = 200 zurückgesendet werden, da disese funktion noch nicht richtig läuft wird es am anfang gemacht
+         */
+        res.sendStatus(200);
+        /*TaskSchema.find({_id: taskID, "assigned_users.$.rating": null}).exec(function (err, usersWithoutRating) {
+            if(err) throw err;
+            else{
+                if (usersWithoutRating.length != 0){
+                    console.log("Es wurden alle BEwertungen abgegeben!");
+                    res.sendStatus(200);
+                }
+                else{
+                    console.log("Es sind noch Bewertungen offen!");
+                    console.log("Task:" + usersWithoutRating);
+                    res.sendStatus(900);
+                }
+            }
+        });*/
+    };
+
+    this.setFinalRating = function (taskID, storyPoints,res) {
+        db.connect();
+        TaskSchema.find({_id: taskID}).update({story_points : storyPoints}).exec(function (err) {
+            if (!err) res.sendStatus(200);
+            else {
+                throw err;
+            }
+        });
+        db.disconnect();
+    };
+
     // @created: January 14th
     // Add story points from a specific user to a task
     this.addStoryPointsToTaskForUser2 = function (taskID, userID, storyPoints, res) {

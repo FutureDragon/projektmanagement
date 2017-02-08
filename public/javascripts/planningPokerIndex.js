@@ -1,7 +1,8 @@
 $(document).ready(function (event) {
-    var dialogShow;
+    var dialogShow, dialogWait;
     var tasks = [];
     var openTaskId;
+    var average;
     getNotRatedTasks();
     dialogShow = $( "#dialog-form-task" ).dialog({
         autoOpen: false,
@@ -24,11 +25,25 @@ $(document).ready(function (event) {
         }
     });
 
+    dialogWait = $( "#waitDialog" ).dialog({
+        autoOpen: false,
+        height: "auto",
+        width: "500",
+        modal: true,
+        buttons: {
+        },
+        close: function () {
+
+        }
+    });
+
+
 
     function updateTaskStoryPoints() {
         var storyPoints = $("#storyPoints").val();
         var userId = Cookies.get("Id");
         if ($.isNumeric(storyPoints)) {
+            dialogWait.dialog( "open" );
             $.ajax(
                 {
                     type: "POST",
@@ -48,6 +63,7 @@ $(document).ready(function (event) {
                             $('#pokermessages').text("Story Points wurden gespeichert").addClass("alert alert-success");
                             $('#pokermessages').animate({opacity: 1.0}, 2000).fadeOut('slow', function() {
                             });
+                            setTimeout(isRatingComplete, 500);
                         }
                     }
                 }
@@ -56,6 +72,74 @@ $(document).ready(function (event) {
         else {
             $("#pokermessage").text("Bitte story points eingeben").addClass("alert alert-danger");
         }
+    }
+
+    function tick() {
+        $.getJSON( "/planningPoker/rest/tick", function( data ) {
+
+        });
+    }
+
+    function calculateAverageRating() {
+        $.getJSON( "backlog/rest/"+openTaskId, function( data ) {
+            var i = 0;
+            var j = 0;
+            var sum = 0;
+            $.each(data.assigned_users,function () {
+                if(data.assigned_users[i].rating != null) {
+                    sum += data.assigned_users[i].rating;
+                    j++;
+                }
+                i++;
+            });
+            average = sum / j;
+        });
+        setTimeout(setRating,2000);
+    }
+
+    function isRatingComplete() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/planningPoker/rest/ratingComplete",
+                contentType: "application/json; charset=utf-8",
+                dataType : 'json',
+                data: JSON.stringify(
+                    {
+                        "taskId" : openTaskId
+                    }),
+                statusCode: {
+                    200: function (response) {
+                        setTimeout(calculateAverageRating, 2000);
+                    },
+                    900: function (responce) {
+
+                    }
+                }
+            }
+        );
+    }
+
+
+    function setRating() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/planningPoker/rest/setRating",
+                contentType: "application/json; charset=utf-8",
+                dataType : 'json',
+                data: JSON.stringify(
+                    {
+                        "taskId" : openTaskId,
+                        "storyPoints" : average
+                    }),
+                statusCode: {
+                    200: function (response) {
+                        dialogWait.dialog("close");
+                    }
+                }
+            }
+        );
     }
 
     function getNotRatedTasks() {

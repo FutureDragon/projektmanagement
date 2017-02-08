@@ -18,10 +18,25 @@ router.post('/rest/update', function(req, res, next) {
   var userId      = req.body.userId;
   var taskId      = req.body.taskId;
   var storyPoints = req.body.storyPoints;
-  console.log(userId);
-  console.log(taskId);
-  console.log(storyPoints);
-  res.status(200).send("asd");
+  console.log("Füge das User Rating hinzu");
+  task.addUserRating(taskId,userId,storyPoints,res);
+});
+
+router.post('/rest/ratingComplete', function(req, res, next) {
+  var taskId      = req.body.taskId;
+  console.log("Prüfe ob das Rating zu ende ist");
+  task.isTaskRatingComplete(taskId,res);
+});
+
+router.post('/rest/setRating', function(req, res, next) {
+  var taskId      = req.body.taskId;
+  var storyPoints = req.body.storyPoints;
+  console.log("Setze die Story Points");
+  task.setFinalRating(taskId, storyPoints, res);
+});
+router.get('/rest/tick', function(req, res, next) {
+  console.log("Tick");
+  res.sendStatus(200);
 });
 
 module.exports = router;
