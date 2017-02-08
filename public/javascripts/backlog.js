@@ -119,6 +119,7 @@ $(document).ready(function (event) {
                 $("#statusShow").text("Code Review");
             },
             "Fertig": function () {
+                $("#endDate").val(endDateString);
                 dialogEnd.dialog("open");
             },
             "Bearbeiten":{

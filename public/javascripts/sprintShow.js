@@ -116,6 +116,7 @@ $(document).ready(function () {
                 $("#statusShow").text("Code Review");
             },
             "Fertig": function () {
+                $("#endDate").val(endDateString);
                 dialogEnd.dialog("open");
             },
             "Bearbeiten":{
@@ -164,7 +165,6 @@ $(document).ready(function () {
         modal: true,
         buttons: {
             "OK": function() {
-                $("#endDate").val();
                 updateTaskEnd(task._id, "Done");
             },
             "Abbrechen": function () {
