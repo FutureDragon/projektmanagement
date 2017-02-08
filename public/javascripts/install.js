@@ -6,7 +6,7 @@ $(document).ready(function (event) {
     $("#message").hide();
 
     $("#dropBtn").click(function () {
-        $("#log").append("<p class='logrow'>Start to Drop Database</p>");
+        $("#log").append("<p class='logrow'>Start to Drop Database and insert new Admin</p>");
         $.ajax(
             {
                 type: "POST",
@@ -18,7 +18,8 @@ $(document).ready(function (event) {
                 statusCode: {
                     200: function (response) {
                         $("#log").append("<p class='green logrow'>Database dropped</p>");
-                        $("#log").fadeOut(2000);
+                        setTimeout(addOnlyAdmin, 200);
+
                     }
                 }
             }
@@ -71,6 +72,32 @@ $(document).ready(function (event) {
             }
         );
     }
+
+    function addOnlyAdmin() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "/rest/install/addUsers",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {
+                        firstname : "Roberto",
+                        lastname : "Blanco",
+                        email : "admin@admin.de",
+                        pw : "admin",
+                        role : "admin"
+                    }),
+                statusCode: {
+                    200: function (response) {
+                        $("#log").append("<p class='logrow'>Insert Admin</p>");
+                        $("#log").fadeOut(2000);
+                    }
+                }
+            }
+        );
+    }
+
     function addScrum() {
         $.ajax(
             {

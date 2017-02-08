@@ -3,7 +3,9 @@ $(document).ready(function (event) {
     var tasks = [];
     var openTaskId;
     var average;
-    getNotRatedTasks();
+    if(Cookies.get("Id") != null) {
+        getNotRatedTasks();
+    }
     dialogShow = $( "#dialog-form-task" ).dialog({
         autoOpen: false,
         height: "auto",
