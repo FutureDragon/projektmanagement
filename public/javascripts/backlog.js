@@ -96,7 +96,7 @@ $(document).ready(function (event) {
     }
 // ____________________________________________________________________________
     var wWidth = $(window).width();
-    var dWidth = wWidth * 0.4;
+    var dWidth = wWidth * 0.5;
     var wHeight = $(window).height();
     var dHeight = wHeight * 0.4;
 
@@ -130,11 +130,11 @@ $(document).ready(function (event) {
             "Löschen" : function () {
                 dialogConfirm.dialog( "open" );
             },
-            "Fenster Schließen": function () {
-                dialogShow.dialog("close");
-            },
             "User Hinzufügen" : function () {
                 window.location = "/backlog/"+openTaskId+"/edit";
+            },
+            "Fenster Schließen": function () {
+                dialogShow.dialog("close");
             }
         },
         close: function () {
@@ -202,6 +202,15 @@ $(document).ready(function (event) {
     function getTask(id) {
         openTaskId = id;
         $.getJSON( "backlog/rest/"+id, function( data ) {
+            var endDate2 = new Date(data.end);
+            var endDate2Month = endDate2.getMonth() + 1;
+            if (endDate2Month.toString().length < 2) {
+                endDate2Month = "0" + endDate2Month;
+            }
+            var endDate2Day = endDate2.getDate();
+            if (endDate2Day.toString().length < 2) {
+                endDate2Day = "0" + endDate2Day;
+            }
             var createdDate = new Date(data.created);
             var createdDateMonth = createdDate.getMonth() + 1;
             if (createdDateMonth.toString().length < 2) {
@@ -227,7 +236,13 @@ $(document).ready(function (event) {
                 + "  " + createdDateHours + ":" + createdDateMinutes + ":" + createdDateSeconds;
             $("#taskShow").val(data.task);
             $("#descriptionShow").val(data.description);
-            $("#statusShow").text(data.status);
+            if (data.status == "Done") {
+                $("#statusShow").text(data.status + " am " + endDate2Day + "."
+                    + endDate2Month + "." + endDate2.getFullYear());
+            }
+            else {
+                $("#statusShow").text(data.status);
+            }
             $("#createdShow").text("Von " + data._creator + " am " + createdString);
             $("#priorityShow").text(data.priority);
             $("#storyPointsShow").text(data.story_points);
@@ -260,6 +275,7 @@ $(document).ready(function (event) {
         modal: true,
         buttons: {
             "OK": function() {
+                $("#endDate").val(endDateString);
                 updateTaskEnd(task._id, "Done");
             },
             "Abbrechen": function () {
@@ -269,7 +285,6 @@ $(document).ready(function (event) {
     });
 
     function updateTaskEnd(id, status) {
-        $("#statusShow").text("Done");
         var endDateFormat = endDate.val();
         var endDateChanged = endDateFormat.substring(3, 5) + "/" + endDateFormat.substring(0, 2)
             + "/" + endDateFormat.substring(6, 10);
@@ -288,6 +303,7 @@ $(document).ready(function (event) {
                 success: updatesuccess()
             }
         );
+        $("#statusShow").text("Done" + " am " + endDate.val());
         dialogEnd.dialog("close");
     }
 

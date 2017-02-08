@@ -71,11 +71,32 @@ $(document).ready(function () {
     function getSprintsWithoutMilestone() {
         $.getJSON("/milestone/rest/sprintWithoutMilestone", function (data) {
             $.each(data, function (key, val) {
-                color = "blue";
+                color = "addUserToTask";
+                var startDate = new Date(val.start);
+                var startDateMonth = startDate.getMonth() + 1;
+                if (startDateMonth.toString().length < 2) {
+                    startDateMonth = "0" + startDateMonth;
+                }
+                var startDateDay = startDate.getDate();
+                if (startDateDay.toString().length < 2) {
+                    startDateDay = "0" + startDateDay;
+                }
+                var endDate = new Date(val.end);
+                var endDateMonth = endDate.getMonth() + 1;
+                if (endDateMonth.toString().length < 2) {
+                    endDateMonth = "0" + endDateMonth;
+                }
+                var endDateDay = endDate.getDate();
+                if (endDateDay.toString().length < 2) {
+                    endDateDay = "0" + endDateDay;
+                }
                 var text = '<div class="checkbox sprintCheckbox ' + color + '">' +
                     '<label class="sprintname">' +
                     '<input class="checkbox-check" type="checkbox" name="sprint" value="' + val._id + '">' +
-                    '<p>' + val.name + '</p>' +
+                    '<p><b>' + val.name + '</b><br>' +
+                    startDateDay + '.' + startDateMonth + '.' + startDate.getFullYear() +
+                    ' - ' + endDateDay + '.' + endDateMonth + '.' + endDate.getFullYear() +
+                    '</p>' +
                     '</label>' +
                     '</div>';
                 $("#sprintContainer").append(text);
@@ -92,11 +113,33 @@ $(document).ready(function () {
     function getSprints() {
         $.getJSON("/sprint/rest/getSprintsToMilestone/" + $("#milestoneId").val(), function (data) {
             $.each(data, function (key, val) {
-                color = "blue";
+                color = "addUserToTask";
+                var startDate = new Date(val.start);
+                var startDateMonth = startDate.getMonth() + 1;
+                if (startDateMonth.toString().length < 2) {
+                    startDateMonth = "0" + startDateMonth;
+                }
+                var startDateDay = startDate.getDate();
+                if (startDateDay.toString().length < 2) {
+                    startDateDay = "0" + startDateDay;
+                }
+                var endDate = new Date(val.end);
+                var endDateMonth = endDate.getMonth() + 1;
+                if (endDateMonth.toString().length < 2) {
+                    endDateMonth = "0" + endDateMonth;
+                }
+                var endDateDay = endDate.getDate();
+                if (endDateDay.toString().length < 2) {
+                    endDateDay = "0" + endDateDay;
+                }
                 var text = '<div class="checkbox sprintCheckbox ' + color + '">' +
                     '<label class="sprintname">' +
                     '<input class="checkbox-check" type="checkbox" name="sprint2" value="' + val._id + '">' +
-                    '<p>' + val.name + '</p>' +
+                    '<p>' +
+                    '<b>' + val.name + '</b><br>' +
+                    startDateDay + '.' + startDateMonth + '.' + startDate.getFullYear() +
+                    ' - ' + endDateDay + '.' + endDateMonth + '.' + endDate.getFullYear() +
+                    '</p>' +
                     '</label>' +
                     '</div>';
                 $("#sprintContainer2").append(text);
@@ -195,13 +238,13 @@ $(document).ready(function () {
         var checkbox = $(this).find(".checkbox-check");
         if (checkbox.is(":checked")) {
             $(this).find(".checkbox-check").prop('checked', false);
-            $(this).removeClass("green");
-            $(this).addClass("blue");
+            $(this).removeClass("blue");
+            $(this).addClass("addUserToTask");
         }
         else {
             $(this).find(".checkbox-check").prop('checked', true);
-            $(this).removeClass("blue");
-            $(this).addClass("green");
+            $(this).removeClass("addUserToTask");
+            $(this).addClass("blue");
         }
     });
 

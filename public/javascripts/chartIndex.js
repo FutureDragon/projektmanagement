@@ -38,6 +38,7 @@ $(document).ready(function (event) {
                 $("#sprintTable").append(text);
             }
             $(".table").fadeIn(500);
+        }).done(function () {
             createMilestone();
         });
     }

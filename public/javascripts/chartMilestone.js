@@ -1,25 +1,22 @@
 $(function () {
-    var sprint;
+    var milestone;
     var dataPoints = [];
-    var countTasks = 0;
-    var countTasksW = 0;
-    var countStoryPoints = 0;
-    var countStoryPointsMax = 0;
-    var calcStoryPoints = 0;
+    var countSprints = 0;
+    var check = false;
     var startDate, startDay, startMonth, startYear;
     var endDate, endDay, endMonth, endYear;
     var endDateAxis, endDateAxisDay, endDateAxisMonth, endDateAxisYear;
 
-    getSprint($("#sprintId").val());
+    getMilestone($("#milestoneId").val());
 
     // ____________________________________________________________________________
 
-    function getSprint(id) {
-        $.getJSON("/sprint/rest/" + id, function (data) {
-            sprint = data;
+    function getMilestone(id) {
+        $.getJSON("/milestone/rest/" + id, function (data) {
+            milestone = data;
         }).done(function () {
-            startDate = new Date(sprint.start);
-            endDate = new Date(sprint.end);
+            startDate = new Date(milestone.start);
+            endDate = new Date(milestone.end);
             startDay = startDate.getDate();
             startMonth = startDate.getMonth();
             startYear = startDate.getFullYear();
@@ -30,37 +27,31 @@ $(function () {
             endDateAxisMonth = endMonth;
             endDateAxisYear = endYear;
             setTimeout(function () {
-                getTasks();
+                getSprints();
             }, 20);
         })
     }
 
-    function getTasks() {
-        $.getJSON("/backlog/rest/getTasksToSprint/" + $("#sprintId").val(), function (data) {
+    function getSprints() {
+        $.getJSON("/sprint/rest/getSprintsToMilestone/" + $("#milestoneId").val(), function (data) {
             $.each(data, function (key, val) {
-                countTasks++;
-                if (val.story_points > 0) {
-                    countStoryPoints = countStoryPoints + val.story_points;
-                }
-                else {
-                    countTasksW++;
-                }
+                countSprints++;
             });
         }).done(function () {
-            dataPoints.push({x: new Date(startYear, startMonth, startDay), y: countStoryPoints});
+            dataPoints.push({x: new Date(startYear, startMonth, startDay), y: countSprints});
             setTimeout(function () {
-                $.getJSON("/backlog/rest/getTasksToSprint/" + $("#sprintId").val(), function (data) {
+                $.getJSON("/sprint/rest/getSprintsToMilestone/" + $("#milestoneId").val(), function (data) {
                     $.each(data, function (key, val) {
-                        if (val.story_points > 0 && val.end != null && val.end != undefined) {
-                            dataPoints.push({x: new Date(val.end), y: val.story_points});
+                        if (val.end != null && val.end != undefined) {
+                            dataPoints.push({x: new Date(val.end), y: 1});
                         }
                         else {
-                            dataPoints.push({x: undefined, y: 0});
+                            dataPoints.push({x: 0, y: 0});
                         }
                     });
                 }).done(function () {
                     for (var i = 0; i < dataPoints.length; i++) {
-                        if (dataPoints[i].x == null || dataPoints[i].x == undefined || dataPoints[i].y == 0) {
+                        if (dataPoints[i].x == 0 || dataPoints[i].y == 0) {
                             dataPoints[i].x = new Date(2999, 0, 1);
                             dataPoints[i].y = undefined;
                         }
@@ -68,18 +59,12 @@ $(function () {
                     dataPoints.sort(function (a, b) {
                         return a.x - b.x
                     });
-                    countStoryPointsMax = countStoryPoints;
                     for (var i = 1; i < dataPoints.length; i++) {
-                        if (dataPoints[i].y != undefined) {
-                            calcStoryPoints = countStoryPoints;
-                            countStoryPoints = calcStoryPoints - dataPoints[i].y;
-                            dataPoints[i].y = countStoryPoints;
-                        }
+                        dataPoints[i].y = countSprints - i;
                     }
                     for (var i = 0; i < dataPoints.length; i++) {
-                        if (dataPoints[i].x == null || dataPoints[i].x == undefined || dataPoints[i].y == undefined) {
+                        if (dataPoints[i].y == undefined) {
                             dataPoints[i].x = undefined;
-                            dataPoints[i].y = undefined;
                         }
                     }
                     for (var i = 0; i < dataPoints.length; i++) {
@@ -90,7 +75,11 @@ $(function () {
                             endDateAxisYear = endDateAxis.getFullYear();
                         }
                     }
-                    //alert(JSON.stringify(dataPoints));
+                    for (var i = 0; i < dataPoints.length; i++) {
+                        if (dataPoints[i].x < startDate) {
+                            check = true;
+                        }
+                    }
                     createChart();
                 });
             }, 20);
@@ -102,7 +91,7 @@ $(function () {
     function createChart() {
         var options = {
             title: {
-                text: "Burn-Down-Chart - " + sprint.name
+                text: "Burn-Down-Chart - " + milestone.name
             },
             animationEnabled: true,
             axisX: {
@@ -113,28 +102,27 @@ $(function () {
                 }
             },
             axisY: {
-                title: "Story Points"
+                title: "Anzahl der Sprints"
             },
             data: [
                 {
                     type: "line",
                     color: "blue",
                     showInLegend: true,
-                    legendText: "Geschätzter Aufwand",
+                    legendText: "Meilenstein",
                     dataPoints: [
                         {
                             x: new Date(startYear, startMonth, startDay),
-                            y: countStoryPointsMax,
-                            indexLabel: "geplanter Start"
+                            y: countSprints
                         },
-                        {x: new Date(endYear, endMonth, endDay), y: 0, indexLabel: "geplantes Ende"}
+                        {x: new Date(endYear, endMonth, endDay), y: 0}
                     ]
                 },
                 {
                     type: "line",
                     color: "red",
                     showInLegend: true,
-                    legendText: "Verbleibender Aufwand",
+                    legendText: "Endzeitpunkte der Sprints",
                     dataPoints: dataPoints
                 }
             ]
@@ -151,25 +139,19 @@ $(function () {
                 }
             };
         }
-        if (countTasks > 0 && countStoryPointsMax > 0) {
-            if (countTasksW > 0) {
-                $("#showMessage").removeClass("alert-warning").hide();
-                $("#showMessage").text("Warnung: Der Sprint enthält " + countTasksW + " Tasks, denen noch keine Story " +
-                    "Points zugeordnet wurden. Diese werden nicht im Burn-Down-Chart " +
-                    "angezeigt!").addClass("alert alert-warning").fadeIn();
+        if (countSprints > 0) {
+            if (check == true) {
+                $("#showMessage").removeClass("alert-danger").hide();
+                $("#showMessage").text("Mindestens ein Sprint endet, bevor der Meilenstein " +
+                    "beginnt!").addClass("alert alert-danger").fadeIn();
             }
             $("#chartContainer").CanvasJSChart(options);
         }
         else {
-            if (countTasks == 0) {
+            if (countSprints == 0) {
                 $("#showMessage").removeClass("alert-danger").hide();
-                $("#showMessage").text("Der Sprint enthält keine Tasks. Deshalb kann kein " +
+                $("#showMessage").text("Der Meilenstein enthält keine Sprints. Deshalb kann kein " +
                     "Burn-Down-Chart erstellt werden!").addClass("alert alert-danger").fadeIn();
-            }
-            else {
-                $("#showMessage").removeClass("alert-danger").hide();
-                $("#showMessage").text("Die Tasks, die diesem Sprint zugeordnet sind, enthalten keine Story Points. " +
-                    "Deshalb kann kein Burn-Down-Chart erstellt werden!").addClass("alert alert-danger").fadeIn();
             }
         }
     }
