@@ -13,6 +13,7 @@ var sprint = require('./routes/sprint');
 var planningPoker = require('./routes/planningpoker');
 var chart = require('./routes/chart');
 var milestone = require('./routes/milestone');
+var roadmap = require('./routes/roadmap');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use('/sprint', sprint);
 app.use('/planningPoker', planningPoker);
 app.use('/chart', chart);
 app.use('/milestone', milestone);
+app.use('/roadmap', roadmap);
 
 
 app.use(session({
