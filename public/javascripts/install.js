@@ -4,6 +4,27 @@ $(document).ready(function (event) {
     var milestonesIds = [];
     var employeesIds = [];
     $("#message").hide();
+
+    $("#dropBtn").click(function () {
+        $("#log").append("<p class='logrow'>Start to Drop Database</p>");
+        $.ajax(
+            {
+                type: "POST",
+                url: "/rest/install",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(
+                    {}),
+                statusCode: {
+                    200: function (response) {
+                        $("#log").append("<p class='green logrow'>Database dropped</p>");
+                        $("#log").fadeOut(2000);
+                    }
+                }
+            }
+        );
+    });
+
     $("#installBtn").click(function () {
         $(".logrow").remove();
         $("#log").append("<p class='logrow'>Start to Drop Database</p>");
