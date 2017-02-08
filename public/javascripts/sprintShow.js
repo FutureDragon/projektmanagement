@@ -164,7 +164,7 @@ $(document).ready(function () {
         modal: true,
         buttons: {
             "OK": function() {
-                $("#endDate").val(endDateString);
+                $("#endDate").val();
                 updateTaskEnd(task._id, "Done");
             },
             "Abbrechen": function () {
