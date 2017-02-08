@@ -147,7 +147,8 @@ $(document).ready(function (event) {
         Cookies.remove('Email');
         Cookies.remove('Id');
         logoutConfirm.dialog("close");
-        checkCookie()
+        checkCookie();
+        window.location.href = 'http://localhost:3000';
     }
 
     $('body').on('click', '#loginScreen', function () {
