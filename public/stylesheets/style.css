@@ -68,9 +68,10 @@ h1 {
   vertical-align:middle;
   background-color: rgba(255, 253, 57, 0.3);
   font-size: 16px;
+  margin-bottom: 10px;
 }
 .metro :hover{
-  cursor: pointer;
+
 }
 
 .text-bottom {
@@ -133,4 +134,8 @@ input[type="checkbox"]{
 
 .cursor {
   cursor: pointer;
+}
+
+.forms {
+  display: none;
 }
