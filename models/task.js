@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var TaskSchema = require("../schema/task_schema");
 var TaskStatus = require("./taskStatus");
-var SprintModel = require("./sprint")
+var SprintModel = require("./sprint");
 var db = require("./db");
 
 function Task() {
@@ -107,7 +107,7 @@ function Task() {
             }
         });
         db.disconnect();
-    }
+    };
 
     // Get all tasks which do not belong to a sprint
     this.getTasksWithoutSprint = function (res) {
@@ -179,30 +179,30 @@ function Task() {
             }
         });
         db.disconnect();
-    }
+    };
 
     // @created: January 14th
     // Get all tasks they belong to a user and are not rated anymore
     this.getAllNotRatedTasksForUser = function (id, res) {
         db.connect();
         TaskSchema.find({
-            assigned_users:{
-                $elemMatch:{
-                    user_id: id,
-                    rating: null
+                assigned_users: {
+                    $elemMatch: {
+                        user_id: id,
+                        rating: null
+                    }
                 }
-            }
-        },
-        function (err, tasks) {
-            if (err) {
-                throw err;
-            }
-            else {
-                res.send(tasks);
-            }
-        });
+            },
+            function (err, tasks) {
+                if (err) {
+                    throw err;
+                }
+                else {
+                    res.send(tasks);
+                }
+            });
         db.disconnect();
-    }
+    };
 
     // @created: January 14th
     // Add a user to a task
@@ -215,25 +215,31 @@ function Task() {
             }
         });
         db.disconnect();
-    }
+    };
 
     // @created: January 14th
     // Add story points from a specific user to a task
-    this.addStoryPointsToTaskForUser = function (taskID, userID, storyPoints, res) {
+    this.addStoryPointsToTaskForUser2 = function (taskID, userID, storyPoints, res) {
         db.connect();
-        TaskSchema.update({_id: taskID, "assigned_users.user_id": userID}, {$inc: {"assigned_users.$.rating": storyPoints}}, function (err) {
+        TaskSchema.update({
+            _id: taskID,
+            "assigned_users.user_id": userID
+        }, {$inc: {"assigned_users.$.rating": storyPoints}}, function (err) {
             if (err) throw err;
-            else{
+            else {
                 TaskSchema.find({_id: taskID, "assigned_users.rating": null}, function (err, task) {
-                    if(err) throw err;
-                    else{
-                        if (task.length == 0){
+                    if (err) throw err;
+                    else {
+                        if (task.length == 0) {
                             console.log("Alle Tasks sind bewertet!");
-                            TaskSchema.find({_id: taskID}, {_id: 0, "assigned_users.rating": 1}, function (err, ratings) {
+                            TaskSchema.find({_id: taskID}, {
+                                _id: 0,
+                                "assigned_users.rating": 1
+                            }, function (err, ratings) {
                                 console.log("Ratings:" + ratings.assigned_users);
                             });
                         }
-                        else{
+                        else {
                             console.log("Es sind noch Bewertungen offen!");
                             console.log("Task: " + task);
                         }
@@ -243,9 +249,31 @@ function Task() {
             }
         });
         db.disconnect();
-    }
+    };
 
-    // @created: January 14th
+    this.addStoryPointsToTaskForUser = function (taskID, userID, storyPoints, res) {
+        db.connect();
+
+        var updateStoryPoints = TaskSchema.update({_id: taskID, "assigned_users.user_id": userID}, {$inc: {"assigned_users.$.rating": storyPoints}}).exec();
+        updateStoryPoints.then(function () {
+            console.log("Es wird überprüft, ob es noch User gibt, die diesen Task noch nicht bewertet haben!");
+            return TaskSchema.find({_id: taskID, "assigned_users.rating": null}).exec();
+        })
+        .then(function (usersWithoutRating) {
+            if (usersWithoutRating.length == 0){
+                console.log("Es wurden alle BEwertungen abgegeben!");
+                return TaskSchema.find({_id: taskID}, {_id: 0, "assigned_users.rating": 1}).exec();
+            }
+            else{
+                console.log("Es sind noch Bewertungen offen!");
+                console.log("Task:" + usersWithoutRating);
+            }
+        });
+
+        db.disconnect();
+    };
+
+// @created: January 14th
     // Check if all participants have rated a tasks. If all people have rated check whether all people ratings are equal.
     // If they are equal set the story points for a task. If the are not equal all people have to rate once more.
     // this.checkRatings = function (taskID, res) {
