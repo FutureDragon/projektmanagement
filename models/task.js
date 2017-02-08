@@ -317,6 +317,15 @@ function Task() {
         db.disconnect();
     };
 
+    this.countTasks = function (res) {
+        db.connect();
+        TaskSchema.count({}, function (err, sprints) {
+            if (err) throw err;
+            res.send(JSON.parse(JSON.stringify("{\"count\": \"" + sprints + "\"}")));
+            return sprints;
+        });
+        db.disconnect();
+    };
 // @created: January 14th
     // Check if all participants have rated a tasks. If all people have rated check whether all people ratings are equal.
     // If they are equal set the story points for a task. If the are not equal all people have to rate once more.

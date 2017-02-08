@@ -12,6 +12,11 @@ router.post('/rest', function(req, res, next) {
   console.log("Description: " + req.body.description);
 });
 
+router.get('/rest/count', function(req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    task.countTasks(res);
+});
+
 router.post('/rest/update', function(req, res, next) {
   console.log("Update von : " + req.body.id);
   task.updateStatus(req.body.id, req.body.status, req.body.end, res);

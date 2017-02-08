@@ -142,6 +142,16 @@ function Sprint() {
         });
         db.disconnect();
     };
+    
+    this.countSprints = function (res) {
+        db.connect();
+        SprintSchema.count({}, function (err, sprints) {
+            if (err) throw err;
+            res.send(JSON.parse(JSON.stringify("{\"count\": \"" + sprints + "\"}")));
+            return sprints;
+        });
+        db.disconnect();
+    }
 
 }
 

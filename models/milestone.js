@@ -52,5 +52,15 @@ function Milestone() {
         });
         db.disconnect();
     }
+
+    this.countMilestones = function (res) {
+        db.connect();
+        MilestoneSchema.count({}, function (err, sprints) {
+            if (err) throw err;
+            res.send(JSON.parse(JSON.stringify("{\"count\": \"" + sprints + "\"}")));
+            return sprints;
+        });
+        db.disconnect();
+    };
 }
 module.exports = new Milestone();

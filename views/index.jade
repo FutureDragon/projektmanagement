@@ -5,7 +5,19 @@ block content
     .jumbotron.transparent.fadeIn
       h1= title
       p  Scrum Tool für die FH
+    .row
+    #backlog.col-md-2.metro.click.col-md-offset-2
+        p.text-left  Angelegte Tasks:
+            span#countTasks
+    #sprint.col-md-2.col-md-offset-1.metro.click
+        p.text-left  Angelegte Sprints:
+          span#countSprints
+
+    #milestone.col-md-2.col-md-offset-1.metro.click
+        p.text-left  Angelegte Meilensteine:
+            span#countMilestones
     input#indexHide(type="hidden" value="true")
+
 
 
 

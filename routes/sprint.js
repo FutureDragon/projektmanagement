@@ -63,6 +63,11 @@ router.post('/rest/addMilestone', function(req, res, next) {
     sprint.assignSprintToMilestone(req.body.sprints, req.body.milestone_id, res);
 });
 
+router.get('/rest/count', function(req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    sprint.countSprints(res);
+});
+
 router.post('/rest/removeMilestone', function(req, res, next) {
     console.log("Remove sprint from milestone: ");
     sprint.removeSprintFromMilestone(req.body.sprints, req.body.milestone_id, res);
