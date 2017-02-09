@@ -55,7 +55,7 @@ $(document).ready(function (event) {
         }
     }
 
-    dialogLogin = $( "#dialog-form" ).dialog({
+    dialogLogin = $( "#dialog-form-login" ).dialog({
         autoOpen: false,
         height: "auto",
         width: 450,
@@ -70,6 +70,12 @@ $(document).ready(function (event) {
         },
         close: function () {
             loginReset();
+        }
+    });
+
+    $('#dialog-form-login').keypress(function(e) {
+        if (e.keyCode == $.ui.keyCode.ENTER) {
+            login();
         }
     });
 

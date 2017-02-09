@@ -5,6 +5,10 @@ var task = require('../models/task');
 router.get('/', function(req, res, next) {
   res.render('backlogIndex', { title: 'Projektmanagement Backlog'});
 });
+router.post('/', function(req, res, next) {
+    res.render('backlogIndex', { title: 'Projektmanagement Backlog'});
+});
+
 
 router.post('/rest', function(req, res, next) {
   task.new(req.body.task, req.body.description, req.body.priority, req.body.story_points , req.body._creator, res);
