@@ -150,7 +150,7 @@ $(document).ready(function (event) {
         Cookies.remove('Id');
         logoutConfirm.dialog("close");
         checkCookie();
-        window.location.href = 'http://localhost:3000';
+        window.location.href = '/';
     }
 
     $('body').on('click', '#loginScreen', function () {
