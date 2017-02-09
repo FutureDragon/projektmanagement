@@ -75,7 +75,7 @@ $(document).ready(function (event) {
 
         }
         else {
-            $("#message").text("Task und Story Points eingeben").addClass("alert alert-danger");
+            $("#message").text("Task eingeben").addClass("alert alert-danger");
         }
     }
 
@@ -83,6 +83,7 @@ $(document).ready(function (event) {
         task.val("");
         description.val("");
         $( "#storyPoints" ).val("");
+        $("#message").text("").removeClass("alert-danger alert")
     }
 
     function newTasksuccess() {
@@ -356,13 +357,19 @@ $(document).ready(function (event) {
             var descriptionText = $("#descriptionShow").val();
             var priority = $( "#priorityEdit option:selected" ).text();
             var storyPoints = $( "#storyPointsEdit" ).val();
-            updateTaskDetails(taskText,descriptionText,priority, storyPoints);
-            //$("#messageShow").text("Task erfolgreich geändert").addClass("alert alert-success fadeIn");
-            $("#taskShow").prop("disabled", true);
-            $("#descriptionShow").prop("disabled", true);
-            $("#priorityShow").text(priority);
-            $(this).text("Bearbeiten");
-            $("#storyPointsShow").text(storyPoints);
+            if(taskText != "") {
+                updateTaskDetails(taskText,descriptionText,priority, storyPoints);
+                //$("#messageShow").text("Task erfolgreich geändert").addClass("alert alert-success fadeIn");
+                $("#taskShow").prop("disabled", true);
+                $("#descriptionShow").prop("disabled", true);
+                $("#priorityShow").text(priority);
+                $(this).text("Bearbeiten");
+                $("#storyPointsShow").text(storyPoints);
+            }
+            else {
+                $("#messageShow").text("Task eingeben").addClass("alert alert-danger fadeIn");
+            }
+
         }
     });
 

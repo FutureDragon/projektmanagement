@@ -87,13 +87,18 @@ $(document).ready(function (event) {
         }
         else {
             // Save Button was clicked
-            $(this).text("Bearbeiten");
             var first   = $("#firstNameShow").val();
             var last    = $("#lastNameShow").val();
             var mail    = $("#emailShow").val();
             var passwd  = $("#passwordShow").val();
             var status  = $("#employeeStatusShow").val();
-            updateUser(first,last,mail,passwd,status);
+            if(mail != "" && first != "" && last != "" && passwd != ""){
+                updateUser(first,last,mail,passwd,status);
+                $(this).text("Bearbeiten");
+            }
+            else {
+                $("#userMessageShow").text("Bitte füllen Sie alle Felder aus").addClass("alert alert-danger");
+            }
         }
     });
 
@@ -150,6 +155,7 @@ $(document).ready(function (event) {
         $("#passwordShow").prop("disabled", true);
         $("#employeeStatusShow").prop("disabled", true);
         $("#changeUser").text("Bearbeiten");
+        $("#userMessageShow").text("").removeClass("alert alert-danger");
     }
 
 
