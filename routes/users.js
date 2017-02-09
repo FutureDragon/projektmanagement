@@ -44,7 +44,7 @@ router.post('/rest/login', function (req, res, next) {
 });
 
 router.post('/rest/update', function (req, res, next) {
-    user.update(req.body.id,req.body.firstName, req.body.lastName, req.body.password, req.body.email, req.body.role, res);
+    user.update(req.body.id,req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.role, res);
 });
 
 
