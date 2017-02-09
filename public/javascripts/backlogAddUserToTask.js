@@ -19,13 +19,22 @@ $(document).ready(function (event) {
     function getEmployees() {
         $.getJSON("/users/rest/getEmployees", function (data) {
             $.each(data, function (key, val) {
-                var text = '<div class="checkbox sprintCheckbox addUserToTask">' +
-                    '<label class="sprintname">' +
-                    '<input class="checkbox-check" type="checkbox" name="user" value="' + val._id + '">' +
-                    '<p>' + val.email + '</p>' +
-                    '</label>' +
-                    '</div>';
-                $("#userContainer").append(text);
+                var checker = 0;
+                $.each(task.assigned_users, function (key2, val2) {
+                    if(val2.user_id == val._id) {
+                        checker++;
+                    }
+                });
+                if(checker == 0) {
+                    var text = '<div class="checkbox sprintCheckbox addUserToTask">' +
+                        '<label class="sprintname">' +
+                        '<input class="checkbox-check" type="checkbox" name="user" value="' + val._id + '">' +
+                        '<p>' + val.email + '</p>' +
+                        '</label>' +
+                        '</div>';
+                    $("#userContainer").append(text);
+                }
+
             });
             if (data.length == 0) {
                 var text = "<div class='alert alert-warning'><p>Keine User vorhanden</p></div>";
@@ -33,7 +42,14 @@ $(document).ready(function (event) {
                 $("#save").prop("disabled", true);
             }
         }).done(function () {
+            if($(".checkbox").length) {
 
+            }
+            else {
+                $("#save").hide();
+                var text = "<div class='alert alert-warning'><p>Keine User vorhanden</p></div>";
+                $("#userContainer").append(text);
+            }
         });
     }
 
