@@ -25,7 +25,7 @@ $(document).ready(function (event) {
 // ____________________________________________________________________________
 
     function createIndex() {
-        $(".table").hide().find("tr:gt(1)").remove();
+        $(".table").hide().find("tr:gt(0)").remove();
         $.getJSON("/milestone/rest", function (data) {
             $.each(data, function (key, val) {
                 var color = "blue";
