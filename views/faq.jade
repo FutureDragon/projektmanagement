@@ -13,38 +13,65 @@ block content
         li
             a(href="#sprints")  Sprints
         li
+            a(href="#scrumboard") SCRUM Board
+        li
             a(href="#planningPoker")  Planning Poker
+        li
+            a(href="#burndown")  Burn-Down-Chart
+        li
+            a(href="#roadmap")  Roadmap
     hr
 
 
     h2(id="user")  Benutzerverwaltung
-    br
     h3  Neue User anlegen
-    br
-    h3  User bearbeiten
-    br
+    p  Neue User können nur von einem Admin unter dem Menüpunkt "User" angelegt werden. Der Menüpunkt ist nur für
+    |  Admins sichtbar.
     h3  User Rollen
-    br
+    ul.no-bullet
+        li  Employee = Berechtigung zum Anlegen von Tasks und Durchführen vom Planning Poker
+        li  Scrummaster = Zusätzliche Berechtigung zum Anlegen von Sprints und Meilensteinen
+        li  Admin = Zusätzliche Berechtigung zur Userverwaltung
     hr
     h2(id="backlog")  Backlog
-    br
+    p  Die Tasks werden nach ihrer Priorität eingefärbt.
+    ul.no-bullet
+        li  Grün = Niedrige Priorität
+        li  Gelb = Mittlere Priorität
+        li  Rot = Hohe Priorität
     h3  Neue Tasks anlegen
-    br
+    p  Neue Tasks können über den Button am Ende der Seite erstellt werden. Taskname und Priorität sind verpflichtende Eingaben.
     h3  Tasks bearbeiten
-    br
-    h3  User zuweisen
-    br
+    p  Mit Klicken auf einen Task öffnet sich ein Dialog, der alle Informationen detailliert anzeigt.
+    p  Der Status kann mit Hilfe der Buttons "Offen", "In Arbeit", "Review" und "Fertig" bearbeitet werden.
+    p  Bei Fertigstellung des Tasks muss das Enddatum angegeben werden. Bitte beachten, dass ein realistisches
+    p  Datum eingegeben werden sollte, damit das Burn-Down-Chart korrekt berechnet werden kann.
     hr
     h2(id="sprints")  Sprints
-    br
     h3  Neue Sprints anlegen
-    br
+    p  Neue Sprints können über den Button am Ende der Seite erstellt werden.
     h3  Sprints bearbeiten
-    br
+    p  Zum Bearbeiten eines Sprints kann dieser ausgewählt werden. Anschließend muss man auf den Button "Sprint
+    p  bearbeiten oder Tasks auswählen" klicken. Hier kann der Sprint nun auf dem Button oben rechts geändert werden.
     h3  Sprint mit Tasks befüllen
-    br
+    p  Dazu muss zuerst der Sprint ausgewählt werden. Anschließend muss man auf den Button "Sprint
+    p  bearbeiten oder Tasks auswählen" klicken. Auf der unteren Hälfte der Seite können die Tasks hinzugefügt oder
+    p  entfernt werden.
+    hr
+    h2(id="scrumboard")  SCRUM Board
+    p  Das SCRUM Board kann über die Sprints erreicht werden. Wenn man einen Sprint auswählt, wird das SCRUM Board
+    p  mit den zugeordneten Tasks erstellt. Hier kann beim Anklicken eines Tasks der Status etc. geändert werden.
     hr
     h2(id="planningPoker")  Planning Poker
-    br
-    h3  Tasks bewerten
-    br
+    p  Dem Task müssen zuerst die User, die am Planning Poker teilnehmen sollen, zugeordnet werden. Das wird
+    p  über das Backlog erledigt, indem man dort den Task auswählt und auf den Button "User hinzufügen" klickt.
+    hr
+    h2(id="burndown")  Burn-Down-Chart
+    p  Die blaue Linie des Burn-Down-Charts zeigt den optimalen Verlauf des Sprints an. Die rote Linie zeigt die
+    p  tatsächlichen Endzeitpunkte der Tasks an.
+    p  Es ist zu beachten, dass das Chart nur korrekt berechnet werden kann, wenn auch realistische Daten eingegeben werden.
+    p  Die rote Linie wird nur berechnet, wenn mindestens ein Task beendet wurde.
+    hr
+    h2(id="roadmap")  Roadmap
+    p  In der Roadmap werden alle geplanten Endzeitpunkte der Sprints mit einem blauen Kreis dargestellt.
+    p  Die beendete Tasks werden mit einem roten Kreuz dargestellt.

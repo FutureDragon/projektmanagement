@@ -20,6 +20,10 @@ $(document).ready(function (event) {
         firstDay: 1
     }).val();
 
+    if (Cookies.get("Role") != "scrummaster" && Cookies.get("Role") != "admin") {
+        $("#newMilestoneBtn").hide();
+    }
+
     createIndex();
 
 // ____________________________________________________________________________

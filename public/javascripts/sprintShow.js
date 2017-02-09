@@ -23,6 +23,11 @@ $(document).ready(function () {
         firstDay: 1
     }).val(endDateString);
 
+    if (Cookies.get("Role") != "scrummaster" && Cookies.get("Role") != "admin") {
+        $("#scrumboardHead").hide();
+        $("#edit").hide();
+    }
+
     getSprint($("#sprintId").val());
 
     function getSprint(id) {

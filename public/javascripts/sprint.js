@@ -21,15 +21,16 @@ $(document).ready(function (event) {
         firstDay: 1
     }).val();
 
+    if (Cookies.get("Role") != "scrummaster" && Cookies.get("Role") != "admin") {
+        $("#newSprintBtn").hide();
+    }
+
     createIndex();
 
 // ____________________________________________________________________________
 
     function createIndex() {
         $(".table").hide().find("tr:gt(1)").remove();
-        if (Cookies.get("Role") != "scrummaster" && Cookies.get("Role") != "admin") {
-            $("#newSprintBtn").hide();
-        }
         $.getJSON("/sprint/rest", function (data) {
             $.each(data, function (key, val) {
                 var color = "blue";
