@@ -185,14 +185,7 @@ function Task() {
     // Get all tasks they belong to a user and are not rated anymore
     this.getAllNotRatedTasksForUser = function (id, res) {
         db.connect();
-        TaskSchema.find({
-                assigned_users: {
-                    $elemMatch: {
-                        user_id: id,
-                        rating: null
-                    }
-                }
-            },
+        TaskSchema.find({assigned_users: {$elemMatch: {user_id: id, rating: null}}},
             function (err, tasks) {
                 if (err) {
                     throw err;
@@ -229,26 +222,6 @@ function Task() {
         db.disconnect();
     };
 
-    this.isTaskRatingComplete = function (taskID, res) {
-        /*
-        Damit Warte Dialog verschwindet muss res = 200 zurückgesendet werden, da disese funktion noch nicht richtig läuft wird es am anfang gemacht
-         */
-        res.sendStatus(200);
-        /*TaskSchema.find({_id: taskID, "assigned_users.$.rating": null}).exec(function (err, usersWithoutRating) {
-            if(err) throw err;
-            else{
-                if (usersWithoutRating.length != 0){
-                    console.log("Es wurden alle BEwertungen abgegeben!");
-                    res.sendStatus(200);
-                }
-                else{
-                    console.log("Es sind noch Bewertungen offen!");
-                    console.log("Task:" + usersWithoutRating);
-                    res.sendStatus(900);
-                }
-            }
-        });*/
-    };
 
     this.setFinalRating = function (taskID, storyPoints,res) {
         db.connect();
@@ -258,62 +231,6 @@ function Task() {
                 throw err;
             }
         });
-        db.disconnect();
-    };
-
-    // @created: January 14th
-    // Add story points from a specific user to a task
-    this.addStoryPointsToTaskForUser2 = function (taskID, userID, storyPoints, res) {
-        db.connect();
-        TaskSchema.update({
-            _id: taskID,
-            "assigned_users.user_id": userID
-        }, {$inc: {"assigned_users.$.rating": storyPoints}}, function (err) {
-            if (err) throw err;
-            else {
-                TaskSchema.find({_id: taskID, "assigned_users.rating": null}, function (err, task) {
-                    if (err) throw err;
-                    else {
-                        if (task.length == 0) {
-                            console.log("Alle Tasks sind bewertet!");
-                            TaskSchema.find({_id: taskID}, {
-                                _id: 0,
-                                "assigned_users.rating": 1
-                            }, function (err, ratings) {
-                                console.log("Ratings:" + ratings.assigned_users);
-                            });
-                        }
-                        else {
-                            console.log("Es sind noch Bewertungen offen!");
-                            console.log("Task: " + task);
-                        }
-                        res.sendStatus(200);
-                    }
-                });
-            }
-        });
-        db.disconnect();
-    };
-
-    this.addStoryPointsToTaskForUser = function (taskID, userID, storyPoints, res) {
-        db.connect();
-
-        var updateStoryPoints = TaskSchema.update({_id: taskID, "assigned_users.user_id": userID}, {$inc: {"assigned_users.$.rating": storyPoints}}).exec();
-        updateStoryPoints.then(function () {
-            console.log("Es wird überprüft, ob es noch User gibt, die diesen Task noch nicht bewertet haben!");
-            return TaskSchema.find({_id: taskID, "assigned_users.rating": null}).exec();
-        })
-        .then(function (usersWithoutRating) {
-            if (usersWithoutRating.length == 0){
-                console.log("Es wurden alle BEwertungen abgegeben!");
-                return TaskSchema.find({_id: taskID}, {_id: 0, "assigned_users.rating": 1}).exec();
-            }
-            else{
-                console.log("Es sind noch Bewertungen offen!");
-                console.log("Task:" + usersWithoutRating);
-            }
-        });
-
         db.disconnect();
     };
 
@@ -366,18 +283,6 @@ function Task() {
         });
         db.disconnect();
     };
-// @created: January 14th
-    // Check if all participants have rated a tasks. If all people have rated check whether all people ratings are equal.
-    // If they are equal set the story points for a task. If the are not equal all people have to rate once more.
-    // this.checkRatings = function (taskID, res) {
-    //     TaskSchema.find({_id: taskID, "assigned_users.rating": null}, function (err, task) {
-    //         if(err) throw err;
-    //         else{
-    //             console.log("Task: " + task);
-    //             res.sendStatus(200);
-    //         }
-    //     });
-    // }
 }
 
 // Exports a new Task Object
