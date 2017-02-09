@@ -127,6 +127,7 @@ $(function () {
                 }
             ]
         };
+        /*
         var rest = endDate.getTime() - startDate.getTime();
         if (rest < 7) {
             options.axisX = {
@@ -139,6 +140,7 @@ $(function () {
                 }
             };
         }
+        */
         if (countSprints > 0) {
             if (check == true) {
                 $("#showMessage").removeClass("alert-danger").hide();

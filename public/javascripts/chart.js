@@ -139,6 +139,7 @@ $(function () {
                 }
             ]
         };
+        /*
         var rest = endDate.getTime() - startDate.getTime();
         if (rest < 7) {
             options.axisX = {
@@ -151,6 +152,7 @@ $(function () {
                 }
             };
         }
+        */
         if (countTasks > 0 && countStoryPointsMax > 0) {
             if (countTasksW > 0) {
                 $("#showMessage").removeClass("alert-warning").hide();
