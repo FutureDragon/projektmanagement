@@ -28,17 +28,16 @@ $(function () {
                 var endDate = new Date(val.end);
                 if (startDate.getTime() < startDateAxis.getTime()) {
                     startDateAxis = new Date(startDate);
-                    startDateAxisDay = startDateAxis.getDay();
+                    startDateAxisDay = startDateAxis.getDate();
                     startDateAxisMonth = startDateAxis.getMonth();
                     startDateAxisYear = startDateAxis.getFullYear();
                 }
                 if (endDate.getTime() > endDateAxis.getTime()) {
                     endDateAxis = new Date(endDate);
-                    endDateAxisDay = endDateAxis.getDay();
+                    endDateAxisDay = endDateAxis.getDate();
                     endDateAxisMonth = endDateAxis.getMonth();
                     endDateAxisYear = endDateAxis.getFullYear();
                 }
-
             });
         }).done(function () {
             getSprints();
@@ -86,8 +85,8 @@ $(function () {
                     dataPoints.push({
                         x: new Date(sprints[y].end),
                         y: milestones.length - i,
-                        z: 5,
-                        markerType: "cross",
+                        z: 10,
+                        markerType: "circle",
                         markerColor: "blue"
                     });
                     var id2 = sprints[y]._id;
@@ -106,13 +105,13 @@ $(function () {
             }
         }
         dataPoints.push({
-            x: new Date(startDateAxisYear, endDateAxisMonth, endDateAxisDay),
+            x: new Date(endDateAxisYear, endDateAxisMonth, endDateAxisDay),
             y: 1,
             z: 100,
             markerType: "none"
         });
         dataPoints.push({
-            x: new Date(startDateAxisYear, endDateAxisMonth, endDateAxisDay),
+            x: new Date(endDateAxisYear, endDateAxisMonth, endDateAxisDay),
             y: 1,
             z: 1,
             markerType: "none"
@@ -132,32 +131,19 @@ $(function () {
                 text: "Roadmap"
             },
             axisX: {
-                //minimum: new Date(startDateAxisYear, startDateAxisMonth, startDateAxisDay - 1),
-                //maximum: new Date(endDateAxisYear, endDateAxisMonth, endDateAxisDay + 1),
+                minimum: new Date(startDateAxisYear, startDateAxisMonth, startDateAxisDay - 1),
+                maximum: new Date(endDateAxisYear, endDateAxisMonth, endDateAxisDay + 1),
                 labelFormatter: function (e) {
                     return CanvasJS.formatDate(e.value, "DD.MM.");
                 }
             },
             axisY: {
+                interval: 1
             },
             data: data2
         };
-        /*
-         var rest = endDateAxis.getTime() - startDateAxis.getTime();
-         if (rest < 7) {
-         options.axisX = {
-         //minimum: new Date(startDateAxisYear, startDateAxisMonth, startDateAxisDay - 1),
-         //maximum: new Date(endDateAxisYear, endDateAxisMonth, endDateAxisDay + 1),
-         interval: 1,
-         intervalType: "day",
-         labelFormatter: function (e) {
-         return CanvasJS.formatDate(e.value, "DD.MM.");
-         }
-         };
-         }
-         */
         $("#showMessage").removeClass("alert-info").hide();
-        $("#showMessage").text("Blaues Kreuz = Ende eines Sprints. Rotes " +
+        $("#showMessage").text("Blauer Kreis = Ende eines Sprints. Rotes " +
             "Kreuz = Ende eines Tasks").addClass("alert alert-info").fadeIn();
         $("#chartContainer").CanvasJSChart(options);
     }
