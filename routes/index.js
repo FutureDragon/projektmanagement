@@ -8,7 +8,7 @@ var milestone = require('../models/milestone');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Projektmanagement'});
+  res.render('index', { title: 'Scrumler'});
 });
 
 router.get('/reminder', function(req, res, next) {
