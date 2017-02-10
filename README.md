@@ -1,5 +1,5 @@
 # WI Cluster
-Die Anwendung läuft auf dem WI Cluster unter: 10.60.68.189:3000
+Die Anwendung läuft auf dem WI Cluster.
 
 **Anmeldedaten:**
 
