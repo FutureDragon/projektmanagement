@@ -54,6 +54,11 @@ $(document).ready(function (event) {
         $("#sprint").show("slide", "", 700);
 
         $("#milestone").show("slide", "", 700);
+
+        $("#userData").hide()
+    }
+    else {
+        $("#userData").show()
     }
 
 });
